@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tileeditor", "tileeditor\tileeditor.csproj", "{5A06DBA1-F8E3-443D-8E85-3731B7AE401D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A06DBA1-F8E3-443D-8E85-3731B7AE401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A06DBA1-F8E3-443D-8E85-3731B7AE401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A06DBA1-F8E3-443D-8E85-3731B7AE401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A06DBA1-F8E3-443D-8E85-3731B7AE401D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {03C80482-ABA3-4E67-9589-6FAB0D8DEE5C}
+	EndGlobalSection
+EndGlobal
