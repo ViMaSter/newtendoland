@@ -6,8 +6,10 @@ namespace tileeditor
     enum TileType : byte
     {
         TogglableSpike = (byte)'A',
+        Bee = (byte)'E',
         OrderedFruit = (byte)'F',
         Goal = (byte)'G',
+        Heart = (byte)'H',
         RotatingFruitWithBonus = (byte)'M',
         Hole = (byte)'O',
         Fruit = (byte)'P',
@@ -15,6 +17,8 @@ namespace tileeditor
         Pepper = (byte)'W',
         Wall = (byte)'*',
         Empty = (byte)'0',
+        Closed = (byte)'+',
+        Opened = (byte)'-',
         NONE = 0x00,
     }
 

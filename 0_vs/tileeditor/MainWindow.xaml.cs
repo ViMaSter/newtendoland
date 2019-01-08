@@ -70,7 +70,7 @@ namespace tileeditor
                         ImageGrid.Children.Add(imageElements[row, column]);
 
                         Border borderElement = new Border();
-                        borderElement.BorderBrush = Brushes.White;
+                        borderElement.BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x74, 0x74, 0x74));
                         borderElement.BorderThickness = new Thickness(1, 1, (column+1) == MapData.COLUMNS_VISIBLE ? 1 : 0, (row+1) == MapData.ROWS_VISIBLE ? 1 : 0);
                         Grid.SetRow(borderElement, row);
                         Grid.SetColumn(borderElement, column);
@@ -148,11 +148,27 @@ namespace tileeditor
         void PopulateList()
         {
             IEnumerable<string> maps = Directory.EnumerateFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "tmp", "sourceFiles", "Ysi"), "MapData*.exbin");
-            LevelSelector.Items.Clear();
             foreach (string map in maps)
             {
-                LevelSelector.Items.Add(Path.GetFileNameWithoutExtension(map));
+                ComboBoxItem item = new ComboBoxItem();
+                item.Name = Path.GetFileNameWithoutExtension(map);
+                int levelIndex = int.Parse(Path.GetFileNameWithoutExtension(map).Replace("MapData", ""));
+                if (levelIndex == 99)
+                {
+                    item.Content = "Tutorial stage";
+                }
+                else if (levelIndex > 49)
+                {
+                    item.Content = "Gate " + (levelIndex + 1) + " (UNUSED)";
+                }
+                else
+                {
+                    item.Content = "Gate " + (levelIndex + 1);
+                }
+                LevelSelector.Items.Add(item);
             }
+            LevelSelector.IsEnabled = true;
+            LevelSelector.SelectedIndex = 1;
         }
 
         private void ParseFile_Click(object sender, RoutedEventArgs e)
@@ -176,6 +192,15 @@ namespace tileeditor
                 return;
             }
 
+            if ((e.AddedItems[0] as ComboBoxItem).Name == "default")
+            {
+                if (e.RemovedItems.Count > 0)
+                {
+                    ((ComboBox)sender).SelectedItem = e.RemovedItems[0];
+                }
+                return;
+            }
+
             using (var memStream = new MemoryStream())
             {
                 MapData mapData = MapData.Load(Path.Combine(
@@ -183,7 +208,7 @@ namespace tileeditor
                                       "tmp",
                                       "sourceFiles",
                                       "Ysi",
-                                      (e.AddedItems[0] as string) + ".exbin"
+                                      (e.AddedItems[0] as ComboBoxItem).Name + ".exbin"
                                   ));
                 //LevelData.Text = mapData.Visualize();
                 for (int row = 0; row < MapData.ROWS_VISIBLE; row++)
