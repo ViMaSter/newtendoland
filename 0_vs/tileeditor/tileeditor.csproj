@@ -52,6 +52,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -122,6 +123,45 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Ob.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\P.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\G.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\A+.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\G_.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Oa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\S.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Switch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\unknown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\F.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\undetermined.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\W.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

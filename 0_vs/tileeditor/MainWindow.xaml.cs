@@ -1,10 +1,15 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System;
 using System.IO;
+using System.Linq;
+using System.Resources;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace tileeditor
 {
@@ -13,10 +18,79 @@ namespace tileeditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static bool ResourceExists(string resourcePath)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            return ResourceExists(assembly, resourcePath);
+        }
+
+        public static bool ResourceExists(Assembly assembly, string resourcePath)
+        {
+            return GetResourcePaths(assembly)
+                .Contains(resourcePath.ToLowerInvariant());
+        }
+
+        public static IEnumerable<object> GetResourcePaths(Assembly assembly)
+        {
+            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var resourceName = assembly.GetName().Name + ".g";
+            var resourceManager = new ResourceManager(resourceName, assembly);
+
+            try
+            {
+                var resourceSet = resourceManager.GetResourceSet(culture, true, true);
+
+                foreach (System.Collections.DictionaryEntry resource in resourceSet)
+                {
+                    yield return resource.Key;
+                }
+            }
+            finally
+            {
+                resourceManager.ReleaseAllResources();
+            }
+        }
+
+
+        Image[,] imageElements = new Image[MapData.ROWS_VISIBLE, MapData.COLUMNS_VISIBLE];
+        TextBox[,] textBoxElements = new TextBox[MapData.ROWS_VISIBLE, MapData.COLUMNS_VISIBLE];
         public MainWindow()
         {
             // detect remaining temp-folder
             InitializeComponent();
+            {
+                for (int row = 0; row < MapData.ROWS_VISIBLE; row++)
+                {
+                    for (int column = 0; column < MapData.COLUMNS_VISIBLE; column++)
+                    {
+                        imageElements[row, column] = new Image();
+                        Grid.SetRow(imageElements[row, column], row);
+                        Grid.SetColumn(imageElements[row, column], column);
+                        ImageGrid.Children.Add(imageElements[row, column]);
+
+                        Border borderElement = new Border();
+                        borderElement.BorderBrush = Brushes.White;
+                        borderElement.BorderThickness = new Thickness(1, 1, (column+1) == MapData.COLUMNS_VISIBLE ? 1 : 0, (row+1) == MapData.ROWS_VISIBLE ? 1 : 0);
+                        Grid.SetRow(borderElement, row);
+                        Grid.SetColumn(borderElement, column);
+                        ImageGrid.Children.Add(borderElement);
+
+                        textBoxElements[row, column] = new TextBox();
+                        Grid.SetRow(textBoxElements[row, column], row);
+                        Grid.SetColumn(textBoxElements[row, column], column);
+                        textBoxElements[row, column].TextWrapping = TextWrapping.NoWrap;
+                        textBoxElements[row, column].TextAlignment = TextAlignment.Center;
+                        textBoxElements[row, column].VerticalAlignment = VerticalAlignment.Center;
+                        textBoxElements[row, column].Text = "";
+                        textBoxElements[row, column].Visibility = Visibility.Hidden;
+                        textBoxElements[row, column].Background = new SolidColorBrush(Color.FromArgb(0xDF, 0xFF, 0xFF, 0xFF));
+                        textBoxElements[row, column].Foreground = Brushes.Black;
+                        textBoxElements[row, column].BorderBrush = Brushes.Transparent;
+                        ImageGrid.Children.Add(textBoxElements[row, column]);
+                    }
+                }
+            }
         }
 
         ~MainWindow()
@@ -111,7 +185,72 @@ namespace tileeditor
                                       "Ysi",
                                       (e.AddedItems[0] as string) + ".exbin"
                                   ));
-                LevelData.Text = mapData.Visualize();
+                //LevelData.Text = mapData.Visualize();
+                for (int row = 0; row < MapData.ROWS_VISIBLE; row++)
+                {
+                    for (int column = 0; column < MapData.COLUMNS_VISIBLE; column++)
+                    {
+                        Tile tile = mapData.GetItem(row, column);
+
+                        // update text
+                        textBoxElements[row, column].Text = tile.GetIndex();
+
+                        // update image
+                        if (tile.ToString().Length == 0)
+                        {
+                            imageElements[row, column].Source = new BitmapImage();
+                            continue;
+                        }
+
+                        string path = "Resources/" + tile.ToString() + ".png";
+                        if (!ResourceExists(path))
+                        {
+                            // fallback to edge-case image
+                            path = "Resources/" + tile.GetTileType() + "_.png";
+                            if (!ResourceExists(path))
+                            {
+                                // fallback to non-indexed image
+                                path = "Resources/" + tile.GetTileType() + ".png";
+                                if (!ResourceExists(path))
+                                {
+                                    path = "Resources/unknown.png";
+                                }
+                            }
+                        }
+
+                        BitmapImage image = new BitmapImage();
+                        image.BeginInit();
+                        image.UriSource = new Uri("pack://application:,,,/" + path, UriKind.Absolute);
+                        image.EndInit();
+                        imageElements[row, column].Source = image;
+                    }
+                }
+
+            }
+        }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl)
+            {
+                foreach (TextBox textBox in textBoxElements)
+                {
+                    if (textBox.Text.Length > 0)
+                    {
+                        textBox.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+
+        private void Window_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl)
+            {
+                foreach (TextBox textBox in textBoxElements)
+                {
+                    textBox.Visibility = Visibility.Hidden;
+                }
             }
         }
     }

@@ -5,11 +5,88 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tileeditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Background="#FF2D2D30" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
     <Grid>
         <Button x:Name="LoadFile" Content="Load file..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="89" Click="LoadFile_Click" Height="22"/>
-        <TextBox x:Name="LevelData" HorizontalAlignment="Left" Height="378" Margin="10,35,0,0" Text="" VerticalAlignment="Top" Width="775" FontFamily="Consolas"/>
         <ComboBox x:Name="LevelSelector" HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top" Width="681" SelectionChanged="LevelSelector_SelectionChanged"/>
+
+        <Grid x:Name="ImageGrid" Margin="10,37,185,10.5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="375" Margin="615,37,0,0" VerticalAlignment="Top" Width="170">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left">
+                <Image Source="Resources/S.png"></Image>
+            </Button>
+            <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left">
+                <Image Source="Resources/P.png"></Image>
+            </Button>
+            <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left">
+                <Image Source="Resources/G.png"></Image>
+            </Button>
+            <Button Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left">
+                <Image Source="Resources/G_.png"></Image>
+            </Button>
+            <Button Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left">
+                <Image Source="Resources/Oa.png"></Image>
+            </Button>
+            <Button Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left">
+                <Image Source="Resources/Ob.png"></Image>
+            </Button>
+            <Button Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left">
+                <Image Source="Resources/W.png"></Image>
+            </Button>
+            <Button Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left">
+                <Image Source="Resources/A+.png"></Image>
+            </Button>
+        </Grid>
+        <!-- <TextBox x:Name="LevelData" HorizontalAlignment="Left" Height="378" Margin="10,35,0,0" Text="" VerticalAlignment="Top" Width="775" FontFamily="Consolas"/> -->
 
     </Grid>
 </Window>
