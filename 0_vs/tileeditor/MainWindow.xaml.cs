@@ -19,13 +19,13 @@ namespace tileeditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Resource helper
         public static bool ResourceExists(string resourcePath)
         {
             var assembly = Assembly.GetExecutingAssembly();
 
             return ResourceExists(assembly, resourcePath);
         }
-
         public static bool ResourceExists(Assembly assembly, string resourcePath)
         {
             return GetResourcePaths(assembly)
@@ -52,6 +52,7 @@ namespace tileeditor
                 resourceManager.ReleaseAllResources();
             }
         }
+        #endregion
 
         #region UI constructor
         private void CreateObjectPicker()
@@ -70,16 +71,17 @@ namespace tileeditor
             //  create buttons
             int row = 0;
             int column = 0;
-            foreach (TileType tileType in Tile.PickableTypes)
+            TileTypes.TileType.ForEachType((TileTypes.TileType type) =>
             {
                 Button newButton = new Button
                 {
                     Content = new Image
                     {
-                        Source = new BitmapImage(new Uri("pack://application:,,,/Resources/TileTypes/" + (char)tileType + ".png", UriKind.Absolute)),
+                        Source = new BitmapImage(new Uri("pack://application:,,,/Resources/TileTypes/" + (char)type.MemoryIdentifier + ".png", UriKind.Absolute)),
                         VerticalAlignment = VerticalAlignment.Center
                     }
                 };
+                newButton.Click += (object sender, RoutedEventArgs e) => ConfigPopup.Show(type);
                 Grid.SetColumn(newButton, column);
                 Grid.SetRow(newButton, row);
                 ObjectPicker.Children.Add(newButton);
@@ -90,7 +92,7 @@ namespace tileeditor
                     column = 0;
                     row++;
                 }
-            }
+            });
         }
 
         private void CreatePlacementGrid()
@@ -135,6 +137,8 @@ namespace tileeditor
         {
             // @TODO: detect remaining temp-folder
             InitializeComponent();
+
+            TileTypes.TileType.PopulateRegistar();
 
             CreateObjectPicker();
             CreatePlacementGrid();

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tileeditor"
         mc:Ignorable="d"
-        Title="Yoshi Fruit Cart - Map Editor" Height="450" Background="#282b2d" Width="800" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
+        Title="Yoshi Fruit Cart - Map Editor" Background="#282b2d" Height="450" Width="800" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="37*"/>
