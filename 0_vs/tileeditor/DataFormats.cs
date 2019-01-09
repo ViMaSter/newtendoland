@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.IO;
 
 namespace tileeditor
@@ -24,6 +26,20 @@ namespace tileeditor
 
     struct Tile
     {
+        public static readonly TileType[] PickableTypes = 
+        {
+            TileType.TogglableSpike,
+            TileType.Bee,
+            TileType.OrderedFruit,
+            TileType.Goal,
+            TileType.Heart,
+            TileType.RotatingFruitWithBonus,
+            TileType.Hole,
+            TileType.Fruit,
+            TileType.Start,
+            TileType.Pepper
+        };
+
         private TileType type;
         private string index;
 

@@ -8,6 +8,7 @@ using System.Resources;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -52,45 +53,91 @@ namespace tileeditor
             }
         }
 
+        #region UI constructor
+        private void CreateObjectPicker()
+        {
+            // create object picker
+            //  create rows
+            int rowsRequired = (int)Math.Ceiling(Tile.PickableTypes.Length / (float)ObjectPicker.ColumnDefinitions.Count);
+            for (int i = 0; i < rowsRequired; i++)
+            {
+                ObjectPicker.RowDefinitions.Add(new RowDefinition
+                {
+                    Height = new GridLength(1, GridUnitType.Star)
+                });
+            }
+
+            //  create buttons
+            int row = 0;
+            int column = 0;
+            foreach (TileType tileType in Tile.PickableTypes)
+            {
+                Button newButton = new Button
+                {
+                    Content = new Image
+                    {
+                        Source = new BitmapImage(new Uri("pack://application:,,,/Resources/TileTypes/" + (char)tileType + ".png", UriKind.Absolute)),
+                        VerticalAlignment = VerticalAlignment.Center
+                    }
+                };
+                Grid.SetColumn(newButton, column);
+                Grid.SetRow(newButton, row);
+                ObjectPicker.Children.Add(newButton);
+
+                column++;
+                if (column == ObjectPicker.ColumnDefinitions.Count)
+                {
+                    column = 0;
+                    row++;
+                }
+            }
+        }
+
+        private void CreatePlacementGrid()
+        {
+            // create placement grid
+            for (int row = 0; row < MapData.ROWS_VISIBLE; row++)
+            {
+                for (int column = 0; column < MapData.COLUMNS_VISIBLE; column++)
+                {
+                    imageElements[row, column] = new Image();
+                    Grid.SetRow(imageElements[row, column], row);
+                    Grid.SetColumn(imageElements[row, column], column);
+                    ImageGrid.Children.Add(imageElements[row, column]);
+
+                    Border borderElement = new Border();
+                    borderElement.BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x74, 0x74, 0x74));
+                    borderElement.BorderThickness = new Thickness(1, 1, (column + 1) == MapData.COLUMNS_VISIBLE ? 1 : 0, (row + 1) == MapData.ROWS_VISIBLE ? 1 : 0);
+                    Grid.SetRow(borderElement, row);
+                    Grid.SetColumn(borderElement, column);
+                    ImageGrid.Children.Add(borderElement);
+
+                    textBoxElements[row, column] = new TextBox();
+                    Grid.SetRow(textBoxElements[row, column], row);
+                    Grid.SetColumn(textBoxElements[row, column], column);
+                    textBoxElements[row, column].TextWrapping = TextWrapping.NoWrap;
+                    textBoxElements[row, column].TextAlignment = TextAlignment.Center;
+                    textBoxElements[row, column].VerticalAlignment = VerticalAlignment.Center;
+                    textBoxElements[row, column].Text = "";
+                    textBoxElements[row, column].Visibility = Visibility.Hidden;
+                    textBoxElements[row, column].Background = new SolidColorBrush(Color.FromArgb(0xDF, 0xFF, 0xFF, 0xFF));
+                    textBoxElements[row, column].Foreground = Brushes.Black;
+                    textBoxElements[row, column].BorderBrush = Brushes.Transparent;
+                    ImageGrid.Children.Add(textBoxElements[row, column]);
+                }
+            }
+        }
+        #endregion
 
         Image[,] imageElements = new Image[MapData.ROWS_VISIBLE, MapData.COLUMNS_VISIBLE];
         TextBox[,] textBoxElements = new TextBox[MapData.ROWS_VISIBLE, MapData.COLUMNS_VISIBLE];
         public MainWindow()
         {
-            // detect remaining temp-folder
+            // @TODO: detect remaining temp-folder
             InitializeComponent();
-            {
-                for (int row = 0; row < MapData.ROWS_VISIBLE; row++)
-                {
-                    for (int column = 0; column < MapData.COLUMNS_VISIBLE; column++)
-                    {
-                        imageElements[row, column] = new Image();
-                        Grid.SetRow(imageElements[row, column], row);
-                        Grid.SetColumn(imageElements[row, column], column);
-                        ImageGrid.Children.Add(imageElements[row, column]);
 
-                        Border borderElement = new Border();
-                        borderElement.BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x74, 0x74, 0x74));
-                        borderElement.BorderThickness = new Thickness(1, 1, (column+1) == MapData.COLUMNS_VISIBLE ? 1 : 0, (row+1) == MapData.ROWS_VISIBLE ? 1 : 0);
-                        Grid.SetRow(borderElement, row);
-                        Grid.SetColumn(borderElement, column);
-                        ImageGrid.Children.Add(borderElement);
-
-                        textBoxElements[row, column] = new TextBox();
-                        Grid.SetRow(textBoxElements[row, column], row);
-                        Grid.SetColumn(textBoxElements[row, column], column);
-                        textBoxElements[row, column].TextWrapping = TextWrapping.NoWrap;
-                        textBoxElements[row, column].TextAlignment = TextAlignment.Center;
-                        textBoxElements[row, column].VerticalAlignment = VerticalAlignment.Center;
-                        textBoxElements[row, column].Text = "";
-                        textBoxElements[row, column].Visibility = Visibility.Hidden;
-                        textBoxElements[row, column].Background = new SolidColorBrush(Color.FromArgb(0xDF, 0xFF, 0xFF, 0xFF));
-                        textBoxElements[row, column].Foreground = Brushes.Black;
-                        textBoxElements[row, column].BorderBrush = Brushes.Transparent;
-                        ImageGrid.Children.Add(textBoxElements[row, column]);
-                    }
-                }
-            }
+            CreateObjectPicker();
+            CreatePlacementGrid();
         }
 
         ~MainWindow()
@@ -110,7 +157,7 @@ namespace tileeditor
                 {
                     FileName = "py",
                     Arguments = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Scripts/SARC/SARCExtract.py " + newTargetFolder + Path.GetFileName(filePath),
-                    CreateNoWindow = true
+                    WindowStyle = ProcessWindowStyle.Hidden
                 }
             };
             process.Start();
@@ -125,24 +172,32 @@ namespace tileeditor
         {
             // open and extract SZS
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Yoshi's package file (Ysi_Cmn.pack)|Ysi_Cmn.pack";
+            openFileDialog.Filter = "Yoshi Fruit Cart package file (Ysi_Cmn.pack)|Ysi_Cmn.pack";
             if (openFileDialog.ShowDialog() != true)
             {
                 // no file selected
                 return;
             }
 
-            if (!MoveAndExtract(openFileDialog.FileName))
-            {
-                throw new System.Exception();
-            }
+            Parago.Windows.ProgressDialogResult result = Parago.Windows.ProgressDialog.Execute(this, "Loading data...", (progress) => {
+                Parago.Windows.ProgressDialog.Report(progress, 40, "Extracting game package file...");
+                if (!MoveAndExtract(openFileDialog.FileName))
+                {
+                    throw new System.Exception();
+                }
 
-            if (!MoveAndExtract(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/Ysi_Cmn/Common/Scene/Ysi.szs"))
-            {
-                throw new System.Exception();
-            }
+                Parago.Windows.ProgressDialog.Report(progress, 90, "Extracting scene file...");
+                if (!MoveAndExtract(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/Ysi_Cmn/Common/Scene/Ysi.szs"))
+                {
+                    throw new System.Exception();
+                }
 
-            PopulateList();
+                Parago.Windows.ProgressDialog.Report(progress, 95, "Populating list...");
+                Application.Current.Dispatcher.Invoke(new Action(() => {
+                    PopulateList();
+                }));
+            });
+
         }
 
         void PopulateList()
@@ -227,27 +282,23 @@ namespace tileeditor
                             continue;
                         }
 
-                        string path = "Resources/" + tile.ToString() + ".png";
+                        string path = "Resources/TileTypes/" + tile.ToString() + ".png";
                         if (!ResourceExists(path))
                         {
                             // fallback to edge-case image
-                            path = "Resources/" + tile.GetTileType() + "_.png";
+                            path = "Resources/TileTypes/" + tile.GetTileType() + "_.png";
                             if (!ResourceExists(path))
                             {
                                 // fallback to non-indexed image
-                                path = "Resources/" + tile.GetTileType() + ".png";
+                                path = "Resources/TileTypes/" + tile.GetTileType() + ".png";
                                 if (!ResourceExists(path))
                                 {
-                                    path = "Resources/unknown.png";
+                                    path = "Resources/TileTypes/unknown.png";
                                 }
                             }
                         }
 
-                        BitmapImage image = new BitmapImage();
-                        image.BeginInit();
-                        image.UriSource = new Uri("pack://application:,,,/" + path, UriKind.Absolute);
-                        image.EndInit();
-                        imageElements[row, column].Source = image;
+                        imageElements[row, column].Source = new BitmapImage(new Uri("pack://application:,,,/" + path, UriKind.Absolute));
                     }
                 }
 

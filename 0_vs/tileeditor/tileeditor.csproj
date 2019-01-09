@@ -89,6 +89,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataFormats.cs" />
+    <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
+    <Page Include="ProgressDialog\ProgressDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="ProgressDialog\ProgressDialog.xaml.cs">
+      <DependentUpon>ProgressDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -155,55 +164,61 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Ob.png" />
+    <Resource Include="Resources\TileTypes\Ob.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\P.png" />
+    <Resource Include="Resources\TileTypes\P.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\G.png" />
+    <Resource Include="Resources\TileTypes\G.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\A+.png" />
+    <Resource Include="Resources\TileTypes\A+.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\G_.png" />
+    <Resource Include="Resources\TileTypes\G_.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Oa.png" />
+    <Resource Include="Resources\TileTypes\Oa.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\S.png" />
+    <Resource Include="Resources\TileTypes\S.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Switch.png" />
+    <Resource Include="Resources\TileTypes\Switch.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\unknown.png" />
+    <Resource Include="Resources\TileTypes\unknown.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\F.png" />
+    <Resource Include="Resources\TileTypes\F.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\undetermined.png" />
+    <Resource Include="Resources\TileTypes\undetermined.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\M.png" />
+    <Resource Include="Resources\TileTypes\M.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\W.png" />
+    <Resource Include="Resources\TileTypes\W.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MetroDark\HowToApplyTheme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\A-.png" />
+    <Resource Include="Resources\TileTypes\A-.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\H.png" />
+    <Resource Include="Resources\TileTypes\H.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\E.png" />
+    <Resource Include="Resources\TileTypes\E.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TileTypes\A.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TileTypes\O.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

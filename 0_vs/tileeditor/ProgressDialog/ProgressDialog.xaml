@@ -1,0 +1,7 @@
+﻿<Window x:Class="Parago.Windows.ProgressDialog" Background="#282b2d" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="90" Width="300" Title="ProgressDialog Test" FontFamily="Segoe UI" ResizeMode="NoResize" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterOwner" Closing="OnClosing">
+	<Grid Margin="10">
+		<TextBlock x:Name="TextLabel" Text="Loading..." TextTrimming="CharacterEllipsis" Foreground="#FFDDDDDD" />
+		<ProgressBar x:Name="ProgressBar" Margin="0,25,0,-0.5" Minimum="0" Maximum="10000" Value="0" />
+		<Button x:Name="CancelButton" Margin="0 38 0 0" Width="70" Content="Cancel" Visibility="Collapsed" HorizontalAlignment="Right" Click="OnCancelButtonClick" />
+	</Grid>
+</Window>

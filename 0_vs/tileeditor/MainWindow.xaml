@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tileeditor"
         mc:Ignorable="d"
-        Title="Yoshi's Fruit Cart - Map Editor" Height="450" Background="#282b2d" Width="800" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
+        Title="Yoshi Fruit Cart - Map Editor" Height="450" Background="#282b2d" Width="800" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="37*"/>
@@ -55,18 +55,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
         </Grid>
-        <Grid HorizontalAlignment="Right" Margin="0,45,10,10.5" Width="170" Grid.Column="1" RenderTransformOrigin="0.329,0.49">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <Grid Name="ObjectPicker" HorizontalAlignment="Right" Margin="0,45,10,10.5" Width="170" Grid.Column="1" RenderTransformOrigin="0.329,0.49">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <!--
             <Button Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left">
                 <Image Source="Resources/S.png"></Image>
             </Button>
@@ -90,7 +84,7 @@
             </Button>
             <Button Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left">
                 <Image Source="Resources/A+.png"></Image>
-            </Button>
+            </Button>-->
         </Grid>
         <!-- <TextBox x:Name="LevelData" HorizontalAlignment="Left" Height="378" Margin="10,35,0,0" Text="" VerticalAlignment="Top" Width="775" FontFamily="Consolas"/> -->
 
