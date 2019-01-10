@@ -6,9 +6,31 @@
         xmlns:local="clr-namespace:tileeditor"
         mc:Ignorable="d"
         Title="ConfigPopup" Background="#282b2d" Height="200" Width="360">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="0, -3, 0, -5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Margin" Value="0, -3, 0, -5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Button Name="OK" Content="OK" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Width="75"/>
         <Button Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="270,132,0,0" VerticalAlignment="Top" Width="75"/>
-        <Grid Name="CustomContent" Margin="10,10,5,45.5" />
+        <Grid Name="CustomContent" Margin="10,10,5,45.5">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        </Grid>
     </Grid>
 </Window>

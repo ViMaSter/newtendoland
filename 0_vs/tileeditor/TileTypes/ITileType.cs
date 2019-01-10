@@ -10,12 +10,19 @@ namespace tileeditor.TileTypes
     public abstract class TileType
     {
         private static Dictionary<char, TileType> registar = new Dictionary<char, TileType>();
+        public static IEnumerable<TileType> Enumerable
+        {
+            get
+            {
+                return registar.Values;
+            }
+        }
         public static TileType GetTypeByMemoryIdentifier(char identifier)
         {
             return TileType.registar[identifier];
         }
         public delegate void ForEachDelegate(TileType type);
-        public static void ForEachType(ForEachDelegate callback)
+        public static void ForEach(ForEachDelegate callback)
         {
             foreach(TileType type in registar.Values)
             {

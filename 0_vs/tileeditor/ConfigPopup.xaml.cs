@@ -21,9 +21,12 @@ namespace tileeditor
     {
         TileTypes.TileType associatedType;
 
-        public static void Show(TileTypes.TileType tileType)
+        public static void Show(TileTypes.TileType tileType, Window owner)
         {
             ConfigPopup newPopup = new ConfigPopup();
+            newPopup.Title = "Configure tile: "+tileType.DisplayName;
+            newPopup.Owner = owner;
+            newPopup.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             if (!tileType.PopulateFields(ref newPopup.CustomContent))
             {
                 return;

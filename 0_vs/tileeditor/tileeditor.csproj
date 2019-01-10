@@ -83,8 +83,15 @@
     <Compile Include="ConfigPopup.xaml.cs">
       <DependentUpon>ConfigPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TileTypes\Bee.cs" />
     <Compile Include="TileTypes\Fruit.cs" />
+    <Compile Include="TileTypes\Goal.cs" />
+    <Compile Include="TileTypes\Heart.cs" />
+    <Compile Include="TileTypes\Hole.cs" />
     <Compile Include="TileTypes\ITileType.cs" />
+    <Compile Include="TileTypes\OrderedFruit.cs" />
+    <Compile Include="TileTypes\Pepper.cs" />
+    <Compile Include="TileTypes\RotatingObject.cs" />
     <Compile Include="TileTypes\Spike.cs" />
     <Compile Include="TileTypes\Start.cs" />
     <Page Include="ConfigPopup.xaml">

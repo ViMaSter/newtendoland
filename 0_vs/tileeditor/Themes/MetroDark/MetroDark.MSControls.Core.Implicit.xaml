@@ -64,17 +64,18 @@
   <SolidColorBrush x:Key="PasswordBoxForegroundBrush" Color="{StaticResource Color_024}" />
 
   <!-- *********************************  TextBlock Style  ********************************* -->
-  <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+  <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
     <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
     <Setter Property="FontSize" Value="13.333" />
+    <Setter Property="Padding" Value="5" />
     <Setter Property="FontFamily" Value="Segoe UI" />
-  </Style>
+    </Style>
 
-  <!-- *********************************  Label Style  ********************************* -->
+    <!-- *********************************  Label Style  ********************************* -->
   <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
     <Setter Property="FontFamily" Value="Segoe UI" />
     <Setter Property="FontSize" Value="13.333" />
-    <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+    <Setter Property="Padding" Value="0" />
     <Setter Property="IsTabStop" Value="False" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
   </Style>
@@ -943,10 +944,11 @@
   <Style BasedOn="{StaticResource ScrollViewerStyle}" TargetType="{x:Type ScrollViewer}" />
   <Style BasedOn="{StaticResource ComboBoxStyle}" TargetType="{x:Type ComboBox}" />
   <Style BasedOn="{StaticResource ComboBoxItemStyle}" TargetType="{x:Type ComboBoxItem}" />
+  <Style BasedOn="{StaticResource TextBlockStyle}" TargetType="{x:Type TextBlock}" />
   <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />
   <Style BasedOn="{StaticResource ListBoxStyle}" TargetType="{x:Type ListBox}" />
   <Style BasedOn="{StaticResource ListBoxItemStyle}" TargetType="{x:Type ListBoxItem}" />
-  <Style BasedOn="{StaticResource CheckBoxStyle}" TargetType="CheckBox">
+  <Style BasedOn="{StaticResource CheckBoxStyle}" TargetType="{x:Type CheckBox}">
     <!-- Adding setter for VerticalContentAlignment to target default behavior of MS check box. -->
     <Setter Property="VerticalContentAlignment" Value="Top" />
   </Style>

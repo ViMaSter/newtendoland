@@ -71,7 +71,7 @@ namespace tileeditor
             //  create buttons
             int row = 0;
             int column = 0;
-            TileTypes.TileType.ForEachType((TileTypes.TileType type) =>
+            TileTypes.TileType.ForEach((TileTypes.TileType type) =>
             {
                 Button newButton = new Button
                 {
@@ -79,9 +79,10 @@ namespace tileeditor
                     {
                         Source = new BitmapImage(new Uri("pack://application:,,,/Resources/TileTypes/" + (char)type.MemoryIdentifier + ".png", UriKind.Absolute)),
                         VerticalAlignment = VerticalAlignment.Center
-                    }
+                    },
+                    ToolTip = type.DisplayName
                 };
-                newButton.Click += (object sender, RoutedEventArgs e) => ConfigPopup.Show(type);
+                newButton.Click += (object sender, RoutedEventArgs e) => ConfigPopup.Show(type, this);
                 Grid.SetColumn(newButton, column);
                 Grid.SetRow(newButton, row);
                 ObjectPicker.Children.Add(newButton);

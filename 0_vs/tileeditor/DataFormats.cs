@@ -16,7 +16,7 @@ namespace tileeditor
         Hole = (byte)'O',
         Fruit = (byte)'P',
         Start = (byte)'S',
-        Pepper = (byte)'W',
+        PepperAndSwitch = (byte)'W',
         Wall = (byte)'*',
         Empty = (byte)'0',
         Closed = (byte)'+',
@@ -37,7 +37,7 @@ namespace tileeditor
             TileType.Hole,
             TileType.Fruit,
             TileType.Start,
-            TileType.Pepper
+            TileType.PepperAndSwitch
         };
 
         private TileType type;

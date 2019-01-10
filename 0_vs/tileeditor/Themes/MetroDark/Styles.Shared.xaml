@@ -515,7 +515,7 @@
     <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
     <Setter Property="FontSize" Value="14.667" />
     <Setter Property="FontFamily" Value="Segoe UI" />
-    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Padding" Value="6,0,0,0" />
     <Setter Property="MinHeight" Value="30" />
@@ -524,7 +524,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="CheckBox">
-          <Grid VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+          <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup x:Name="CommonStates">
                 <VisualState x:Name="Normal" />

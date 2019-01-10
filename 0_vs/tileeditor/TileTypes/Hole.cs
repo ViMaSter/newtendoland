@@ -3,13 +3,13 @@ using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
 {
-    class Spike : TileType
+    class Hole : TileType
     {
         public override char MemoryIdentifier
         {
             get
             {
-                return 'A';
+                return 'O';
             }
         }
 
@@ -17,29 +17,29 @@ namespace tileeditor.TileTypes
         {
             get
             {
-                return "Spike";
+                return "Hole";
             }
         }
 
-        enum SpikeStartState
+        enum HoleSize
         {
-            Closed = '+',
-            Open = '-'
+            Small = 'a',
+            Large = 'b'
         }
 
         #region Form generator
         private ComboBox selector;
-        SpikeStartState state;
+        HoleSize state;
         public override bool PopulateFields(ref Grid grid)
         {
             grid.ColumnDefinitions[0].Width = new System.Windows.GridLength(3, System.Windows.GridUnitType.Star);
             Label label = new Label();
-            label.Content = "Spike style:";
+            label.Content = "Hole size:";
             Grid.SetColumn(label, 0);
             Grid.SetRow(label, 0);
 
             selector = new ComboBox();
-            foreach (SpikeStartState spikeState in Enum.GetValues(typeof(SpikeStartState)))
+            foreach (HoleSize spikeState in Enum.GetValues(typeof(HoleSize)))
             {
                 selector.Items.Add(spikeState);
             }
@@ -53,7 +53,7 @@ namespace tileeditor.TileTypes
 
         public override void ObtainData()
         {
-            state = (SpikeStartState)selector.SelectedItem;
+            state = (HoleSize)selector.SelectedItem;
         }
         #endregion
     }
