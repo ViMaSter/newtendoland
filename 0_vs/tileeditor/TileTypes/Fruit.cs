@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
@@ -18,6 +19,14 @@ namespace tileeditor.TileTypes
             get
             {
                 return "Fruit (Regular)";
+            }
+        }
+
+        public override string DisplayData
+        {
+            get
+            {
+                return "Index: " + index.ToString();
             }
         }
 
@@ -62,6 +71,19 @@ namespace tileeditor.TileTypes
             return Int32.TryParse(text, out input) && input >= 0 && input <= 99;
         }
 
+        protected override bool Load(BinaryReader reader, int availablePadding)
+        {
+            byte[] potentialIndex = reader.ReadBytes(availablePadding);
+            if (potentialIndex[0] != 0x00)
+            {
+                index = Int32.Parse(System.Text.Encoding.Default.GetString(potentialIndex));
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("index of Regular fruit", potentialIndex, "Regular fruits require an index - none found");
+            }
+            return true;
+        }
         #endregion
     }
 }

@@ -24,7 +24,7 @@ namespace tileeditor
         {
             var assembly = Assembly.GetExecutingAssembly();
 
-            return ResourceExists(assembly, resourcePath);
+            return ResourceExists(assembly, System.Uri.EscapeUriString(resourcePath));
         }
         public static bool ResourceExists(Assembly assembly, string resourcePath)
         {
@@ -58,26 +58,30 @@ namespace tileeditor
         private void CreateObjectPicker()
         {
             // create object picker
-            //  create rows
-            int rowsRequired = (int)Math.Ceiling(Tile.PickableTypes.Length / (float)ObjectPicker.ColumnDefinitions.Count);
-            for (int i = 0; i < rowsRequired; i++)
-            {
-                ObjectPicker.RowDefinitions.Add(new RowDefinition
-                {
-                    Height = new GridLength(1, GridUnitType.Star)
-                });
-            }
-
-            //  create buttons
             int row = 0;
             int column = 0;
+
             TileTypes.TileType.ForEach((TileTypes.TileType type) =>
             {
+                if (!type.IsValid())
+                {
+                    return;
+                }
+
+                if (column == 0)
+                {
+                    // add rows on demand
+                    ObjectPicker.RowDefinitions.Add(new RowDefinition
+                    {
+                        Height = new GridLength(1, GridUnitType.Star)
+                    });
+                }
+
                 Button newButton = new Button
                 {
                     Content = new Image
                     {
-                        Source = new BitmapImage(new Uri("pack://application:,,,/Resources/TileTypes/" + (char)type.MemoryIdentifier + ".png", UriKind.Absolute)),
+                        Source = new BitmapImage(new Uri("pack://application:,,,/Resources/TileTypes/" + type.DisplayName + ".png", UriKind.Absolute)),
                         VerticalAlignment = VerticalAlignment.Center
                     },
                     ToolTip = type.DisplayName
@@ -275,32 +279,39 @@ namespace tileeditor
                 {
                     for (int column = 0; column < MapData.COLUMNS_VISIBLE; column++)
                     {
-                        Tile tile = mapData.GetItem(row, column);
+                        TileTypes.TileType tile = mapData.GetItem(row, column);
 
-                        // update text
-                        textBoxElements[row, column].Text = tile.GetIndex();
+                        // reset text
+                        textBoxElements[row, column].Text = tile.DisplayData;
 
                         // update image
-                        if (tile.ToString().Length == 0)
+                        if (!tile.IsValid())
                         {
                             imageElements[row, column].Source = new BitmapImage();
+                            imageElements[row, column].ToolTip = "";
                             continue;
                         }
 
-                        string path = "Resources/TileTypes/" + tile.ToString() + ".png";
-                        if (!ResourceExists(path))
+                        // update texts
+                        textBoxElements[row, column].Text = tile.DisplayData;
+                        imageElements[row, column].ToolTip = tile.DisplayName;
+
+                        string path = "Resources/TileTypes/" + tile.DisplayName + ".png";
+                        if (tile.DisplayData.Length > 0)
                         {
-                            // fallback to edge-case image
-                            path = "Resources/TileTypes/" + tile.GetTileType() + "_.png";
+                            imageElements[row, column].ToolTip += " [" + tile.DisplayData + "]";
+
+                            path = "Resources/TileTypes/" + tile.DisplayName + "_" + tile.DisplayData + ".png";
                             if (!ResourceExists(path))
                             {
                                 // fallback to non-indexed image
-                                path = "Resources/TileTypes/" + tile.GetTileType() + ".png";
-                                if (!ResourceExists(path))
-                                {
-                                    path = "Resources/TileTypes/unknown.png";
-                                }
+                                path = "Resources/TileTypes/" + tile.DisplayName + ".png";
                             }
+                        }
+                        if (!ResourceExists(path))
+                        {
+                            // fallback to non-indexed image
+                            path = "Resources/TileTypes/unknown.png";
                         }
 
                         imageElements[row, column].Source = new BitmapImage(new Uri("pack://application:,,,/" + path, UriKind.Absolute));

@@ -1,16 +1,15 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
 {
-    class Bee : TileType
+    class Wall : TileType
     {
         public override char MemoryIdentifier
         {
             get
             {
-                return 'E';
+                return '*';
             }
         }
 
@@ -18,7 +17,7 @@ namespace tileeditor.TileTypes
         {
             get
             {
-                return "Bee";
+                return "Wall";
             }
         }
 
@@ -32,5 +31,10 @@ namespace tileeditor.TileTypes
         {
         }
         #endregion
+
+        public override bool IsValid()
+        {
+            return false;
+        }
     }
 }

@@ -84,8 +84,10 @@
       <DependentUpon>ConfigPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="TileTypes\Bee.cs" />
+    <Compile Include="TileTypes\EmptyObjects.cs" />
     <Compile Include="TileTypes\Fruit.cs" />
     <Compile Include="TileTypes\Goal.cs" />
+    <Compile Include="TileTypes\HeaderUnknown.cs" />
     <Compile Include="TileTypes\Heart.cs" />
     <Compile Include="TileTypes\Hole.cs" />
     <Compile Include="TileTypes\ITileType.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="TileTypes\RotatingObject.cs" />
     <Compile Include="TileTypes\Spike.cs" />
     <Compile Include="TileTypes\Start.cs" />
+    <Compile Include="TileTypes\Wall.cs" />
     <Page Include="ConfigPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -182,25 +185,25 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\Ob.png" />
+    <Resource Include="Resources\TileTypes\Hole_Large.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\P.png" />
+    <Resource Include="Resources\TileTypes\Fruit %28Regular%29.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\G.png" />
+    <Resource Include="Resources\TileTypes\Goal_Regular.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\A+.png" />
+    <Resource Include="Resources\TileTypes\Spike_Closed.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\G_.png" />
+    <Resource Include="Resources\TileTypes\Goal.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\Oa.png" />
+    <Resource Include="Resources\TileTypes\Hole_Small.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\S.png" />
+    <Resource Include="Resources\TileTypes\Start.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TileTypes\Switch.png" />
@@ -209,34 +212,34 @@
     <Resource Include="Resources\TileTypes\unknown.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\F.png" />
+    <Resource Include="Resources\TileTypes\Fruit %28Ordered%29.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\undetermined.png" />
+    <Resource Include="Resources\TileTypes\HeaderUnknown.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\M.png" />
+    <Resource Include="Resources\TileTypes\Rotating object.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\W.png" />
+    <Resource Include="Resources\TileTypes\Pepper.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MetroDark\HowToApplyTheme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\A-.png" />
+    <Resource Include="Resources\TileTypes\Spike_Opened.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\H.png" />
+    <Resource Include="Resources\TileTypes\Heart.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\E.png" />
+    <Resource Include="Resources\TileTypes\Bee.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\A.png" />
+    <Resource Include="Resources\TileTypes\Spike.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\O.png" />
+    <Resource Include="Resources\TileTypes\Hole.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

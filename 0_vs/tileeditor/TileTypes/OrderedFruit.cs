@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
@@ -18,6 +19,14 @@ namespace tileeditor.TileTypes
             get
             {
                 return "Fruit (Ordered)";
+            }
+        }
+
+        public override string DisplayData
+        {
+            get
+            {
+                return "Order: " + order.ToString();
             }
         }
 
@@ -62,6 +71,19 @@ namespace tileeditor.TileTypes
             return Int32.TryParse(text, out input) && input >= 0 && input <= 99;
         }
 
+        protected override bool Load(BinaryReader reader, int availablePadding)
+        {
+            byte[] potentialIndex = reader.ReadBytes(availablePadding);
+            if (potentialIndex[0] != 0x00)
+            {
+                order = Int32.Parse(System.Text.Encoding.Default.GetString(potentialIndex));
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("index of Ordered fruit", potentialIndex, "Ordered fruits require an order - none found");
+            }
+            return true;
+        }
         #endregion
     }
 }

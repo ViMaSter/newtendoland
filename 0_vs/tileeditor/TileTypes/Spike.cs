@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
@@ -18,6 +19,14 @@ namespace tileeditor.TileTypes
             get
             {
                 return "Spike";
+            }
+        }
+
+        public override string DisplayData
+        {
+            get
+            {
+                return state.ToString();
             }
         }
 
@@ -54,6 +63,18 @@ namespace tileeditor.TileTypes
         public override void ObtainData()
         {
             state = (SpikeStartState)selector.SelectedItem;
+        }
+
+        protected override bool Load(BinaryReader reader, int availablePadding)
+        {
+            state = (SpikeStartState)reader.ReadByte();
+
+            // skip potentially remaining memory
+            for (int i = 1; i < availablePadding; i++)
+            {
+                reader.ReadByte();
+            }
+            return true;
         }
         #endregion
     }

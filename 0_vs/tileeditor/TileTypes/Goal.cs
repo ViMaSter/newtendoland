@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
@@ -18,6 +19,14 @@ namespace tileeditor.TileTypes
             get
             {
                 return "Goal";
+            }
+        }
+
+        public override string DisplayData
+        {
+            get
+            {
+                return levelTarget == -1 ? "Regular" : "Jumps to " + levelTarget.ToString();
             }
         }
 
@@ -86,6 +95,19 @@ namespace tileeditor.TileTypes
             return Int32.TryParse(text, out input) && input >= 0 && input <= 99;
         }
 
+        protected override bool Load(BinaryReader reader, int availablePadding)
+        {
+            byte[] potentialIndex = reader.ReadBytes(availablePadding);
+            if (potentialIndex[0] != 0x00)
+            {
+                levelTarget = Int32.Parse(System.Text.Encoding.Default.GetString(potentialIndex));
+            }
+            else
+            {
+                levelTarget = -1;
+            }
+            return true;
+        }
         #endregion
     }
 }
