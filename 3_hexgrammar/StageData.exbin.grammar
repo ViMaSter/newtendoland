@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="EXBIN grammar" start="id:65" author="accou" fileextension="exbin">
+        <description>Grammar for EXBIN files</description>
+        <structure name="StageData.exbin" id="65" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <structure name="Offset" id="66" length="20"/>
+            <structure name="Level" id="68" length="956" repeatmax="51" strokecolor="25A1FF" fillcolor="DDDDDD">
+                <structure name="Unknown" id="69" length="6" alignment="0"/>
+                <structure name="Unknown (CP)" id="71" length="2" valueexpression="CP"/>
+                <structure name="Unknown (Post CP)" id="73" length="3"/>
+                <number name="ID" id="75" strokecolor="FFFFFF" fillcolor="333333" type="integer" length="1" display="hex" minval="0x0" maxval="0x32"/>
+                <string name="Background ID" id="76" fillcolor="CC3E3E" type="fixed-length" length="2"/>
+                <structure name="Background PostPadding" id="77" length="6"/>
+                <string name="Not Door" id="83" fillcolor="65AF6C" type="fixed-length" length="2"/>
+                <structure name="Not Door PostPadding" id="84" length="6"/>
+                <structure name="?Teleport Identifier" id="86" length="5" alignment="0" strokecolor="505CFF">
+                    <string name="ValueOrMin" id="88" fillcolor="70C1FF" type="fixed-length" length="2"/>
+                    <string name="delimiter" id="89" type="fixed-length" length="1">
+                        <fixedvalues>
+                            <fixedvalue name="~" value="&lt;string&gt;"/>
+                        </fixedvalues>
+                    </string>
+                    <string name="Max" id="90" fillcolor="C987FF" type="fixed-length" length="2"/>
+                </structure>
+                <structure name="?Teleport Identifier PostPadding" id="91" length="3" alignment="0"/>
+                <structure name="SpikeDefinitions" id="101" length="12">
+                    <structref name="Spike for 0a" id="103" structure="id:98"/>
+                    <structref name="Spike for 0b" id="108" structure="id:98"/>
+                    <structref name="Spike for 0c" id="111" structure="id:98"/>
+                </structure>
+                <structure name="MapFlag" id="112" length="2" repeatmin="4" repeatmax="4">
+                    <string name="Flag" id="114" fillcolor="7BFF8A" type="fixed-length" length="1">
+                        <fixedvalues>
+                            <fixedvalue name="N" value="Normal Goal?"/>
+                            <fixedvalue name="V" value="Bonus Goal?"/>
+                            <fixedvalue name="H" value="Unknown"/>
+                            <fixedvalue name="B" value="Unknown"/>
+                        </fixedvalues>
+                    </string>
+                    <structure name="Buffer" id="115" length="1"/>
+                </structure>
+                <structure name="MapFlags PostPadding" id="124" length="4"/>
+                <structure name="W Definition (Is Pepper Or Switch)" id="126" repeatmin="16" repeatmax="16">
+                    <string name="Type" id="128" fillcolor="7C90FF" type="fixed-length" length="1">
+                        <fixedvalues>
+                            <fixedvalue name="1" value="Switch"/>
+                            <fixedvalue name="2" value="Pepper"/>
+                            <fixedvalue name="0" value="Nothing"/>
+                        </fixedvalues>
+                    </string>
+                    <structure name="Buffer" id="129" length="7"/>
+                </structure>
+                <structure name="M Definition (Rotation Formations)" id="131" repeatmin="16" repeatmax="16">
+                    <string name="Type" id="133" fillcolor="8676B7" type="fixed-length" length="2">
+                        <fixedvalues>
+                            <fixedvalue name="4" value="Small Circle"/>
+                            <fixedvalue name="5" value="Large Circle"/>
+                            <fixedvalue name="6" value="Horizontal Quad (Reg)"/>
+                            <fixedvalue name="7" value="Horizontal Quad (Offset)"/>
+                            <fixedvalue name="8" value="Circle Size 0 (Reg)"/>
+                            <fixedvalue name="9" value="Circle Size 1 (Reg)"/>
+                            <fixedvalue name="10" value="Circle Size 2 (Reg)"/>
+                            <fixedvalue name="11" value="Circle Size 3 (Reg)"/>
+                            <fixedvalue name="12" value="Circle Size 0 (Offset)"/>
+                            <fixedvalue name="13" value="Circle Size 1 (Offset)"/>
+                            <fixedvalue name="14" value="Circle Size 2 (Offset)"/>
+                            <fixedvalue name="15" value="Big bee (small circle)"/>
+                            <fixedvalue name="16" value="Large circle"/>
+                            <fixedvalue name="17" value="Bottom Left to Top Right (Offset 0)"/>
+                            <fixedvalue name="18" value="Bottom Left to Top Right (Offset 1)"/>
+                            <fixedvalue name="19" value="Bottom Left to Top Right (Offset 2)"/>
+                            <fixedvalue name="20" value="Vertical Quad (Reg)"/>
+                            <fixedvalue name="21" value="Vertical Quad (Offset)"/>
+                            <fixedvalue name="25" value="Circle Size 4 (Offset 0)"/>
+                            <fixedvalue name="26" value="Circle Size 4 (Offset 1)"/>
+                            <fixedvalue name="27" value="Circle Size 4 (Offset 2)"/>
+                            <fixedvalue name="28" value="Circle Size 5 (Offset 0)"/>
+                            <fixedvalue name="29" value="Circle Size 5 (Offset 1)"/>
+                            <fixedvalue name="30" value="Circle Size 5 (Offset 2)"/>
+                            <fixedvalue name="31" value="Circle Size 6 (Offset 0)"/>
+                            <fixedvalue name="32" value="Circle Size 6 (Offset 1)"/>
+                            <fixedvalue name="33" value="Circle Size 6 (Offset 2)"/>
+                            <fixedvalue name="34" value="Circle Size 7 (Offset 0)"/>
+                            <fixedvalue name="35" value="Circle Size 7 (Offset 1)"/>
+                            <fixedvalue name="36" value="Circle Size 7 (Offset 2)"/>
+                        </fixedvalues>
+                    </string>
+                    <structure name="Buffer" id="134" length="10"/>
+                </structure>
+                <structure name="F Definition (? Ordering)" id="136" repeatmin="16" repeatmax="16">
+                    <string name="MinOrValue" id="138" fillcolor="0F9E0D" type="fixed-length" length="2"/>
+                    <structure name="Buffer" id="139" length="1"/>
+                    <string name="Max" id="141" fillcolor="76C971" type="fixed-length" length="2"/>
+                    <structure name="Buffer2" id="143" length="7"/>
+                </structure>
+                <structure name="P Definition (Index to Fruit)" id="145" repeatmin="32" repeatmax="32">
+                    <string name="MinOrValue" id="147" fillcolor="FFB521" type="fixed-length" length="2"/>
+                    <structure name="Buffer" id="148" length="1"/>
+                    <string name="Max" id="150" fillcolor="BC9566" type="fixed-length" length="2"/>
+                    <structure name="Buffer2" id="151" length="7"/>
+                </structure>
+            </structure>
+        </structure>
+        <structure name="SpikeDefinition" id="98" length="4" encoding="ISO_8859-1:1987" endian="big" signed="no" strokecolor="E8D648" fillcolor="DDDDDD">
+            <string name="Spike Definition" id="100" fillcolor="E8D648" type="fixed-length" length="1">
+                <fixedvalues>
+                    <fixedvalue name="S" value="Small"/>
+                    <fixedvalue name="N" value="Normal"/>
+                    <fixedvalue name="L" value="Large"/>
+                </fixedvalues>
+            </string>
+            <structure name="Buffer" id="106" length="3"/>
+        </structure>
+    </grammar>
+</ufwb>

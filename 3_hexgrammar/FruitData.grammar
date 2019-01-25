@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="EXBIN grammar" start="id:222" author="accou" fileextension="exbin">
+        <description>Grammar for EXBIN files</description>
+        <structure name="FruitData.exbin" id="222" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <structure name="Buffer" id="304" length="3"/>
+            <structure name="Level" id="300" repeatmax="90" fillcolor="CCCCCC">
+                <structure name="Offset" id="223" length="16"/>
+                <number name="ID" id="291" fillcolor="5EA4FF" type="integer" length="1"/>
+                <structure name="Buffer" id="292" length="64"/>
+                <string name="MinOrValue" id="294" fillcolor="4AA540" type="fixed-length" length="1">
+                    <fixedvalues>
+                        <fixedvalue name="3" value="Bananas"/>
+                    </fixedvalues>
+                </string>
+                <string name="DelimiterOrValue2" id="298" fillcolor="72A560" type="fixed-length" length="1"/>
+                <string name="Max" id="299" fillcolor="89A586" type="fixed-length" length="1">
+                    <fixedvalues>
+                        <fixedvalue name="3" value="Bananas"/>
+                    </fixedvalues>
+                </string>
+            </structure>
+        </structure>
+    </grammar>
+</ufwb>
