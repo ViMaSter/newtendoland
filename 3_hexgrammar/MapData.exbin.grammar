@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="EXBIN grammar" start="id:3" author="accou" fileextension="exbin">
+        <description>Grammar for EXBIN files</description>
+        <structure name="MapData.exbin file (Yoshi's Fruit Cart Level Data)" id="3" length="2054" alignment="0" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <structure name="Header" id="4">
+                <structure name="Header Unknown" id="5" length="16"/>
+                <structure name="Background ?" id="7" length="4" fillcolor="FF8C8E"/>
+                <structure name="Header Unknown 2" id="9" length="18"/>
+                <structure name="RotatingObjectInfo" id="11" repeatmin="8" repeatmax="8">
+                    <structref name="ShortEntry" id="13" repeatmin="4" repeatmax="4" structure="id:12"/>
+                </structure>
+            </structure>
+            <structure name="Payload" id="16" length="0" strokecolor="FF0000">
+                <structure name="VisibleRow" id="17" repeatmax="15">
+                    <structref name="Entry" id="19" repeatmin="24" repeatmax="24" structure="id:18"/>
+                </structure>
+                <structure name="InvisibleRow" id="21" repeatmax="5">
+                    <structref name="Entry" id="22" repeatmin="24" repeatmax="24" structure="id:18"/>
+                </structure>
+            </structure>
+            <structure name="Footer" id="25" length="0" disabled="yes">
+                <structref name="Footer Wall?" id="26" repeatmin="19" repeatmax="19" structure="id:18"/>
+                <structref name="&lt;Entry-1&gt;" id="27" repeatmin="102" repeatmax="102" structure="id:18"/>
+            </structure>
+        </structure>
+        <structure name="Entry" id="18" length="4" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <string name="Type" id="30" fillcolor="DDFFB7" type="fixed-length" length="1"/>
+            <string name="Modifier" id="31" fillcolor="FFDBB2" type="fixed-length" length="3"/>
+        </structure>
+        <structure name="ShortEntry" id="12" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <string name="Type" id="33" fillcolor="6BFF60" type="fixed-length" length="1"/>
+            <string name="Modifier" id="34" fillcolor="FFBC6F" type="fixed-length" length="2"/>
+        </structure>
+    </grammar>
+</ufwb>
