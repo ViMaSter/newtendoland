@@ -103,9 +103,9 @@ namespace tileeditor
         private void CreatePlacementGrid()
         {
             // create placement grid
-            for (int row = 0; row < MapData.ROWS_VISIBLE; row++)
+            for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
             {
-                for (int column = 0; column < MapData.COLUMNS_VISIBLE; column++)
+                for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
                 {
                     imageElements[row, column] = new Image();
                     Grid.SetRow(imageElements[row, column], row);
@@ -114,7 +114,7 @@ namespace tileeditor
 
                     Border borderElement = new Border();
                     borderElement.BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x74, 0x74, 0x74));
-                    borderElement.BorderThickness = new Thickness(1, 1, (column + 1) == MapData.COLUMNS_VISIBLE ? 1 : 0, (row + 1) == MapData.ROWS_VISIBLE ? 1 : 0);
+                    borderElement.BorderThickness = new Thickness(1, 1, (column + 1) == DataFormats.MapData.COLUMNS_VISIBLE ? 1 : 0, (row + 1) == DataFormats.MapData.ROWS_VISIBLE ? 1 : 0);
                     Grid.SetRow(borderElement, row);
                     Grid.SetColumn(borderElement, column);
                     ImageGrid.Children.Add(borderElement);
@@ -136,8 +136,8 @@ namespace tileeditor
         }
         #endregion
 
-        Image[,] imageElements = new Image[MapData.ROWS_VISIBLE, MapData.COLUMNS_VISIBLE];
-        TextBox[,] textBoxElements = new TextBox[MapData.ROWS_VISIBLE, MapData.COLUMNS_VISIBLE];
+        Image[,] imageElements = new Image[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
+        TextBox[,] textBoxElements = new TextBox[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
         public MainWindow()
         {
             // @TODO: detect remaining temp-folder
@@ -267,7 +267,7 @@ namespace tileeditor
 
             using (var memStream = new MemoryStream())
             {
-                MapData mapData = MapData.Load(Path.Combine(
+                DataFormats.MapData mapData = DataFormats.MapData.Load(Path.Combine(
                                       Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                                       "tmp",
                                       "sourceFiles",
@@ -275,9 +275,9 @@ namespace tileeditor
                                       (e.AddedItems[0] as ComboBoxItem).Name + ".exbin"
                                   ));
                 //LevelData.Text = mapData.Visualize();
-                for (int row = 0; row < MapData.ROWS_VISIBLE; row++)
+                for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
                 {
-                    for (int column = 0; column < MapData.COLUMNS_VISIBLE; column++)
+                    for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
                     {
                         TileTypes.TileType tile = mapData.GetItem(row, column);
 

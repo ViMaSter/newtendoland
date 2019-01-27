@@ -19,8 +19,6 @@ namespace tileeditor
     /// </summary>
     partial class ConfigPopup : Window
     {
-        TileTypes.TileType associatedType;
-
         public static void Show(TileTypes.TileType tileType, Window owner)
         {
             ConfigPopup newPopup = new ConfigPopup();

@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ufwb version="1.17">
-    <grammar name="EXBIN grammar" start="id:65" author="accou" fileextension="exbin">
+    <grammar name="EXBIN grammar" start="id:3" author="accou" fileextension="exbin">
         <description>Grammar for EXBIN files</description>
-        <structure name="StageData.exbin" id="65" encoding="ISO_8859-1:1987" endian="big" signed="no">
-            <structure name="Offset" id="66" length="20"/>
-            <structure name="Level" id="68" length="956" repeatmax="51" strokecolor="25A1FF" fillcolor="DDDDDD">
-                <structure name="Unknown" id="69" length="6" alignment="0"/>
-                <structure name="Unknown (CP)" id="71" length="2" valueexpression="CP"/>
-                <structure name="Unknown (Post CP)" id="73" length="3"/>
-                <number name="ID" id="75" strokecolor="FFFFFF" fillcolor="333333" type="integer" length="1" display="hex" minval="0x0" maxval="0x32"/>
-                <string name="Background ID" id="76" fillcolor="CC3E3E" type="fixed-length" length="2"/>
-                <structure name="Background PostPadding" id="77" length="6"/>
-                <string name="Not Door" id="83" fillcolor="65AF6C" type="fixed-length" length="2"/>
-                <structure name="Not Door PostPadding" id="84" length="6"/>
-                <structure name="?Teleport Identifier" id="86" length="5" alignment="0" strokecolor="505CFF">
-                    <string name="ValueOrMin" id="88" fillcolor="70C1FF" type="fixed-length" length="2"/>
-                    <string name="delimiter" id="89" type="fixed-length" length="1">
+        <structure name="StageData.exbin" id="3" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <structure name="Offset" id="4" length="20"/>
+            <structure name="Level" id="6" length="956" repeatmax="51" strokecolor="25A1FF" fillcolor="DDDDDD">
+                <structure name="Tutorial Message (FF FF = none)" id="74" length="2" repeatmin="2" repeatmax="2" fillcolor="FFFF00"/>
+                <structure name="Unknown" id="7" length="2" alignment="0"/>
+                <structure name="Unknown (CP)" id="9" length="2" fillcolor="00DDD6" valueexpression="CP"/>
+                <structure name="Unknown (Post CP)" id="11" length="3"/>
+                <number name="ID" id="13" strokecolor="FFFFFF" fillcolor="333333" type="integer" length="1" display="hex" minval="0x0" maxval="0x32"/>
+                <string name="Background ID" id="14" fillcolor="CC3E3E" type="fixed-length" length="2"/>
+                <structure name="Background PostPadding" id="15" length="6"/>
+                <string name="Not Door" id="17" fillcolor="65AF6C" type="fixed-length" length="2"/>
+                <structure name="Not Door PostPadding" id="18" length="6"/>
+                <structure name="?Teleport Identifier" id="20" length="5" alignment="0" strokecolor="505CFF">
+                    <string name="ValueOrMin" id="21" fillcolor="70C1FF" type="fixed-length" length="2"/>
+                    <string name="delimiter" id="22" type="fixed-length" length="1">
                         <fixedvalues>
                             <fixedvalue name="~" value="&lt;string&gt;"/>
                         </fixedvalues>
                     </string>
-                    <string name="Max" id="90" fillcolor="C987FF" type="fixed-length" length="2"/>
+                    <string name="Max" id="23" fillcolor="C987FF" type="fixed-length" length="2"/>
                 </structure>
-                <structure name="?Teleport Identifier PostPadding" id="91" length="3" alignment="0"/>
-                <structure name="SpikeDefinitions" id="101" length="12">
-                    <structref name="Spike for 0a" id="103" structure="id:98"/>
-                    <structref name="Spike for 0b" id="108" structure="id:98"/>
-                    <structref name="Spike for 0c" id="111" structure="id:98"/>
+                <structure name="?Teleport Identifier PostPadding" id="25" length="3" alignment="0"/>
+                <structure name="SpikeDefinitions" id="27" length="12">
+                    <structref name="Spike for 0a" id="29" structure="id:28"/>
+                    <structref name="Spike for 0b" id="30" structure="id:28"/>
+                    <structref name="Spike for 0c" id="31" structure="id:28"/>
                 </structure>
-                <structure name="MapFlag" id="112" length="2" repeatmin="4" repeatmax="4">
-                    <string name="Flag" id="114" fillcolor="7BFF8A" type="fixed-length" length="1">
+                <structure name="MapFlag" id="33" length="2" repeatmin="4" repeatmax="4">
+                    <string name="Flag" id="34" fillcolor="7BFF8A" type="fixed-length" length="1">
                         <fixedvalues>
                             <fixedvalue name="N" value="Normal Goal?"/>
                             <fixedvalue name="V" value="Bonus Goal?"/>
@@ -37,21 +38,21 @@
                             <fixedvalue name="B" value="Unknown"/>
                         </fixedvalues>
                     </string>
-                    <structure name="Buffer" id="115" length="1"/>
+                    <structure name="Buffer" id="35" length="1"/>
                 </structure>
-                <structure name="MapFlags PostPadding" id="124" length="4"/>
-                <structure name="W Definition (Is Pepper Or Switch)" id="126" repeatmin="16" repeatmax="16">
-                    <string name="Type" id="128" fillcolor="7C90FF" type="fixed-length" length="1">
+                <structure name="MapFlags PostPadding" id="38" length="4"/>
+                <structure name="W Definition (Is Pepper Or Switch)" id="40" repeatmin="16" repeatmax="16">
+                    <string name="Type" id="41" fillcolor="7C90FF" type="fixed-length" length="1">
                         <fixedvalues>
                             <fixedvalue name="1" value="Switch"/>
                             <fixedvalue name="2" value="Pepper"/>
                             <fixedvalue name="0" value="Nothing"/>
                         </fixedvalues>
                     </string>
-                    <structure name="Buffer" id="129" length="7"/>
+                    <structure name="Buffer" id="42" length="7"/>
                 </structure>
-                <structure name="M Definition (Rotation Formations)" id="131" repeatmin="16" repeatmax="16">
-                    <string name="Type" id="133" fillcolor="8676B7" type="fixed-length" length="2">
+                <structure name="M Definition (Rotation Formations)" id="45" repeatmin="16" repeatmax="16">
+                    <string name="Type" id="46" fillcolor="8676B7" type="fixed-length" length="2">
                         <fixedvalues>
                             <fixedvalue name="4" value="Small Circle"/>
                             <fixedvalue name="5" value="Large Circle"/>
@@ -85,31 +86,31 @@
                             <fixedvalue name="36" value="Circle Size 7 (Offset 2)"/>
                         </fixedvalues>
                     </string>
-                    <structure name="Buffer" id="134" length="10"/>
+                    <structure name="Buffer" id="47" length="10"/>
                 </structure>
-                <structure name="F Definition (? Ordering)" id="136" repeatmin="16" repeatmax="16">
-                    <string name="MinOrValue" id="138" fillcolor="0F9E0D" type="fixed-length" length="2"/>
-                    <structure name="Buffer" id="139" length="1"/>
-                    <string name="Max" id="141" fillcolor="76C971" type="fixed-length" length="2"/>
-                    <structure name="Buffer2" id="143" length="7"/>
+                <structure name="F Definition (? Ordering)" id="50" repeatmin="16" repeatmax="16">
+                    <string name="MinOrValue" id="51" fillcolor="0F9E0D" type="fixed-length" length="2"/>
+                    <structure name="Buffer" id="52" length="1"/>
+                    <string name="Max" id="54" fillcolor="76C971" type="fixed-length" length="2"/>
+                    <structure name="Buffer2" id="55" length="7"/>
                 </structure>
-                <structure name="P Definition (Index to Fruit)" id="145" repeatmin="32" repeatmax="32">
-                    <string name="MinOrValue" id="147" fillcolor="FFB521" type="fixed-length" length="2"/>
-                    <structure name="Buffer" id="148" length="1"/>
-                    <string name="Max" id="150" fillcolor="BC9566" type="fixed-length" length="2"/>
-                    <structure name="Buffer2" id="151" length="7"/>
+                <structure name="P Definition (Index to Fruit)" id="58" repeatmin="32" repeatmax="32">
+                    <string name="MinOrValue" id="59" fillcolor="FFB521" type="fixed-length" length="2"/>
+                    <structure name="Buffer" id="60" length="1"/>
+                    <string name="Max" id="62" fillcolor="BC9566" type="fixed-length" length="2"/>
+                    <structure name="Buffer2" id="63" length="7"/>
                 </structure>
             </structure>
         </structure>
-        <structure name="SpikeDefinition" id="98" length="4" encoding="ISO_8859-1:1987" endian="big" signed="no" strokecolor="E8D648" fillcolor="DDDDDD">
-            <string name="Spike Definition" id="100" fillcolor="E8D648" type="fixed-length" length="1">
+        <structure name="SpikeDefinition" id="28" length="4" encoding="ISO_8859-1:1987" endian="big" signed="no" strokecolor="E8D648" fillcolor="DDDDDD">
+            <string name="Spike Definition" id="68" fillcolor="E8D648" type="fixed-length" length="1">
                 <fixedvalues>
                     <fixedvalue name="S" value="Small"/>
                     <fixedvalue name="N" value="Normal"/>
                     <fixedvalue name="L" value="Large"/>
                 </fixedvalues>
             </string>
-            <structure name="Buffer" id="106" length="3"/>
+            <structure name="Buffer" id="69" length="3"/>
         </structure>
     </grammar>
 </ufwb>

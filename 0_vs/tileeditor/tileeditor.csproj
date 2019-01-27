@@ -83,20 +83,22 @@
     <Compile Include="ConfigPopup.xaml.cs">
       <DependentUpon>ConfigPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TileTypes\Bee.cs" />
-    <Compile Include="TileTypes\EmptyObjects.cs" />
-    <Compile Include="TileTypes\Fruit.cs" />
-    <Compile Include="TileTypes\Goal.cs" />
-    <Compile Include="TileTypes\HeaderUnknown.cs" />
-    <Compile Include="TileTypes\Heart.cs" />
-    <Compile Include="TileTypes\Hole.cs" />
-    <Compile Include="TileTypes\ITileType.cs" />
-    <Compile Include="TileTypes\OrderedFruit.cs" />
-    <Compile Include="TileTypes\Pepper.cs" />
-    <Compile Include="TileTypes\RotatingObject.cs" />
-    <Compile Include="TileTypes\Spike.cs" />
-    <Compile Include="TileTypes\Start.cs" />
-    <Compile Include="TileTypes\Wall.cs" />
+    <Compile Include="DataFormats\MapData.cs" />
+    <Compile Include="DataFormats\StageData.cs" />
+    <Compile Include="DataFormats\TileTypes\Bee.cs" />
+    <Compile Include="DataFormats\TileTypes\EmptyObjects.cs" />
+    <Compile Include="DataFormats\TileTypes\Fruit.cs" />
+    <Compile Include="DataFormats\TileTypes\Goal.cs" />
+    <Compile Include="DataFormats\TileTypes\HeaderUnknown.cs" />
+    <Compile Include="DataFormats\TileTypes\Heart.cs" />
+    <Compile Include="DataFormats\TileTypes\Hole.cs" />
+    <Compile Include="DataFormats\TileTypes\ITileType.cs" />
+    <Compile Include="DataFormats\TileTypes\OrderedFruit.cs" />
+    <Compile Include="DataFormats\TileTypes\Pepper.cs" />
+    <Compile Include="DataFormats\TileTypes\RotatingObject.cs" />
+    <Compile Include="DataFormats\TileTypes\Spike.cs" />
+    <Compile Include="DataFormats\TileTypes\Start.cs" />
+    <Compile Include="DataFormats\TileTypes\Wall.cs" />
     <Page Include="ConfigPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,7 +111,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataFormats.cs" />
     <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
     <Page Include="ProgressDialog\ProgressDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
