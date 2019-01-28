@@ -67,46 +67,11 @@ namespace tileeditor.TileTypes
             List<RotatingObject> rotatingObjects = new List<RotatingObject>();
             for (int i = 0; i < AVAILABLE_PIVOTS; i++)
             {
-                RotatingObject rotatingObject = new RotatingObject();
-                rotatingObject.pivotObject = TileTypes.TileType.Construct(reader, DataFormats.MapData.HEADER_TILE_PADDING);
-                if (!rotatingObject.pivotObject.IsValid())
-                {
-                    // @TODO: Support pivots (potential rotating objects?) that are 2 bytes total (with orbitter)
-                    // skip 3 entries so we advance the reader
-                    TileTypes.TileType.Construct(reader, DataFormats.MapData.HEADER_TILE_PADDING);
-                    TileTypes.TileType.Construct(reader, DataFormats.MapData.HEADER_TILE_PADDING);
-                    TileTypes.TileType.Construct(reader, DataFormats.MapData.HEADER_TILE_PADDING);
-                    continue;
-                }
-
-                // By default a list ends after 3 items, except if the last item is of TileType.RotatingFruitWithBonus
-                // then the next 4 items are appended to that same list, instead of treating it like another list
-                List<TileTypes.TileType> tileList = new List<TileTypes.TileType>(3);
-                for (int j = 0; j < 3; j++)
-                {
-                    TileTypes.TileType newTile = TileTypes.TileType.Construct(reader, DataFormats.MapData.HEADER_TILE_PADDING);
-                    if (!newTile.IsValid())
-                    {
-                        continue;
-                    }
-                    tileList.Add(newTile);
-                }
-
-                while (tileList.Count > 0 && tileList[tileList.Count - 1].MemoryIdentifier == TileTypes.TileType.GetTypeByMemoryIdentifier((char)'M').MemoryIdentifier)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        TileTypes.TileType newTile = TileTypes.TileType.Construct(reader, DataFormats.MapData.HEADER_TILE_PADDING);
-                        if (!newTile.IsValid())
-                        {
-                            continue;
-                        }
-                        tileList.Add(newTile);
-                    }
-                    i++;
-                }
-                rotatingObject.rotatingObjects = tileList.ToArray();
-                rotatingObjects.Add(rotatingObject);
+                reader.ReadBytes(DataFormats.MapData.HEADER_TILE_PADDING + 1);
+                reader.ReadBytes(DataFormats.MapData.HEADER_TILE_PADDING + 1);
+                reader.ReadBytes(DataFormats.MapData.HEADER_TILE_PADDING + 1);
+                reader.ReadBytes(DataFormats.MapData.HEADER_TILE_PADDING + 1);
+                // @TODO: Rewrite orbiter-parser similar to IndexResolver
             }
             return rotatingObjects.ToArray();
         }

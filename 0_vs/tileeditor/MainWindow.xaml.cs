@@ -19,42 +19,10 @@ namespace tileeditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Resource helper
-        public static bool ResourceExists(string resourcePath)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            return ResourceExists(assembly, System.Uri.EscapeUriString(resourcePath));
-        }
-        public static bool ResourceExists(Assembly assembly, string resourcePath)
-        {
-            return GetResourcePaths(assembly)
-                .Contains(resourcePath.ToLowerInvariant());
-        }
-
-        public static IEnumerable<object> GetResourcePaths(Assembly assembly)
-        {
-            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-            var resourceName = assembly.GetName().Name + ".g";
-            var resourceManager = new ResourceManager(resourceName, assembly);
-
-            try
-            {
-                var resourceSet = resourceManager.GetResourceSet(culture, true, true);
-
-                foreach (System.Collections.DictionaryEntry resource in resourceSet)
-                {
-                    yield return resource.Key;
-                }
-            }
-            finally
-            {
-                resourceManager.ReleaseAllResources();
-            }
-        }
-        #endregion
-
         #region UI constructor
+        Image[,] imageElements = new Image[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
+        TextBox[,] textBoxElements = new TextBox[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
+
         private void CreateObjectPicker()
         {
             // create object picker
@@ -99,7 +67,6 @@ namespace tileeditor
                 }
             });
         }
-
         private void CreatePlacementGrid()
         {
             // create placement grid
@@ -136,8 +103,8 @@ namespace tileeditor
         }
         #endregion
 
-        Image[,] imageElements = new Image[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
-        TextBox[,] textBoxElements = new TextBox[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
+        DataFormats.GameDataContainer gameDataContainer;
+
         public MainWindow()
         {
             // @TODO: detect remaining temp-folder
@@ -154,31 +121,31 @@ namespace tileeditor
             // detect remaiming temp-folder and delete it
         }
 
-        bool MoveAndExtract(string filePath)
-        {
-            string newTargetFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/";
-            Directory.CreateDirectory(newTargetFolder);
-            File.Copy(filePath, newTargetFolder + Path.GetFileName(filePath), true);
-
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "py",
-                    Arguments = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Scripts/SARC/SARCExtract.py " + newTargetFolder + Path.GetFileName(filePath),
-                    WindowStyle = ProcessWindowStyle.Hidden
-                }
-            };
-            process.Start();
-            process.WaitForExit();
-
-            string extractedFolderName = newTargetFolder + Path.GetFileNameWithoutExtension(filePath) + "/";
-            DirectoryInfo dirInfo = new DirectoryInfo(extractedFolderName);
-            return dirInfo.Exists;
-        }
-
         private void LoadFile_Click(object sender, RoutedEventArgs e)
         {
+            bool MoveAndExtract(string filePath)
+            {
+                string newTargetFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/";
+                Directory.CreateDirectory(newTargetFolder);
+                File.Copy(filePath, newTargetFolder + Path.GetFileName(filePath), true);
+
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "py",
+                        Arguments = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Scripts/SARC/SARCExtract.py " + newTargetFolder + Path.GetFileName(filePath),
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    }
+                };
+                process.Start();
+                process.WaitForExit();
+
+                string extractedFolderName = newTargetFolder + Path.GetFileNameWithoutExtension(filePath) + "/";
+                DirectoryInfo dirInfo = new DirectoryInfo(extractedFolderName);
+                return dirInfo.Exists;
+            }
+
             // open and extract SZS
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Yoshi Fruit Cart package file (Ysi_Cmn.pack)|Ysi_Cmn.pack";
@@ -195,138 +162,45 @@ namespace tileeditor
                     throw new System.Exception();
                 }
 
-                Parago.Windows.ProgressDialog.Report(progress, 65, "Extracting scene file...");
+                Parago.Windows.ProgressDialog.Report(progress, 80, "Extracting scene file...");
                 if (!MoveAndExtract(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/Ysi_Cmn/Common/Scene/Ysi.szs"))
                 {
                     throw new System.Exception();
                 }
 
-                Parago.Windows.ProgressDialog.Report(progress, 90, "Parsing StageData...");
-                if (!MoveAndExtract(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/Ysi_Cmn/Common/Scene/Ysi.szs"))
-                {
-                    throw new System.Exception();
-                }
+                Parago.Windows.ProgressDialog.Report(progress, 90, "Populating GameDataContainer...");
+                gameDataContainer = new DataFormats.GameDataContainer(Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    "tmp",
+                    "sourceFiles",
+                    "Ysi"
+                ));
 
-                LoadStageData();
-
-                Parago.Windows.ProgressDialog.Report(progress, 95, "Populating list...");
+                Parago.Windows.ProgressDialog.Report(progress, 95, "Populating dropdown...");
                 Application.Current.Dispatcher.Invoke(new Action(() => {
-                    PopulateList();
+                    foreach (string map in gameDataContainer.MapsAvailable)
+                    {
+                        ComboBoxItem item = new ComboBoxItem();
+                        item.Name = Path.GetFileNameWithoutExtension(map);
+                        int levelIndex = int.Parse(Path.GetFileNameWithoutExtension(map).Replace("MapData", ""));
+                        if (levelIndex == 99)
+                        {
+                            item.Content = "Tutorial stage";
+                        }
+                        else if (levelIndex > 49)
+                        {
+                            item.Content = "Gate " + (levelIndex + 1) + " (UNUSED)";
+                        }
+                        else
+                        {
+                            item.Content = "Gate " + (levelIndex + 1);
+                        }
+                        LevelSelector.Items.Add(item);
+                    }
+                    LevelSelector.IsEnabled = true;
+                    LevelSelector.SelectedIndex = 1;
                 }));
             });
-
-        }
-
-        void PopulateList()
-        {
-            IEnumerable<string> maps = Directory.EnumerateFiles(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "tmp", "sourceFiles", "Ysi"), "MapData*.exbin");
-            foreach (string map in maps)
-            {
-                ComboBoxItem item = new ComboBoxItem();
-                item.Name = Path.GetFileNameWithoutExtension(map);
-                int levelIndex = int.Parse(Path.GetFileNameWithoutExtension(map).Replace("MapData", ""));
-                if (levelIndex == 99)
-                {
-                    item.Content = "Tutorial stage";
-                }
-                else if (levelIndex > 49)
-                {
-                    item.Content = "Gate " + (levelIndex + 1) + " (UNUSED)";
-                }
-                else
-                {
-                    item.Content = "Gate " + (levelIndex + 1);
-                }
-                LevelSelector.Items.Add(item);
-            }
-            LevelSelector.IsEnabled = true;
-            LevelSelector.SelectedIndex = 1;
-        }
-
-        private void ParseFile_Click(object sender, RoutedEventArgs e)
-        {
-            // open and parse .exbin
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "tmp", "sourceFiles", "Ysi");
-            openFileDialog.Filter = "Extracted binary-files (*.exbin)|*.exbin";
-            if (openFileDialog.ShowDialog() != true)
-            {
-                // no file selected
-                return;
-            }
-
-        }
-
-        private void LoadMapData(string mapDataFileName)
-        {
-            using (var memStream = new MemoryStream())
-            {
-                DataFormats.MapData mapData = DataFormats.MapData.Load(Path.Combine(
-                                      Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                                      "tmp",
-                                      "sourceFiles",
-                                      "Ysi",
-                                      mapDataFileName
-                                  ));
-                //LevelData.Text = mapData.Visualize();
-                for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
-                {
-                    for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
-                    {
-                        TileTypes.TileType tile = mapData.GetItem(row, column);
-
-                        // reset text
-                        textBoxElements[row, column].Text = tile.DisplayData;
-
-                        // update image
-                        if (!tile.IsValid())
-                        {
-                            imageElements[row, column].Source = new BitmapImage();
-                            imageElements[row, column].ToolTip = "";
-                            continue;
-                        }
-
-                        // update texts
-                        textBoxElements[row, column].Text = tile.DisplayData;
-                        imageElements[row, column].ToolTip = tile.DisplayName;
-
-                        string path = "Resources/TileTypes/" + tile.DisplayName + ".png";
-                        if (tile.DisplayData.Length > 0)
-                        {
-                            imageElements[row, column].ToolTip += " [" + tile.DisplayData + "]";
-
-                            path = "Resources/TileTypes/" + tile.DisplayName + "_" + tile.DisplayData + ".png";
-                            if (!ResourceExists(path))
-                            {
-                                // fallback to non-indexed image
-                                path = "Resources/TileTypes/" + tile.DisplayName + ".png";
-                            }
-                        }
-                        if (!ResourceExists(path))
-                        {
-                            // fallback to non-indexed image
-                            path = "Resources/TileTypes/unknown.png";
-                        }
-
-                        imageElements[row, column].Source = new BitmapImage(new Uri("pack://application:,,,/" + path, UriKind.Absolute));
-                    }
-                }
-
-            }
-        }
-
-        private void LoadStageData()
-        {
-            using (var memStream = new MemoryStream())
-            {
-                DataFormats.StageData stageData = DataFormats.StageData.Load(Path.Combine(
-                                      Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                                      "tmp",
-                                      "sourceFiles",
-                                      "Ysi",
-                                      "StageData.exbin"
-                                  ));
-            }
         }
 
         private void LevelSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -345,32 +219,89 @@ namespace tileeditor
                 return;
             }
 
-            LoadMapData((e.AddedItems[0] as ComboBoxItem).Name + ".exbin");
+            VisualizeMapData((e.AddedItems[0] as ComboBoxItem).Name + ".exbin");
         }
 
-        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        #region Visualize map
+        public static bool ResourceExists(string resourcePath)
         {
-            if (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl)
+            var assembly = Assembly.GetExecutingAssembly();
+
+            return ResourceExists(assembly, System.Uri.EscapeUriString(resourcePath));
+        }
+        public static bool ResourceExists(Assembly assembly, string resourcePath)
+        {
+            return GetResourcePaths(assembly)
+                .Contains(resourcePath.ToLowerInvariant());
+        }
+
+        public static IEnumerable<object> GetResourcePaths(Assembly assembly)
+        {
+            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var resourceName = assembly.GetName().Name + ".g";
+            var resourceManager = new ResourceManager(resourceName, assembly);
+
+            try
             {
-                foreach (TextBox textBox in textBoxElements)
+                var resourceSet = resourceManager.GetResourceSet(culture, true, true);
+
+                foreach (System.Collections.DictionaryEntry resource in resourceSet)
                 {
-                    if (textBox.Text.Length > 0)
+                    yield return resource.Key;
+                }
+            }
+            finally
+            {
+                resourceManager.ReleaseAllResources();
+            }
+        }
+
+        private void VisualizeMapData(string mapDataFileName)
+        {
+            DataFormats.Level level = gameDataContainer.GetLevelInfo(mapDataFileName);
+            for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
+            {
+                for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
+                {
+                    TileTypes.TileType tile = level.mapData.GetItem(row, column);
+
+                    // reset text
+                    textBoxElements[row, column].Text = tile.DisplayData;
+
+                    // update image
+                    if (!tile.IsValid())
                     {
-                        textBox.Visibility = Visibility.Visible;
+                        imageElements[row, column].Source = new BitmapImage();
+                        imageElements[row, column].ToolTip = "";
+                        continue;
                     }
-                }
-            }
-        }
 
-        private void Window_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl)
-            {
-                foreach (TextBox textBox in textBoxElements)
-                {
-                    textBox.Visibility = Visibility.Hidden;
+                    // update texts
+                    textBoxElements[row, column].Text = tile.DisplayData;
+                    imageElements[row, column].ToolTip = tile.DisplayName;
+
+                    string path = "Resources/TileTypes/" + tile.DisplayName + ".png";
+                    if (tile.DisplayData.Length > 0)
+                    {
+                        imageElements[row, column].ToolTip += " [" + tile.DisplayData + "]";
+
+                        path = "Resources/TileTypes/" + tile.DisplayName + "_" + tile.DisplayData + ".png";
+                        if (!ResourceExists(path))
+                        {
+                            // fallback to non-indexed image
+                            path = "Resources/TileTypes/" + tile.DisplayName + ".png";
+                        }
+                    }
+                    if (!ResourceExists(path))
+                    {
+                        // fallback to non-indexed image
+                        path = "Resources/TileTypes/unknown.png";
+                    }
+
+                    imageElements[row, column].Source = new BitmapImage(new Uri("pack://application:,,,/" + path, UriKind.Absolute));
                 }
             }
         }
+        #endregion
     }
 }

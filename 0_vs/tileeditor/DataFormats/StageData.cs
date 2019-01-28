@@ -6,10 +6,7 @@ namespace tileeditor.DataFormats
 {
     class StageData
     {
-        // tutorial + 50 ingame levels
-        private const int LEVEL_AMOUNT = 51;
-
-        class Level
+        public class Stage
         {
             [System.Flags]
             enum ContentFlag
@@ -223,7 +220,14 @@ namespace tileeditor.DataFormats
             // this is always set to [0x00, 0x00] in default levels
             // @TODO VM play with this value a bit
             private byte[] unknownPostCP;                       // < 3 bytes
-            private byte ID;                                    // < 1 byte
+            private byte _ID;                                   // < 1 byte
+            public byte ID
+            {
+                get
+                {
+                    return _ID;
+                }
+            }
 
             // loaded from Ysi_Cmn.pack / Common/Model/Ysi_Field.szs / gsys.bfres / Textures -> Field*
             // @TODO VM build renderer/selector for this
@@ -252,16 +256,16 @@ namespace tileeditor.DataFormats
             private const int fruitAssociations_LENGTH = 12;
             private IndexResolver[] fruitAssociations = new IndexResolver[FRUIT_ASSOCIATIONS];
 
-            public static Level Load(BinaryReader reader)
+            public static Stage Load(BinaryReader reader)
             {
-                Level level = new Level();
+                Stage level = new Stage();
                 level.tutorialText1 = reader.ReadBytes(2);
                 level.tutorialText2 = reader.ReadBytes(2);
                 level.tutorialTextbuffer = reader.ReadBytes(2);
 
                 level.unknownCP = reader.ReadBytes(2);
                 level.unknownPostCP = reader.ReadBytes(3);
-                level.ID = reader.ReadByte();
+                level._ID = reader.ReadByte();
 
                 level.backgroundID = IndexResolver.Load(reader, backgroundID_LENGTH);
                 level.notDoor = IndexResolver.Load(reader, notDoor_LENGTH);
@@ -306,23 +310,31 @@ namespace tileeditor.DataFormats
 
         #region File description
         private byte[] headerUnknown; // < 20 bytes
-        private Level[] payload = new Level[LEVEL_AMOUNT];
+        private Dictionary<int, Stage> payload = new Dictionary<int, Stage>(61); // 61 is based on the game's default amount of maps (50 in-game + 10 unused maps + tutorial)
+        public bool HasLevelWithID(int mapID)
+        {
+            return payload.ContainsKey(mapID);
+        }
+        public Stage GetLevelByID(int mapID)
+        {
+            return payload[mapID];
+        }
         #endregion
 
-        public static StageData Load(string fileName)
+        public static StageData Load(string pathToYsiExtract)
         {
             StageData stageData = new StageData();
 
-            using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+            using (BinaryReader reader = new BinaryReader(File.Open(Path.Combine(pathToYsiExtract, "StageData.exbin"), FileMode.Open)))
             {
                 stageData.headerUnknown = reader.ReadBytes(20);
-                for (int levelIndex = 0; levelIndex < LEVEL_AMOUNT; levelIndex++)
+                while (reader.BaseStream.Position != reader.BaseStream.Length)
                 {
-                    stageData.payload[levelIndex] = Level.Load(reader);
+                    Stage level = Stage.Load(reader);
+                    stageData.payload[level.ID] = level;
                 }
                 Debug.Assert(reader.BaseStream.Position == reader.BaseStream.Length, "");
             }
-
 
             return stageData;
         }

@@ -3,7 +3,7 @@
 
 namespace tileeditor.DataFormats
 {
-    struct MapData
+    class MapData
     {
         #region Constants
         public const int ROWS_VISIBLE = 15;
@@ -19,7 +19,7 @@ namespace tileeditor.DataFormats
         private byte[] headerUnknown;                         // < 16 bytes
         private byte[] backgroundUnknown;                     // < 4 bytes
         private byte[] headerUnknown2;                        // < 18 bytes
-        private TileTypes.RotatingObject[] rotatingObjects;   // < RotatingObject.AVAILABLE_PIVOTS * RotatingObject.SLOTS_PER_PIVOT * (1 + DataFormats.MapData.HEADER_TILE_PADDING) bytes
+        private TileTypes.RotatingObject[] rotatingObjects;   // < RotatingObject.AVAILABLE_PIVOTS * RotatingObject.SLOTS_PER_PIVOT * (1 + MapData.HEADER_TILE_PADDING) bytes
         #endregion
 
         #region Payload
@@ -33,10 +33,10 @@ namespace tileeditor.DataFormats
             return visibleRows[row, column];
         }
 
-        public static DataFormats.MapData Load(string fileName)
+        public static MapData Load(string pathToMapData)
         {
-            DataFormats.MapData mapData = new DataFormats.MapData();
-            using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+            MapData mapData = new MapData();
+            using (BinaryReader reader = new BinaryReader(File.Open(pathToMapData, FileMode.Open)))
             {
                 mapData.headerUnknown = reader.ReadBytes(16);
                 mapData.backgroundUnknown = reader.ReadBytes(4);
@@ -55,7 +55,7 @@ namespace tileeditor.DataFormats
                 {
                     for (int column = 0; column < COLUMNS_TOTAL; column++)
                     {
-                        mapData.invisibleRows[row, column] = TileTypes.TileType.Construct(reader, DataFormats.MapData.BODY_TILE_PADDING);
+                        mapData.invisibleRows[row, column] = TileTypes.TileType.Construct(reader, MapData.BODY_TILE_PADDING);
                     }
                 }
             }
