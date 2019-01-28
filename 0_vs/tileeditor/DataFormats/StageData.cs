@@ -6,7 +6,8 @@ namespace tileeditor.DataFormats
 {
     class StageData
     {
-        private const int LEVEL_AMOUNT = 50;
+        // tutorial + 50 ingame levels
+        private const int LEVEL_AMOUNT = 51;
 
         class Level
         {
@@ -24,7 +25,8 @@ namespace tileeditor.DataFormats
             {
                 NONE = 0,
                 Switch = '1',
-                Pepper = '2'
+                Pepper = '2',
+                Unset = 0x30
             };
 
             enum MovementPattern
@@ -84,6 +86,7 @@ namespace tileeditor.DataFormats
             /// - (ranges only)        for the INCLUSIVE max value (.Max)
             /// - (ranges only)        a random number between that Range (GetRandom())
             /// </summary>
+            [DebuggerDisplay("{IsRange?Min+\" - \"+Max:Value.ToString()}")]
             class IndexResolver
             {
                 public bool IsRange
@@ -141,10 +144,10 @@ namespace tileeditor.DataFormats
                 private static int ParseNumber(BinaryReader reader, ref int remainingBytes)
                 {
                     // peek for a number
-                    List<byte> buffer = new List<byte>{ reader.ReadByte() };
+                    List<byte> buffer = new List<byte> { reader.ReadByte() };
                     Debug.Assert(--remainingBytes >= 0, "No more bytes remaining to continue operation");
 
-                    if (buffer[buffer.Count - 1] == 0x00 || buffer[buffer.Count - 1] == '~')
+                    if (buffer[buffer.Count - 1] < '0' || buffer[buffer.Count - 1] > '9')
                     {
                         // if that's already invalid we can't handle it
                         return -1;
@@ -154,7 +157,7 @@ namespace tileeditor.DataFormats
                     buffer.Add(reader.ReadByte());
                     Debug.Assert(--remainingBytes >= 0, "No more bytes remaining to continue operation");
 
-                    while (buffer[buffer.Count - 1] != 0x00 || buffer[buffer.Count - 1] != '~')
+                    while (buffer[buffer.Count - 1] > '0' && buffer[buffer.Count - 1] < '9')
                     {
                         buffer.Add(reader.ReadByte());
 
@@ -168,7 +171,18 @@ namespace tileeditor.DataFormats
                     return System.Byte.Parse(System.Text.Encoding.Default.GetString(buffer.ToArray()));
                 }
 
-                public static IndexResolver Load(BinaryReader reader, ref int remainingBytes)
+                /// <summary>
+                /// Creates an instance of an index based on a memory region.
+                /// 
+                /// The memory region will start at the current position of reader and will stop parsing at latest after reading as many bytes as provided in remainingBytes.
+                /// 
+                /// Important: If numbers do not take up all the space provided by remainingBytes, they are discarded and the reader is advanced still.
+                /// Basically this method guarantees, that after executing it, reader is at reader.BaseStream.Position (before execution) + remainingBytes.
+                /// </summary>
+                /// <param name="reader">BinaryReader that is set up to be at the intended start of an index</param>
+                /// <param name="remainingBytes">How many bytes can be parsed at maximum - if less are required to create the index, the remaining bytes are skipped and reader is advanced</param>
+                /// <returns></returns>
+                public static IndexResolver Load(BinaryReader reader, int remainingBytes)
                 {
                     int parsedMin = ParseNumber(reader, ref remainingBytes);
                     int parsedMax = ParseNumber(reader, ref remainingBytes);
@@ -190,8 +204,8 @@ namespace tileeditor.DataFormats
                 }
             }
 
-            private static readonly byte[] HOLE_DEFINITION_KEYS = { 0x0a, 0x0b, 0x0c};
-            private const int MAXIMUM_CONTENT_FLAGS  = 6;
+            private static readonly byte[] HOLE_DEFINITION_KEYS = { 0x0a, 0x0b, 0x0c };
+            private const int MAXIMUM_CONTENT_FLAGS = 6;
             private const int SWITCHORPEPPER_DEFINITIONS = 16;
             private const int MOVEMENTPATTERN_DEFINITIONS = 16;
             private const int FRUIT_ORDER_DEFINITIONS = 16;
@@ -214,29 +228,29 @@ namespace tileeditor.DataFormats
             // loaded from Ysi_Cmn.pack / Common/Model/Ysi_Field.szs / gsys.bfres / Textures -> Field*
             // @TODO VM build renderer/selector for this
             // @TODO VM check if a range could be used here (only direct values, but structure supports more)
-            private const int BackgroundID_LENGTH = 8;
-            private IndexResolver BackgroundID;                                                                                        
+            private const int backgroundID_LENGTH = 8;
+            private IndexResolver backgroundID;
             // unknown - definitively unrelated to the door                                                                         
-            private const int NotDoor_LENGTH = 8;
-            private IndexResolver NotDoor;                                                                                          
+            private const int notDoor_LENGTH = 8;
+            private IndexResolver notDoor;
             // BUFFER < 6 bytes
             // single or range of potential teleports?                                                                              
-            private const int TeleportIndices_LENGTH = 8;
-            private IndexResolver TeleportIndices;                                                                                  
-            private const int HoleDefinitions_LENGTH = 4;
-            private Dictionary<byte, tileeditor.TileTypes.Hole.Size> HoleDefinitions = new Dictionary<byte, TileTypes.Hole.Size>(3);
-            private const int ContentFlag_LENGTH = 2;
-            private ContentFlag[] ContentFlags = new ContentFlag[MAXIMUM_CONTENT_FLAGS];                                            
-            private const int SwitchOrPepperDefinitions_LENGTH = 8;
-            private SwitchOrPepper[] SwitchOrPepperDefinitions = new SwitchOrPepper[SWITCHORPEPPER_DEFINITIONS];                    
-            private const int MovementPattern_LENGTH = 12;
-            private IndexResolver[] MovementPatterns = new IndexResolver[MOVEMENTPATTERN_DEFINITIONS];                              
+            private const int teleportIndices_LENGTH = 8;
+            private IndexResolver teleportIndices;
+            private const int holeDefinitions_LENGTH = 4;
+            private Dictionary<byte, tileeditor.TileTypes.Hole.Size> holeDefinitions = new Dictionary<byte, TileTypes.Hole.Size>(3);
+            private const int contentFlag_LENGTH = 2;
+            private ContentFlag[] contentFlags = new ContentFlag[MAXIMUM_CONTENT_FLAGS];
+            private const int switchOrPepperDefinitions_LENGTH = 8;
+            private SwitchOrPepper[] switchOrPepperDefinitions = new SwitchOrPepper[SWITCHORPEPPER_DEFINITIONS];
+            private const int movementPattern_LENGTH = 12;
+            private IndexResolver[] movementPatterns = new IndexResolver[MOVEMENTPATTERN_DEFINITIONS];
             // related to fruit order?                                                                                              
-            private const int FDefinition_LENGTH = 12;
-            private IndexResolver[] FDefinition = new IndexResolver[FRUIT_ORDER_DEFINITIONS];                                       
+            private const int orderedFruitDefinition_LENGTH = 12;
+            private IndexResolver[] orderedFruitDefinition = new IndexResolver[FRUIT_ORDER_DEFINITIONS];
             // resolved an index to a specific fruit (See FruitData)                                                                
-            private const int FruitAssociations_LENGTH = 12;
-            private IndexResolver[] FruitAssociations = new IndexResolver[FRUIT_ASSOCIATIONS];                                      
+            private const int fruitAssociations_LENGTH = 12;
+            private IndexResolver[] fruitAssociations = new IndexResolver[FRUIT_ASSOCIATIONS];
 
             public static Level Load(BinaryReader reader)
             {
@@ -249,70 +263,41 @@ namespace tileeditor.DataFormats
                 level.unknownPostCP = reader.ReadBytes(3);
                 level.ID = reader.ReadByte();
 
-                {
-                    int remainingBytes = BackgroundID_LENGTH;
-                    level.BackgroundID = IndexResolver.Load(reader, ref remainingBytes);
-                    reader.ReadBytes(remainingBytes);
-                }
-
-                {
-                    int remainingBytes = NotDoor_LENGTH;
-                    level.NotDoor = IndexResolver.Load(reader, ref remainingBytes);
-                    reader.ReadBytes(remainingBytes);
-                }
-
-                {
-                    int remainingBytes = TeleportIndices_LENGTH;
-                    level.TeleportIndices = IndexResolver.Load(reader, ref remainingBytes);
-                    reader.ReadBytes(remainingBytes);
-                }
+                level.backgroundID = IndexResolver.Load(reader, backgroundID_LENGTH);
+                level.notDoor = IndexResolver.Load(reader, notDoor_LENGTH);
+                level.teleportIndices = IndexResolver.Load(reader, teleportIndices_LENGTH);
 
                 foreach (byte key in HOLE_DEFINITION_KEYS)
                 {
-                    level.HoleDefinitions.Add(key, (tileeditor.TileTypes.Hole.Size)reader.ReadByte());
-                    reader.ReadBytes(HoleDefinitions_LENGTH - 1);
+                    level.holeDefinitions.Add(key, (tileeditor.TileTypes.Hole.Size)reader.ReadByte());
+                    reader.ReadBytes(holeDefinitions_LENGTH - 1);
                 }
 
                 for (int contentFlagIndex = 0; contentFlagIndex < MAXIMUM_CONTENT_FLAGS; contentFlagIndex++)
                 {
-                    level.ContentFlags[contentFlagIndex] = (ContentFlag)reader.ReadByte();                    
-                    reader.ReadBytes(ContentFlag_LENGTH - 1);
+                    level.contentFlags[contentFlagIndex] = (ContentFlag)reader.ReadByte();
+                    reader.ReadBytes(contentFlag_LENGTH - 1);
                 }
 
                 for (int switchOrPepperIndex = 0; switchOrPepperIndex < SWITCHORPEPPER_DEFINITIONS; switchOrPepperIndex++)
                 {
-                    level.SwitchOrPepperDefinitions[switchOrPepperIndex] = (SwitchOrPepper)reader.ReadByte(); // < SWITCHORPEPPER_DEFINITIONS * (1 byte (value) + 7 bytes (padding))
-                    reader.ReadBytes(SwitchOrPepperDefinitions_LENGTH - 1);
+                    level.switchOrPepperDefinitions[switchOrPepperIndex] = (SwitchOrPepper)reader.ReadByte(); // < SWITCHORPEPPER_DEFINITIONS * (1 byte (value) + 7 bytes (padding))
+                    reader.ReadBytes(switchOrPepperDefinitions_LENGTH - 1);
                 }
 
                 for (int patternIndex = 0; patternIndex < MOVEMENTPATTERN_DEFINITIONS; patternIndex++)
                 {
-                    int bytes = MovementPattern_LENGTH;
-                    level.MovementPatterns[patternIndex] = IndexResolver.Load(reader, ref bytes);
-                    if (bytes > 0)
-                    {
-                        reader.ReadBytes(bytes);
-                    }
+                    level.movementPatterns[patternIndex] = IndexResolver.Load(reader, movementPattern_LENGTH);
                 }
 
                 for (int FDefinitionIndex = 0; FDefinitionIndex < FRUIT_ORDER_DEFINITIONS; FDefinitionIndex++)  // < FRUIT_ORDER_DEFINITIONS * (1 or 2 bytes (value) + 10 or 11 bytes (padding))
                 {                                                                                               // related to fruit order? actual usage unknown
-                    int bytes = FDefinition_LENGTH;
-                    level.FDefinition[FDefinitionIndex] = IndexResolver.Load(reader, ref bytes);
-                    if (bytes > 0)
-                    {
-                        reader.ReadBytes(bytes);
-                    }
+                    level.orderedFruitDefinition[FDefinitionIndex] = IndexResolver.Load(reader, orderedFruitDefinition_LENGTH);
                 }
 
                 for (int fruitAssociationIndex = 0; fruitAssociationIndex < FRUIT_ASSOCIATIONS; fruitAssociationIndex++)  // < FRUIT_ASSOCIATIONS * (2 bytes (min) + 1 byte (delimiter) + 2 bytes (max)) + 7 bytes (padding))
                 {                                                                                               // related to fruit order? actual usage unknown
-                    int bytes = FruitAssociations_LENGTH;
-                    level.FruitAssociations[fruitAssociationIndex] = IndexResolver.Load(reader, ref bytes);
-                    if (bytes > 0)
-                    {
-                        reader.ReadBytes(bytes);
-                    }
+                    level.fruitAssociations[fruitAssociationIndex] = IndexResolver.Load(reader, fruitAssociations_LENGTH);
                 }
 
                 return level;
@@ -321,7 +306,7 @@ namespace tileeditor.DataFormats
 
         #region File description
         private byte[] headerUnknown; // < 20 bytes
-        private Level[] payload;
+        private Level[] payload = new Level[LEVEL_AMOUNT];
         #endregion
 
         public static StageData Load(string fileName)
@@ -335,7 +320,9 @@ namespace tileeditor.DataFormats
                 {
                     stageData.payload[levelIndex] = Level.Load(reader);
                 }
+                Debug.Assert(reader.BaseStream.Position == reader.BaseStream.Length, "");
             }
+
 
             return stageData;
         }

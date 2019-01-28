@@ -195,11 +195,19 @@ namespace tileeditor
                     throw new System.Exception();
                 }
 
-                Parago.Windows.ProgressDialog.Report(progress, 90, "Extracting scene file...");
+                Parago.Windows.ProgressDialog.Report(progress, 65, "Extracting scene file...");
                 if (!MoveAndExtract(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/Ysi_Cmn/Common/Scene/Ysi.szs"))
                 {
                     throw new System.Exception();
                 }
+
+                Parago.Windows.ProgressDialog.Report(progress, 90, "Parsing StageData...");
+                if (!MoveAndExtract(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tmp/sourceFiles/Ysi_Cmn/Common/Scene/Ysi.szs"))
+                {
+                    throw new System.Exception();
+                }
+
+                LoadStageData();
 
                 Parago.Windows.ProgressDialog.Report(progress, 95, "Populating list...");
                 Application.Current.Dispatcher.Invoke(new Action(() => {
@@ -249,22 +257,8 @@ namespace tileeditor
 
         }
 
-        private void LevelSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void LoadMapData(string mapDataFileName)
         {
-            if (e.AddedItems.Count <= 0)
-            {
-                return;
-            }
-
-            if ((e.AddedItems[0] as ComboBoxItem).Name == "default")
-            {
-                if (e.RemovedItems.Count > 0)
-                {
-                    ((ComboBox)sender).SelectedItem = e.RemovedItems[0];
-                }
-                return;
-            }
-
             using (var memStream = new MemoryStream())
             {
                 DataFormats.MapData mapData = DataFormats.MapData.Load(Path.Combine(
@@ -272,7 +266,7 @@ namespace tileeditor
                                       "tmp",
                                       "sourceFiles",
                                       "Ysi",
-                                      (e.AddedItems[0] as ComboBoxItem).Name + ".exbin"
+                                      mapDataFileName
                                   ));
                 //LevelData.Text = mapData.Visualize();
                 for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
@@ -319,6 +313,39 @@ namespace tileeditor
                 }
 
             }
+        }
+
+        private void LoadStageData()
+        {
+            using (var memStream = new MemoryStream())
+            {
+                DataFormats.StageData stageData = DataFormats.StageData.Load(Path.Combine(
+                                      Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                                      "tmp",
+                                      "sourceFiles",
+                                      "Ysi",
+                                      "StageData.exbin"
+                                  ));
+            }
+        }
+
+        private void LevelSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count <= 0)
+            {
+                return;
+            }
+
+            if ((e.AddedItems[0] as ComboBoxItem).Name == "default")
+            {
+                if (e.RemovedItems.Count > 0)
+                {
+                    ((ComboBox)sender).SelectedItem = e.RemovedItems[0];
+                }
+                return;
+            }
+
+            LoadMapData((e.AddedItems[0] as ComboBoxItem).Name + ".exbin");
         }
 
         private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
