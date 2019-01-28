@@ -23,12 +23,12 @@ namespace tileeditor.DataFormats
         #endregion
 
         #region Payload
-        private TileTypes.TileType[,] visibleRows;            // < ROWS_VISIBLE * COLUMNS_TOTAL * (1 + BODY_TILE_PADDING) bytes
-        private TileTypes.TileType[,] invisibleRows;          // < ROWS_TOTAL - ROWS_VISIBLE, COLUMNS_TOTAL * (1 + BODY_TILE_PADDING) bytes
+        private TileTypes.BaseType[,] visibleRows;            // < ROWS_VISIBLE * COLUMNS_TOTAL * (1 + BODY_TILE_PADDING) bytes
+        private TileTypes.BaseType[,] invisibleRows;          // < ROWS_TOTAL - ROWS_VISIBLE, COLUMNS_TOTAL * (1 + BODY_TILE_PADDING) bytes
         #endregion
         #endregion
 
-        public TileTypes.TileType GetItem(int row, int column)
+        public TileTypes.BaseType GetItem(int row, int column)
         {
             return visibleRows[row, column];
         }
@@ -42,20 +42,20 @@ namespace tileeditor.DataFormats
                 mapData.backgroundUnknown = reader.ReadBytes(4);
                 mapData.headerUnknown2 = reader.ReadBytes(18);
                 mapData.rotatingObjects = TileTypes.RotatingObject.Load(reader);
-                mapData.visibleRows = new TileTypes.TileType[ROWS_VISIBLE, COLUMNS_TOTAL];
+                mapData.visibleRows = new TileTypes.BaseType[ROWS_VISIBLE, COLUMNS_TOTAL];
                 for (int row = 0; row < ROWS_VISIBLE; row++)
                 {
                     for (int column = 0; column < COLUMNS_TOTAL; column++)
                     {
-                        mapData.visibleRows[row, column] = TileTypes.TileType.Construct(reader, BODY_TILE_PADDING);
+                        mapData.visibleRows[row, column] = TileTypes.BaseType.Construct(reader, BODY_TILE_PADDING);
                     }
                 }
-                mapData.invisibleRows = new TileTypes.TileType[ROWS_TOTAL - ROWS_VISIBLE, COLUMNS_TOTAL];
+                mapData.invisibleRows = new TileTypes.BaseType[ROWS_TOTAL - ROWS_VISIBLE, COLUMNS_TOTAL];
                 for (int row = 0; row < ROWS_TOTAL - ROWS_VISIBLE; row++)
                 {
                     for (int column = 0; column < COLUMNS_TOTAL; column++)
                     {
-                        mapData.invisibleRows[row, column] = TileTypes.TileType.Construct(reader, MapData.BODY_TILE_PADDING);
+                        mapData.invisibleRows[row, column] = TileTypes.BaseType.Construct(reader, MapData.BODY_TILE_PADDING);
                     }
                 }
             }

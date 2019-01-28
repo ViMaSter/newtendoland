@@ -4,14 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
 namespace tileeditor
 {
     /// <summary>
@@ -19,7 +11,7 @@ namespace tileeditor
     /// </summary>
     partial class ConfigPopup : Window
     {
-        public static void Show(TileTypes.TileType tileType, Window owner)
+        public static void Show(TileTypes.BaseType tileType, Window owner)
         {
             ConfigPopup newPopup = new ConfigPopup();
             newPopup.Title = "Configure tile: "+tileType.DisplayName;

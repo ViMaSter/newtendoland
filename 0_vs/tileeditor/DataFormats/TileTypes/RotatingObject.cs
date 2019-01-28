@@ -32,7 +32,7 @@ namespace tileeditor.TileTypes
     /// Internally, the second list is appended to the first and M2 is dropped, resulting in [S, P1, P2, P3, P4]; the start point
     /// being the pivot with 4 regular fruits as orbiter around it.
     /// </summary>
-    class RotatingObject : TileType
+    class RotatingObject : BaseType
     {
         public override char MemoryIdentifier
         {
@@ -77,8 +77,8 @@ namespace tileeditor.TileTypes
         }
 
         #region Form generator
-        private TileTypes.TileType pivotObject;
-        private TileTypes.TileType[] rotatingObjects;
+        private BaseType pivotObject;
+        private BaseType[] rotatingObjects;
         private ComboBox pivotInput;
 
         // implement common methods
@@ -90,7 +90,7 @@ namespace tileeditor.TileTypes
             Grid.SetRow(pivotLabel, 0);
 
             pivotInput = new ComboBox();
-            pivotInput.ItemsSource = TileTypes.TileType.Enumerable;
+            pivotInput.ItemsSource = TileTypes.Registrar.Enumerable;
             pivotInput.SelectedValuePath = "MemoryIdentifier";
             pivotInput.DisplayMemberPath = "DisplayName";
             Grid.SetColumn(pivotInput, 1);
@@ -104,7 +104,7 @@ namespace tileeditor.TileTypes
 
         public override void ObtainData()
         {
-            pivotObject = TileTypes.TileType.GetTypeByMemoryIdentifier((char)pivotInput.SelectedValue);
+            pivotObject = TileTypes.Registrar.GetTypeByMemoryIdentifier((char)pivotInput.SelectedValue);
         }
 
         private bool ValidateInput(string text)
@@ -114,7 +114,7 @@ namespace tileeditor.TileTypes
 
         protected override bool Load(BinaryReader reader, int availablePadding)
         {
-            rotatingObjects = new TileTypes.TileType[0];
+            rotatingObjects = new BaseType[0];
             return false;
         }
 

@@ -29,7 +29,7 @@ namespace tileeditor
             int row = 0;
             int column = 0;
 
-            TileTypes.TileType.ForEach((TileTypes.TileType type) =>
+            TileTypes.Registrar.ForEach((TileTypes.BaseType type) =>
             {
                 if (!type.IsValid())
                 {
@@ -110,7 +110,7 @@ namespace tileeditor
             // @TODO: detect remaining temp-folder
             InitializeComponent();
 
-            TileTypes.TileType.PopulateRegistar();
+            TileTypes.Registrar.Populate();
 
             CreateObjectPicker();
             CreatePlacementGrid();
@@ -263,7 +263,7 @@ namespace tileeditor
             {
                 for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
                 {
-                    TileTypes.TileType tile = level.mapData.GetItem(row, column);
+                    TileTypes.BaseType tile = level.mapData.GetItem(row, column);
 
                     // reset text
                     textBoxElements[row, column].Text = tile.DisplayData;

@@ -93,12 +93,13 @@
     <Compile Include="DataFormats\TileTypes\HeaderUnknown.cs" />
     <Compile Include="DataFormats\TileTypes\Heart.cs" />
     <Compile Include="DataFormats\TileTypes\Hole.cs" />
-    <Compile Include="DataFormats\TileTypes\ITileType.cs" />
+    <Compile Include="DataFormats\TileTypes\BaseType.cs" />
     <Compile Include="DataFormats\TileTypes\OrderedFruit.cs" />
-    <Compile Include="DataFormats\TileTypes\Pepper.cs" />
+    <Compile Include="DataFormats\TileTypes\PepperOrSwitch.cs" />
     <Compile Include="DataFormats\TileTypes\RotatingObject.cs" />
     <Compile Include="DataFormats\TileTypes\Spike.cs" />
     <Compile Include="DataFormats\TileTypes\Start.cs" />
+    <Compile Include="DataFormats\TileTypes\TileTypes.cs" />
     <Compile Include="DataFormats\TileTypes\Wall.cs" />
     <Page Include="ConfigPopup.xaml">
       <SubType>Designer</SubType>

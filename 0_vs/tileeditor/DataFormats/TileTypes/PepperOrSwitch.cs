@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
 {
-    // @TODO: 'W1' is also used for switches - investigate what determines what to use
-    class Pepper : TileType
+    class PepperOrSwitch : BaseType
     {
         public override char MemoryIdentifier
         {

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
 {
-    class Spike : TileType
+    class Spike : BaseType
     {
         public override char MemoryIdentifier
         {

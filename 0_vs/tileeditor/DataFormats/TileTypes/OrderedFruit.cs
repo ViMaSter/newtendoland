@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
 {
-    class OrderedFruit : TileType
+    class OrderedFruit : BaseType
     {
         public override char MemoryIdentifier
         {

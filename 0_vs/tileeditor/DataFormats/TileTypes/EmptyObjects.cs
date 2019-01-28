@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
 {
-    class Empty : TileType
+    class Empty : BaseType
     {
         public override char MemoryIdentifier
         {
@@ -37,7 +37,7 @@ namespace tileeditor.TileTypes
         }
         #endregion
     }
-    class Nothing : TileType
+    class Nothing : BaseType
     {
         public override char MemoryIdentifier
         {
@@ -71,7 +71,7 @@ namespace tileeditor.TileTypes
         }
         #endregion
     }
-    class Null : TileType
+    class Null : BaseType
     {
         public override char MemoryIdentifier
         {
