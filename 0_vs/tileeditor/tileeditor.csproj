@@ -99,7 +99,7 @@
     <Compile Include="DataFormats\TileTypes\RotatingObject.cs" />
     <Compile Include="DataFormats\TileTypes\Spike.cs" />
     <Compile Include="DataFormats\TileTypes\Start.cs" />
-    <Compile Include="DataFormats\TileTypes\TileTypes.cs" />
+    <Compile Include="DataFormats\TileTypes\Registrar.cs" />
     <Compile Include="DataFormats\TileTypes\Wall.cs" />
     <Page Include="ConfigPopup.xaml">
       <SubType>Designer</SubType>

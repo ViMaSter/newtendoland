@@ -22,6 +22,14 @@ namespace tileeditor.TileTypes
             }
         }
 
+        public override string GetIconFileName
+        {
+            get
+            {
+                return MemoryIdentifier.ToString();
+            }
+        }
+
         public override string DisplayData
         {
             get

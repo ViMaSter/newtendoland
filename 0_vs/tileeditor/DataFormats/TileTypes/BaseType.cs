@@ -9,6 +9,7 @@ namespace tileeditor.TileTypes
         protected BaseType() { }
         public abstract char MemoryIdentifier { get; }
         public abstract string DisplayName { get; }
+        public abstract string GetIconFileName { get; }
         public virtual string DisplayData
         {
             get

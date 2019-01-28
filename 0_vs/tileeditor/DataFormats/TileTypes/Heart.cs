@@ -21,6 +21,14 @@ namespace tileeditor.TileTypes
             }
         }
 
+        public override string GetIconFileName
+        {
+            get
+            {
+                return MemoryIdentifier.ToString();
+            }
+        }
+
         #region Form generator
         public override bool PopulateFields(ref Grid grid)
         {
