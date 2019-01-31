@@ -87,20 +87,18 @@
     <Compile Include="DataFormats\MapData.cs" />
     <Compile Include="DataFormats\StageData.cs" />
     <Compile Include="DataFormats\TileTypes\Bee.cs" />
-    <Compile Include="DataFormats\TileTypes\EmptyObjects.cs" />
     <Compile Include="DataFormats\TileTypes\Fruit.cs" />
     <Compile Include="DataFormats\TileTypes\Goal.cs" />
-    <Compile Include="DataFormats\TileTypes\HeaderUnknown.cs" />
     <Compile Include="DataFormats\TileTypes\Heart.cs" />
     <Compile Include="DataFormats\TileTypes\Hole.cs" />
     <Compile Include="DataFormats\TileTypes\BaseType.cs" />
+    <Compile Include="DataFormats\TileTypes\InvalidObjects.cs" />
     <Compile Include="DataFormats\TileTypes\OrderedFruit.cs" />
     <Compile Include="DataFormats\TileTypes\PepperOrSwitch.cs" />
     <Compile Include="DataFormats\TileTypes\RotatingObject.cs" />
     <Compile Include="DataFormats\TileTypes\Spike.cs" />
     <Compile Include="DataFormats\TileTypes\Start.cs" />
     <Compile Include="DataFormats\TileTypes\Registrar.cs" />
-    <Compile Include="DataFormats\TileTypes\Wall.cs" />
     <Page Include="ConfigPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -246,6 +244,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>Xcopy /E /I /Y $(SolutionDir)..\1_scripts $(TargetDir)Scripts</PreBuildEvent>
+    <PreBuildEvent>copy-item $(SolutionDir)..\\1_scripts\\* $(TargetDir)Scripts -force -recurse -verbose</PreBuildEvent>
   </PropertyGroup>
 </Project>
