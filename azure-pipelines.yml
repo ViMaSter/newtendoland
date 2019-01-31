@@ -35,6 +35,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
     contents: '**/$(BuildConfiguration)/**'
 
 - task: PublishBuildArtifacts@1
