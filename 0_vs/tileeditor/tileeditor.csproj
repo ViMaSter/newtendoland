@@ -244,6 +244,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy-item $(SolutionDir)..\\1_scripts\\* $(TargetDir)Scripts -force -recurse -verbose</PreBuildEvent>
+    <PreBuildEvent>Xcopy /E /I /Y $(SolutionDir)..\1_scripts $(TargetDir)Scripts</PreBuildEvent>
   </PropertyGroup>
 </Project>
