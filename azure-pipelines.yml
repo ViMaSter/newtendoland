@@ -32,9 +32,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**/$(BuildConfiguration)/**'
+
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'drop' 
-    publishLocation: 'Container' # Options: container, filePath
-    targetPath: # Required when publishLocation == FilePath
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: drop
