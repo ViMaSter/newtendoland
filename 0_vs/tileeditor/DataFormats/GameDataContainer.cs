@@ -27,6 +27,7 @@ namespace tileeditor.DataFormats
     class GameDataContainer
     {
         StageData stageData;
+        FruitData fruitData;
         Dictionary<string, MapData> mapData = new Dictionary<string, MapData>(61); // 61 is based on the game's default amount of maps (50 in-game + 10 unused maps + tutorial)
         public Dictionary<string, MapData>.KeyCollection MapsAvailable
         {
@@ -58,6 +59,7 @@ namespace tileeditor.DataFormats
         public GameDataContainer(string pathToYsiExtract)
         {
             stageData = StageData.Load(pathToYsiExtract);
+            fruitData = FruitData.Load(pathToYsiExtract);
 
             IEnumerable<string> maps = Directory.EnumerateFiles(pathToYsiExtract, "MapData*.exbin");
             foreach (string map in maps)

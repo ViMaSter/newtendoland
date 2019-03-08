@@ -83,7 +83,9 @@
     <Compile Include="ConfigPopup.xaml.cs">
       <DependentUpon>ConfigPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataFormats\FruitData.cs" />
     <Compile Include="DataFormats\GameDataContainer.cs" />
+    <Compile Include="DataFormats\IndexResolver.cs" />
     <Compile Include="DataFormats\MapData.cs" />
     <Compile Include="DataFormats\StageData.cs" />
     <Compile Include="DataFormats\TileTypes\Bee.cs" />
