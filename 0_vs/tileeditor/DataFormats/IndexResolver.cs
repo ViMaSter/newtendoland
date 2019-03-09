@@ -27,8 +27,22 @@ namespace tileeditor.DataFormats
     /// - (ranges only)        a random number between that Range (GetRandom())
     /// </summary>
     [DebuggerDisplay("{IsRange?Min+\" - \"+Max:Value.ToString()}")]
-    class IndexResolver
+    class IndexResolver : System.IEquatable<IndexResolver>
     {
+        #region System.IEquatable
+        public override int GetHashCode()
+        {
+            return minOrValue.GetHashCode() ^ max.GetHashCode() ^ delimiter.GetHashCode();
+        }
+
+        public bool Equals(IndexResolver other)
+        {
+            return other.minOrValue == this.minOrValue &&
+                other.max == this.max &&
+                other.delimiter == this.delimiter;
+        }
+        #endregion
+
         public bool IsRange
         {
             get
@@ -66,12 +80,37 @@ namespace tileeditor.DataFormats
             }
         }
 
-        private IndexResolver(int min, int max)
+        /// <summary>
+        /// Byte used to divide min and max value (is `null`, if only one value was stored)
+        /// 
+        /// This is required to be stored, as there seem to be differences in outcome.
+        /// FruitData.exbin stores the fruit type using both "1~3" and "4.6" in the same file
+        /// @TODO VM Inspect influence of delimiter in FruitData - current hypothesis: ~ = from MIN to MAX | . = MIN or MAX
+        /// </summary>
+        byte? delimiter = null;
+        public byte Delimiter
+        {
+            get
+            {
+                Debug.Assert(IsRange, "Delimiter is only used for range values - this value will be invalid");
+                if (IsRange)
+                {
+                    return (byte)delimiter;
+                }
+                else
+                {
+                    return 0xff;
+                }
+            }
+        }
+
+        public IndexResolver(int min, int max, byte delimiter)
         {
             this.minOrValue = min;
             this.max = max;
+            this.delimiter = delimiter;
         }
-        private IndexResolver(int value)
+        public IndexResolver(int value)
         {
             this.minOrValue = value;
         }
@@ -136,7 +175,12 @@ namespace tileeditor.DataFormats
         /// <returns></returns>
         public static IndexResolver Load(BinaryReader reader, int remainingBytes)
         {
+            // grab first number
             int parsedMin = ParseNumber(reader, ref remainingBytes);
+            // grad what might be a delimiter
+            reader.BaseStream.Seek(-1, SeekOrigin.Current);
+            byte potentialDivider = reader.ReadByte();
+            // grab second number
             int parsedMax = ParseNumber(reader, ref remainingBytes);
 
             // discard padding
@@ -145,13 +189,43 @@ namespace tileeditor.DataFormats
                 reader.ReadBytes(remainingBytes);
             }
 
+            // construct either a simple number or a range with the byte used as a delimiter
             if (parsedMax == -1)
             {
                 return new IndexResolver(parsedMin);
             }
             else
             {
-                return new IndexResolver(parsedMin, parsedMax);
+                return new IndexResolver(parsedMin, parsedMax, potentialDivider);
+            }
+        }
+
+        /// <summary>
+        /// Convert an instance of this class into a byte-array representation inside the .exbin-format
+        /// </summary>
+        /// <param name="byteLength">How many bytes to allocate (or fill with padding if space is left)</param>
+        public void SerializeExbin(ref List<byte> target, int byteLength)
+        {
+            Debug.Assert(minOrValue != -1, "No valid min value set");
+            byte[] minValueStringified = System.Text.Encoding.ASCII.GetBytes(minOrValue.ToString());
+            Debug.Assert(byteLength >= minValueStringified.Length, "No bytes left in buffer for min value");
+            target.AddRange(minValueStringified);
+            byteLength -= minValueStringified.Length;
+
+            if (IsRange)
+            {
+                byte[] maxStringified = System.Text.Encoding.ASCII.GetBytes(max.ToString());
+                Debug.Assert(byteLength >= maxStringified.Length+1, "No bytes left in buffer for delimiter plus max value");
+
+                target.Add(this.Delimiter);
+                target.AddRange(maxStringified);
+                byteLength -= maxStringified.Length + 1;
+            }
+
+            // fill potential remaining space with zero-byte
+            for (int i = 0; i < byteLength; i++)
+            {
+                target.Add(0x00);
             }
         }
     }
