@@ -7,12 +7,15 @@ namespace tileeditor.Tests.DataFormats
     [TestFixture]
     class FruitData
     {
-        string pathToYsiExtract = "";
+        string pathToYsiExtract = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/../../../../5_azurescripts/testresources/";
+
         [SetUp]
         public void SetUpFilePaths()
         {
-            this.pathToYsiExtract = "";
-            Assert.AreNotEqual("", this.pathToYsiExtract, "Uncomment the line above and change the path to point to the folder containing Nintendo Land's default 'FruitData.exbin'-file");
+            Assert.IsTrue(
+                File.Exists(pathToYsiExtract + "FruitData.exbin"),
+                "FruitData.exbin needs to exist inside /5_azurescripts/testresources/ for tests to be run! (More info in README.MD -> 'Running tests')"
+            );
         }
 
         /// <summary>

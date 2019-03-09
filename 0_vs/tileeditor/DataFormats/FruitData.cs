@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace tileeditor.DataFormats
 {
-    class FruitData
+    public class FruitData
     {
         // byte-to-3D-object mapping
         public enum FruitMapping

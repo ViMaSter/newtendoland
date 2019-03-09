@@ -27,7 +27,7 @@ namespace tileeditor.DataFormats
     /// - (ranges only)        a random number between that Range (GetRandom())
     /// </summary>
     [DebuggerDisplay("{IsRange?Min+\" - \"+Max:Value.ToString()}")]
-    class IndexResolver : System.IEquatable<IndexResolver>
+    public class IndexResolver : System.IEquatable<IndexResolver>
     {
         #region System.IEquatable
         public override int GetHashCode()
