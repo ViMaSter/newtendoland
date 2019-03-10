@@ -1,11 +1,23 @@
-$File = "$PSScriptRoot\testresources\FruitData.exbin"
-$ftp = "ftp://${env:testAssetsFTPUsername}:${env:testAssetsFTPPassword}@$env:testAssetsFTPHostname/FruitData.exbin"
+$list = New-Object System.Collections.Generic.List[string];
+$list.Add("EnemyData.exbin");
+$list.Add("FruitData.exbin");
+$list.Add("StageData.exbin");
+$list.Add("MapData99.exbin");
 
-"ftp url: $ftp"
+for ($i = 0; $i -lt 60; $i++)
+{
+    $formattedIndex = "{0:00}" -f $i;
+    $list.Add("MapData$formattedIndex.exbin");
+}
+ 
+foreach ($item in $list) {
+    $file = "$PSScriptRoot\testresources\$item"
+    $ftp = "ftp://${env:testAssetsFTPUsername}:${env:testAssetsFTPPassword}@$env:testAssetsFTPHostname/$item"
 
-$webclient = New-Object System.Net.WebClient
-$uri = New-Object System.Uri($ftp)
+    $webclient = New-Object System.Net.WebClient
+    $uri = New-Object System.Uri($ftp)
 
-"Downloading $File..."
+    "Downloading $file..."
 
-$webclient.DownloadFile($uri, $File)
+    $webclient.DownloadFile($uri, $file)
+}
