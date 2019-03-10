@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Controls;
 
@@ -78,20 +80,29 @@ namespace tileeditor.TileTypes
             int input = -1;
             return Int32.TryParse(text, out input) && input >= 0 && input <= 99;
         }
+        #endregion
 
-        protected override bool Load(BinaryReader reader, int availablePadding)
+        protected override void Load(List<byte> parsableBytes)
         {
-            byte[] potentialIndex = reader.ReadBytes(availablePadding);
-            if (potentialIndex[0] != 0x00)
-            {
-                order = Int32.Parse(System.Text.Encoding.Default.GetString(potentialIndex));
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("index of Ordered fruit", potentialIndex, "Ordered fruits require an order - none found");
-            }
+            base.Load(parsableBytes);
+
+            Debug.Assert(parsableBytes.Count >= 1, "index of Ordered fruit", "Ordered fruits require an index - none found");
+            order = Int32.Parse(System.Text.Encoding.Default.GetString(parsableBytes.ToArray()));
+        }
+
+        public override bool SerializeExbin(ref System.Collections.Generic.List<byte> target, ref int bytesLeft)
+        {
+            // add memory identifier
+            target.Add((byte)MemoryIdentifier);
+            bytesLeft--;
+
+            // add stringified index
+            byte[] orderStringified = System.Text.Encoding.ASCII.GetBytes(order.ToString());
+            Debug.Assert(bytesLeft >= orderStringified.Length, "No bytes left in buffer for order");
+            target.AddRange(orderStringified);
+            bytesLeft -= orderStringified.Length;
+
             return true;
         }
-        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Controls;
 
 namespace tileeditor.TileTypes
@@ -102,20 +103,38 @@ namespace tileeditor.TileTypes
             int input = -1;
             return Int32.TryParse(text, out input) && input >= 0 && input <= 99;
         }
+        #endregion
 
-        protected override bool Load(BinaryReader reader, int availablePadding)
+        protected override void Load(List<byte> parsableBytes)
         {
-            byte[] potentialIndex = reader.ReadBytes(availablePadding);
-            if (potentialIndex[0] != 0x00)
-            {
-                levelTarget = Int32.Parse(System.Text.Encoding.Default.GetString(potentialIndex));
-            }
-            else
+            base.Load(parsableBytes);
+
+            if (parsableBytes.Count == 0)
             {
                 levelTarget = -1;
             }
+            else
+            {
+                levelTarget = Int32.Parse(System.Text.Encoding.Default.GetString(parsableBytes.ToArray()));
+            }
+        }
+
+        public override bool SerializeExbin(ref System.Collections.Generic.List<byte> target, ref int bytesLeft)
+        {
+            // add memory identifier
+            target.Add((byte)MemoryIdentifier);
+            bytesLeft--;
+
+            // add stringified index
+            if (levelTarget != -1)
+            {
+                byte[] indexStringified = System.Text.Encoding.ASCII.GetBytes(levelTarget.ToString());
+                Debug.Assert(bytesLeft >= indexStringified.Length, "No bytes left in buffer for goal index");
+                target.AddRange(indexStringified);
+                bytesLeft -= indexStringified.Length;
+            }
+
             return true;
         }
-        #endregion
     }
 }

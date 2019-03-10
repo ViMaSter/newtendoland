@@ -18,7 +18,7 @@ namespace tileeditor.DataFormats
                 Unknown2 = 'B',
             };
 
-            enum SwitchOrPepper
+            enum PepperOrSwitchFlag
             {
                 NONE = 0,
                 Switch = '1',
@@ -106,7 +106,7 @@ namespace tileeditor.DataFormats
             private const int contentFlag_LENGTH = 2;
             private ContentFlag[] contentFlags = new ContentFlag[MAXIMUM_CONTENT_FLAGS];
             private const int switchOrPepperDefinitions_LENGTH = 8;
-            private SwitchOrPepper[] switchOrPepperDefinitions = new SwitchOrPepper[SWITCHORPEPPER_DEFINITIONS];
+            private PepperOrSwitchFlag[] switchOrPepperDefinitions = new PepperOrSwitchFlag[SWITCHORPEPPER_DEFINITIONS];
             private const int movementPattern_LENGTH = 12;
             private IndexResolver[] movementPatterns = new IndexResolver[MOVEMENTPATTERN_DEFINITIONS];
             // related to fruit order?                                                                                              
@@ -145,7 +145,7 @@ namespace tileeditor.DataFormats
 
                 for (int switchOrPepperIndex = 0; switchOrPepperIndex < SWITCHORPEPPER_DEFINITIONS; switchOrPepperIndex++)
                 {
-                    level.switchOrPepperDefinitions[switchOrPepperIndex] = (SwitchOrPepper)reader.ReadByte(); // < SWITCHORPEPPER_DEFINITIONS * (1 byte (value) + 7 bytes (padding))
+                    level.switchOrPepperDefinitions[switchOrPepperIndex] = (PepperOrSwitchFlag)reader.ReadByte(); // < SWITCHORPEPPER_DEFINITIONS * (1 byte (value) + 7 bytes (padding))
                     reader.ReadBytes(switchOrPepperDefinitions_LENGTH - 1);
                 }
 

@@ -226,7 +226,7 @@
     <Resource Include="Resources\TileTypes\Rotating object.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\Pepper.png" />
+    <Resource Include="Resources\TileTypes\PepperOrSwitch.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MetroDark\HowToApplyTheme.txt" />

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Controls;
 
@@ -79,17 +81,24 @@ namespace tileeditor.TileTypes
             return Int32.TryParse(text, out input) && input >= 0 && input <= 99;
         }
 
-        protected override bool Load(BinaryReader reader, int availablePadding)
+        protected override void Load(List<byte> parsableBytes)
         {
-            byte[] potentialIndex = reader.ReadBytes(availablePadding);
-            if (potentialIndex[0] != 0x00)
-            {
-                index = Int32.Parse(System.Text.Encoding.Default.GetString(potentialIndex));
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("index of Regular fruit", potentialIndex, "Regular fruits require an index - none found");
-            }
+            base.Load(parsableBytes);
+
+            Debug.Assert(parsableBytes.Count >= 1, "index of Regular fruit", "Regular fruits require an index - none found");
+            index = Int32.Parse(System.Text.Encoding.Default.GetString(parsableBytes.ToArray()));
+        }
+        public override bool SerializeExbin(ref System.Collections.Generic.List<byte> target, ref int bytesLeft)
+        {
+            // add memory identifier
+            target.Add((byte)MemoryIdentifier);
+            bytesLeft--;
+
+            // add stringified index
+            byte[] indexStringified = System.Text.Encoding.ASCII.GetBytes(index.ToString());
+            target.AddRange(indexStringified);
+            bytesLeft -= indexStringified.Length;
+
             return true;
         }
         #endregion

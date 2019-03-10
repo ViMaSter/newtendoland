@@ -53,5 +53,9 @@ namespace tileeditor.TileTypes
                 Register(((BaseType)Activator.CreateInstance(type)));
             }
         }
+        public static void TearDown()
+        {
+            registar.Clear();
+        }
     }
 }
