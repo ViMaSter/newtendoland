@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Windows.Controls;
 
-namespace tileeditor.TileTypes
+namespace NintendoLand.TileTypes
 {
     public class RotatingObjectHeader
     {
@@ -144,66 +141,7 @@ namespace tileeditor.TileTypes
             }
         }
 
-        public override string DisplayName
-        {
-            get
-            {
-                return "Rotating object";
-            }
-        }
-
-        public override string GetIconFileName
-        {
-            get
-            {
-                return MemoryIdentifier.ToString();
-            }
-        }
-
-        public override string DisplayData
-        {
-            get
-            {
-                return "ID: " + index.ToString();
-            }
-        }
-
-        #region Form generator
-        private ComboBox pivotInput;
-
-        private int index;
-
-        // implement common methods
-        public override bool PopulateFields(ref Grid grid)
-        {
-            Label pivotLabel = new Label();
-            pivotLabel.Content = "Pivot:";
-            Grid.SetColumn(pivotLabel, 0);
-            Grid.SetRow(pivotLabel, 0);
-
-            pivotInput = new ComboBox();
-            pivotInput.ItemsSource = TileTypes.Registrar.Enumerable;
-            pivotInput.SelectedValuePath = "MemoryIdentifier";
-            pivotInput.DisplayMemberPath = "DisplayName";
-            Grid.SetColumn(pivotInput, 1);
-            Grid.SetRow(pivotInput, 0);
-            
-            // @TODO: + - Button for valid TileTypes
-            grid.Children.Add(pivotLabel);
-            grid.Children.Add(pivotInput);
-            return true;
-        }
-
-        public override void ObtainData()
-        {
-            TileTypes.Registrar.GetTypeByMemoryIdentifier((char)pivotInput.SelectedValue);
-        }
-
-        private bool ValidateInput(string text)
-        {
-            return true;
-        }
-        #endregion
+        int index;
 
         protected override void Load(List<byte> parsableBytes)
         {

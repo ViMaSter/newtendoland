@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace tileeditor.DataFormats
+namespace NintendoLand.DataFormats
 {
     public class StageData
     {
@@ -104,7 +103,7 @@ namespace tileeditor.DataFormats
             private const int teleportIndices_LENGTH = 8;
             private IndexResolver teleportIndices;
             private const int holeDefinitions_LENGTH = 4;
-            private Dictionary<byte, tileeditor.TileTypes.Hole.Size> holeDefinitions = new Dictionary<byte, TileTypes.Hole.Size>(3);
+            private Dictionary<byte, NintendoLand.TileTypes.Hole.Size> holeDefinitions = new Dictionary<byte, TileTypes.Hole.Size>(3);
             private const int contentFlag_LENGTH = 2;
             private List<ContentFlag> contentFlags = new List<ContentFlag>();
             private const int switchOrPepperDefinitions_LENGTH = 8;
@@ -135,7 +134,7 @@ namespace tileeditor.DataFormats
 
                 foreach (byte key in HOLE_DEFINITION_KEYS)
                 {
-                    level.holeDefinitions.Add(key, (tileeditor.TileTypes.Hole.Size)reader.ReadByte());
+                    level.holeDefinitions.Add(key, (NintendoLand.TileTypes.Hole.Size)reader.ReadByte());
                     reader.ReadBytes(holeDefinitions_LENGTH - 1);
                 }
 
@@ -305,7 +304,7 @@ namespace tileeditor.DataFormats
             serializedData.AddRange(headerUnknown);
             foreach(KeyValuePair<int, Stage> stageWithIndex in payload)
             {
-                stageWithIndex.Value.SerializeExbin(ref serializedData, tileeditor.DataFormats.StageData.Stage.BYTES_REQUIRED);
+                stageWithIndex.Value.SerializeExbin(ref serializedData, NintendoLand.DataFormats.StageData.Stage.BYTES_REQUIRED);
             }
 
         }

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
-namespace tileeditor.DataFormats
+namespace NintendoLand.DataFormats
 {
     /// <summary>
     /// The only public information shared between file parser and UI front end
@@ -11,7 +10,7 @@ namespace tileeditor.DataFormats
     /// but only 50 rows inside StageData.exbin - this is required to be handled gracefully. Use .IsComplete to determine, if data is missing.
     /// All missing fields default to null, if you require more specific checks.
     /// </summary>
-    class Level
+    public class Level
     {
         public StageData.Stage level;
         public MapData mapData;
@@ -24,7 +23,7 @@ namespace tileeditor.DataFormats
         }
     }
 
-    class GameDataContainer
+    public class GameDataContainer
     {
         StageData stageData;
         FruitData fruitData;
@@ -40,7 +39,7 @@ namespace tileeditor.DataFormats
         // @TODO VM EnemyData
 
         /// <summary>
-        /// Returns a struct containing the parsed contents of all related *Data.exbin-files of a level - can be incomplete see tileeditor.DataFormats.Level.
+        /// Returns a struct containing the parsed contents of all related *Data.exbin-files of a level - can be incomplete see NintendoLand.DataFormats.Level.
         /// </summary>
         /// <param name="mapFileName"></param>
         /// <returns></returns>

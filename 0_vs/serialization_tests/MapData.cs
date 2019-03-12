@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace tileeditor.Tests.DataFormats
+namespace NintendoLand.Tests.DataFormats
 {
     [TestFixture]
     class MapData
@@ -58,12 +58,12 @@ namespace tileeditor.Tests.DataFormats
             int levelCount = 0;
             foreach (string map in maps)
             {
-                tileeditor.DataFormats.MapData mapData = tileeditor.DataFormats.MapData.Load(map);
+                NintendoLand.DataFormats.MapData mapData = NintendoLand.DataFormats.MapData.Load(map);
                 List<byte> serializedData = new List<byte>();
                 mapData.SerializeExbin(ref serializedData,
                     16 + 4 + 18 +   // header
                     TileTypes.RotatingObjectHeader.BYTES_PER_CONTAINER + // rotating objects header
-                    (tileeditor.DataFormats.MapData.ROWS_TOTAL * tileeditor.DataFormats.MapData.COLUMNS_TOTAL * (1 + tileeditor.DataFormats.MapData.CELL_TILE_PADDING )) // payload of actual cells
+                    (NintendoLand.DataFormats.MapData.ROWS_TOTAL * NintendoLand.DataFormats.MapData.COLUMNS_TOTAL * (1 + NintendoLand.DataFormats.MapData.CELL_TILE_PADDING )) // payload of actual cells
                 ); // magic number is the max length of a default MapData.exbin-file
 
                 File.WriteAllText(map + ".gen", string.Empty);
@@ -89,13 +89,13 @@ namespace tileeditor.Tests.DataFormats
             IEnumerable<string> maps = Directory.EnumerateFiles(pathToYsiExtract, "MapData*.exbin");
             foreach (string map in maps)
             {
-                tileeditor.DataFormats.MapData mapData = tileeditor.DataFormats.MapData.Load(map);
+                NintendoLand.DataFormats.MapData mapData = NintendoLand.DataFormats.MapData.Load(map);
                 List<byte> serializedData = new List<byte>();
                 mapData.SetItem(0, 0, TileTypes.Registrar.GetTypeByMemoryIdentifier('G'));
                 mapData.SerializeExbin(ref serializedData,
                     16 + 4 + 18 +   // header
                     TileTypes.RotatingObjectHeader.BYTES_PER_CONTAINER + // rotating objects header
-                    (tileeditor.DataFormats.MapData.ROWS_TOTAL * tileeditor.DataFormats.MapData.COLUMNS_TOTAL * (1 + tileeditor.DataFormats.MapData.CELL_TILE_PADDING)) // payload of actual cells
+                    (NintendoLand.DataFormats.MapData.ROWS_TOTAL * NintendoLand.DataFormats.MapData.COLUMNS_TOTAL * (1 + NintendoLand.DataFormats.MapData.CELL_TILE_PADDING)) // payload of actual cells
                 ); // magic number is the max length of a default MapData.exbin-file
 
                 CollectionAssert.AreNotEqual(

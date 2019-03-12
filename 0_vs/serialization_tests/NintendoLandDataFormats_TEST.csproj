@@ -53,13 +53,13 @@
     <Compile Include="StageData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\tileeditor\tileeditor.csproj">
-      <Project>{5a06dba1-f8e3-443d-8e85-3731b7ae401d}</Project>
-      <Name>tileeditor</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\NintendoLandDataFormats\NintendoLandDataFormats.csproj">
+      <Project>{2ef107b3-4f92-4af4-afd0-fd676367f747}</Project>
+      <Name>NintendoLandDataFormats</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

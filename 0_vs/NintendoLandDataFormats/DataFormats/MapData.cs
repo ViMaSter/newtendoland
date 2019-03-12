@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace tileeditor.DataFormats
+namespace NintendoLand.DataFormats
 {
     public class MapData
     {
@@ -17,9 +17,16 @@ namespace tileeditor.DataFormats
 
         #region File description
         #region Header
-        private byte[] headerUnknown;                         // < 16 bytes
-        private byte[] backgroundUnknown;                     // < 4 bytes
-        private byte[] headerUnknown2;                        // < 18 bytes
+        public byte[] headerConstant1;                              // < 16 bytes
+        private byte[] backgroundUnknown;                           // < 9 bytes
+        public byte[] headerConstant2;                              // < 10 bytes
+        public enum UnknownFlag
+        {
+            Regular = 0x12,
+            OnlyMapData38 = 0x11
+        }
+        public UnknownFlag unknownFlag;                             // < 1 byte
+        public byte[] headerConstant3;                              // < 2 bytes
         private TileTypes.RotatingObjectHeader[] rotatingObjects;   // < 96 bytes
         #endregion
 
@@ -52,9 +59,11 @@ namespace tileeditor.DataFormats
             FileStream fs = new FileStream(pathToMapData, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             using (BinaryReader reader = new BinaryReader(fs))
             {
-                mapData.headerUnknown = reader.ReadBytes(16);
-                mapData.backgroundUnknown = reader.ReadBytes(4);
-                mapData.headerUnknown2 = reader.ReadBytes(18);
+                mapData.headerConstant1 = reader.ReadBytes(16);
+                mapData.backgroundUnknown = reader.ReadBytes(9);
+                mapData.headerConstant2 = reader.ReadBytes(10);
+                mapData.unknownFlag = (UnknownFlag)reader.ReadByte();
+                mapData.headerConstant3 = reader.ReadBytes(2);
                 mapData.rotatingObjects = TileTypes.RotatingObjectHeader.Load(new List<byte>(reader.ReadBytes(TileTypes.RotatingObjectHeader.BYTES_PER_CONTAINER)));
                 mapData.rows = new TileTypes.BaseType[ROWS_TOTAL, COLUMNS_TOTAL];
                 for (int row = 0; row < ROWS_TOTAL; row++)
@@ -84,16 +93,24 @@ namespace tileeditor.DataFormats
         public void SerializeExbin(ref List<byte> target, int bytesLeft)
         {
             Debug.Assert(bytesLeft >= 16, "No bytes left for 'headerUnknown'");
-            target.AddRange(this.headerUnknown);
+            target.AddRange(this.headerConstant1);
             bytesLeft -= 16;
 
-            Debug.Assert(bytesLeft >= 4, "No bytes left for 'backgroundUnknown'");
+            Debug.Assert(bytesLeft >= 9, "No bytes left for 'backgroundUnknown'");
             target.AddRange(this.backgroundUnknown);
-            bytesLeft -= 4;
+            bytesLeft -= 9;
 
-            Debug.Assert(bytesLeft >= 18, "No bytes left for 'headerUnknown2'");
-            target.AddRange(this.headerUnknown2);
-            bytesLeft -= 18;
+            Debug.Assert(bytesLeft >= 10, "No bytes left for 'headerUnknown2'");
+            target.AddRange(this.headerConstant2);
+            bytesLeft -= 10;
+
+            Debug.Assert(bytesLeft >= 1, "No bytes left for 'random'");
+            target.Add((byte)this.unknownFlag);
+            bytesLeft -= 1;
+
+            Debug.Assert(bytesLeft >= 2, "No bytes left for 'headerUnknown3'");
+            target.AddRange(this.headerConstant3);
+            bytesLeft -= 2;
 
             {
                 int rotatingObjectHeaderBytesLeft = TileTypes.RotatingObjectHeader.BYTES_PER_CONTAINER;
@@ -120,7 +137,7 @@ namespace tileeditor.DataFormats
                 {
                     int cellBytesLeft = CELL_TILE_PADDING + 1;
                     this.rows[row, column].SerializeExbin(ref target, ref cellBytesLeft);
-                    Debug.Assert(cellBytesLeft >= 0, "Cell data required "+ cellBytesLeft * -1+"more bytes than legal");
+                    Debug.Assert(cellBytesLeft >= 0, "Cell data required " + cellBytesLeft * -1 + "more bytes than legal");
                     for (int i = 0; i < cellBytesLeft; i++)
                     {
                         target.Add(0x00);

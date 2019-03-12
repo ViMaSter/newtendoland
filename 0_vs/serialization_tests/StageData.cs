@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace tileeditor.Tests.DataFormats
+namespace NintendoLand.Tests.DataFormats
 {
     [TestFixture]
     class StageData
@@ -24,12 +24,12 @@ namespace tileeditor.Tests.DataFormats
         [Test]
         public void SerializeCleanExbin()
         {
-            tileeditor.DataFormats.StageData stageData = tileeditor.DataFormats.StageData.Load(pathToYsiExtract);
+            NintendoLand.DataFormats.StageData stageData = NintendoLand.DataFormats.StageData.Load(pathToYsiExtract);
 
             Assert.AreEqual(51, stageData.LevelCount, "Default game files require exactly 50 levels + tutorial level"); // while there are 61 MapData**.exbin files, 10 of them are unused by not being present in StageData.exbin - hence 51
 
             List<byte> serializedDefaultStageData = new List<byte>();
-            stageData.SerializeExbin(ref serializedDefaultStageData, 20 + (tileeditor.DataFormats.StageData.Stage.BYTES_REQUIRED * 61));
+            stageData.SerializeExbin(ref serializedDefaultStageData, 20 + (NintendoLand.DataFormats.StageData.Stage.BYTES_REQUIRED * 61));
 
             File.WriteAllText(Path.Combine(pathToYsiExtract, "StageData.exbin") + ".gen", string.Empty);
             File.WriteAllBytes(Path.Combine(pathToYsiExtract, "StageData.exbin") + ".gen", serializedDefaultStageData.ToArray());
@@ -46,14 +46,14 @@ namespace tileeditor.Tests.DataFormats
         [Test]
         public void SerializeDirtyExbin()
         {
-            tileeditor.DataFormats.StageData stageData = tileeditor.DataFormats.StageData.Load(pathToYsiExtract);
+            NintendoLand.DataFormats.StageData stageData = NintendoLand.DataFormats.StageData.Load(pathToYsiExtract);
 
-            tileeditor.DataFormats.StageData.Stage stage01 = stageData.GetLevelByID(1);
-            stage01.backgroundID = new tileeditor.DataFormats.IndexResolver(8);
+            NintendoLand.DataFormats.StageData.Stage stage01 = stageData.GetLevelByID(1);
+            stage01.backgroundID = new NintendoLand.DataFormats.IndexResolver(8);
             stageData.UpdateLevelByID(1, stage01);
 
             List<byte> serializedDefaultStageData = new List<byte>();
-            stageData.SerializeExbin(ref serializedDefaultStageData, 20 + (tileeditor.DataFormats.StageData.Stage.BYTES_REQUIRED * 61));
+            stageData.SerializeExbin(ref serializedDefaultStageData, 20 + (NintendoLand.DataFormats.StageData.Stage.BYTES_REQUIRED * 61));
 
             CollectionAssert.AreNotEqual(
                 File.ReadAllBytes(Path.Combine(pathToYsiExtract, "StageData.exbin")),
@@ -67,9 +67,9 @@ namespace tileeditor.Tests.DataFormats
         [Test]
         public void InsertUpdateFruitReturnValue()
         {
-            tileeditor.DataFormats.StageData stageData = tileeditor.DataFormats.StageData.Load(pathToYsiExtract);
-            Assert.IsTrue(stageData.UpdateLevelByID(1, new tileeditor.DataFormats.StageData.Stage()));
-            Assert.IsFalse(stageData.UpdateLevelByID(200, new tileeditor.DataFormats.StageData.Stage()));
+            NintendoLand.DataFormats.StageData stageData = NintendoLand.DataFormats.StageData.Load(pathToYsiExtract);
+            Assert.IsTrue(stageData.UpdateLevelByID(1, new NintendoLand.DataFormats.StageData.Stage()));
+            Assert.IsFalse(stageData.UpdateLevelByID(200, new NintendoLand.DataFormats.StageData.Stage()));
         }
     }
 }

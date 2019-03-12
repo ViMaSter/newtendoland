@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 
-namespace tileeditor.TileTypes
+namespace NintendoLand.TileTypes
 {
     public abstract class Registrar
     {
@@ -32,6 +31,9 @@ namespace tileeditor.TileTypes
                 callback(type);
             }
         }
+
+        // TODO @VM Extension class in tile editor?!
+        /*
         public static RoutedEventHandler GenerateOnClickHandler(BaseType type)
         {
             return (object sender, RoutedEventArgs e) =>
@@ -39,6 +41,7 @@ namespace tileeditor.TileTypes
 
             };
         }
+        */
 
         private static void Register(BaseType type)
         {

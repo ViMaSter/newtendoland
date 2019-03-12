@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace tileeditor.Tests.DataFormats
+namespace NintendoLand.Tests.DataFormats
 {
     [TestFixture]
     class FruitData
@@ -24,7 +24,7 @@ namespace tileeditor.Tests.DataFormats
         [Test]
         public void SerializeCleanExbin()
         {
-            tileeditor.DataFormats.FruitData fruitData = tileeditor.DataFormats.FruitData.Load(pathToYsiExtract);
+            NintendoLand.DataFormats.FruitData fruitData = NintendoLand.DataFormats.FruitData.Load(pathToYsiExtract);
             Assert.AreEqual(fruitData.FruitCount, 90, "Default game files require exactly 90 fruit definitions");
             List<byte> serializedData = new List<byte>();
             fruitData.SerializeExbin(ref serializedData, 16 + 84 * 90 + 3); // magic number is the max length of the default FruitData.exbin-file
@@ -41,8 +41,8 @@ namespace tileeditor.Tests.DataFormats
         [Test]
         public void SerializeDirtyExbin()
         {
-            tileeditor.DataFormats.FruitData fruitData = tileeditor.DataFormats.FruitData.Load(pathToYsiExtract);
-            fruitData.UpdateFruit(new tileeditor.DataFormats.FruitData.Fruit(10, tileeditor.DataFormats.FruitData.FruitMapping.Bananas, tileeditor.DataFormats.FruitData.FruitMapping.Strawberry));
+            NintendoLand.DataFormats.FruitData fruitData = NintendoLand.DataFormats.FruitData.Load(pathToYsiExtract);
+            fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas, NintendoLand.DataFormats.FruitData.FruitMapping.Strawberry));
             List<byte> serializedData = new List<byte>();
             fruitData.SerializeExbin(ref serializedData, 16 + 84 * 90 + 3); // magic number is the max length of the default FruitData.exbin-file (16 [header] + 84 [one fruit definition] * 90 + 3 [footer])
 
@@ -58,14 +58,14 @@ namespace tileeditor.Tests.DataFormats
         [Test]
         public void SerializeFruitSanityTest()
         {
-            tileeditor.DataFormats.FruitData fruitData = tileeditor.DataFormats.FruitData.Load(pathToYsiExtract);
+            NintendoLand.DataFormats.FruitData fruitData = NintendoLand.DataFormats.FruitData.Load(pathToYsiExtract);
 
             List<byte> serializedDefaultFruit = new List<byte>(84);
             fruitData.FruitByID[10].SerializeExbin(ref serializedDefaultFruit, 84);
 
             {
                 // ensure deserialized data is identical
-                tileeditor.DataFormats.FruitData.Fruit waterMelonID10 = new tileeditor.DataFormats.FruitData.Fruit(10, tileeditor.DataFormats.FruitData.FruitMapping.WaterMelon);
+                NintendoLand.DataFormats.FruitData.Fruit waterMelonID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.WaterMelon);
 
                 Assert.AreEqual(fruitData.FruitByID[10].ID, waterMelonID10.ID);
                 Assert.AreEqual(fruitData.FruitByID[10].FruitType, waterMelonID10.FruitType);
@@ -79,7 +79,7 @@ namespace tileeditor.Tests.DataFormats
 
             // changed ID
             {
-                tileeditor.DataFormats.FruitData.Fruit waterMelonID11 = new tileeditor.DataFormats.FruitData.Fruit(11, tileeditor.DataFormats.FruitData.FruitMapping.WaterMelon);
+                NintendoLand.DataFormats.FruitData.Fruit waterMelonID11 = new NintendoLand.DataFormats.FruitData.Fruit(11, NintendoLand.DataFormats.FruitData.FruitMapping.WaterMelon);
 
                 Assert.AreNotEqual(fruitData.FruitByID[10].ID, waterMelonID11.ID);
                 Assert.AreEqual(fruitData.FruitByID[10].FruitType, waterMelonID11.FruitType);
@@ -93,7 +93,7 @@ namespace tileeditor.Tests.DataFormats
 
             // changed type
             {
-                tileeditor.DataFormats.FruitData.Fruit bananasID10 = new tileeditor.DataFormats.FruitData.Fruit(10, tileeditor.DataFormats.FruitData.FruitMapping.Bananas);
+                NintendoLand.DataFormats.FruitData.Fruit bananasID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas);
 
                 Assert.AreEqual(fruitData.FruitByID[10].ID, bananasID10.ID);
                 Assert.AreNotEqual(fruitData.FruitByID[10].FruitType, bananasID10.FruitType);
@@ -107,7 +107,7 @@ namespace tileeditor.Tests.DataFormats
 
             // changed type to range
             {
-                tileeditor.DataFormats.FruitData.Fruit waterMelonAppleID10 = new tileeditor.DataFormats.FruitData.Fruit(10, tileeditor.DataFormats.FruitData.FruitMapping.WaterMelon, tileeditor.DataFormats.FruitData.FruitMapping.Apple);
+                NintendoLand.DataFormats.FruitData.Fruit waterMelonAppleID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.WaterMelon, NintendoLand.DataFormats.FruitData.FruitMapping.Apple);
 
                 Assert.AreEqual(fruitData.FruitByID[10].ID, waterMelonAppleID10.ID);
                 Assert.AreNotEqual(fruitData.FruitByID[10].FruitType, waterMelonAppleID10.FruitType);
@@ -126,9 +126,9 @@ namespace tileeditor.Tests.DataFormats
         [Test]
         public void InsertUpdateFruitReturnValue()
         {
-            tileeditor.DataFormats.FruitData fruitData = tileeditor.DataFormats.FruitData.Load(pathToYsiExtract);
-            Assert.IsTrue(fruitData.UpdateFruit(new tileeditor.DataFormats.FruitData.Fruit(10, tileeditor.DataFormats.FruitData.FruitMapping.Bananas, tileeditor.DataFormats.FruitData.FruitMapping.Strawberry)));
-            Assert.IsFalse(fruitData.UpdateFruit(new tileeditor.DataFormats.FruitData.Fruit(200, tileeditor.DataFormats.FruitData.FruitMapping.Bananas, tileeditor.DataFormats.FruitData.FruitMapping.Strawberry)));
+            NintendoLand.DataFormats.FruitData fruitData = NintendoLand.DataFormats.FruitData.Load(pathToYsiExtract);
+            Assert.IsTrue(fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas, NintendoLand.DataFormats.FruitData.FruitMapping.Strawberry)));
+            Assert.IsFalse(fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(200, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas, NintendoLand.DataFormats.FruitData.FruitMapping.Strawberry)));
         }
     }
 }

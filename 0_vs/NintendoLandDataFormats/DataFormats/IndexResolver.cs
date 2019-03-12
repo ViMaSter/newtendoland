@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace tileeditor.DataFormats
+namespace NintendoLand.DataFormats
 {
     /// <summary>
     /// Helper-class for parsing indices used to refer to rows in other "*Data"-files.
