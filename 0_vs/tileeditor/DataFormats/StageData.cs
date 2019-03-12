@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
 namespace tileeditor.DataFormats
 {
-    class StageData
+    public class StageData
     {
         public class Stage
         {
@@ -67,6 +68,7 @@ namespace tileeditor.DataFormats
             private const int MOVEMENTPATTERN_DEFINITIONS = 16;
             private const int FRUIT_ORDER_DEFINITIONS = 16;
             private const int FRUIT_ASSOCIATIONS = 32;
+            public const int BYTES_REQUIRED = 956;
 
             // this seems to determine which textboxes are shown after map start
             // before a player gains control over the level
@@ -93,7 +95,7 @@ namespace tileeditor.DataFormats
             // @TODO VM build renderer/selector for this
             // @TODO VM check if a range could be used here (only direct values, but structure supports more)
             private const int backgroundID_LENGTH = 8;
-            private IndexResolver backgroundID;
+            public IndexResolver backgroundID;
             // unknown - definitively unrelated to the door                                                                         
             private const int notDoor_LENGTH = 8;
             private IndexResolver notDoor;
@@ -104,7 +106,7 @@ namespace tileeditor.DataFormats
             private const int holeDefinitions_LENGTH = 4;
             private Dictionary<byte, tileeditor.TileTypes.Hole.Size> holeDefinitions = new Dictionary<byte, TileTypes.Hole.Size>(3);
             private const int contentFlag_LENGTH = 2;
-            private ContentFlag[] contentFlags = new ContentFlag[MAXIMUM_CONTENT_FLAGS];
+            private List<ContentFlag> contentFlags = new List<ContentFlag>();
             private const int switchOrPepperDefinitions_LENGTH = 8;
             private PepperOrSwitchFlag[] switchOrPepperDefinitions = new PepperOrSwitchFlag[SWITCHORPEPPER_DEFINITIONS];
             private const int movementPattern_LENGTH = 12;
@@ -139,8 +141,17 @@ namespace tileeditor.DataFormats
 
                 for (int contentFlagIndex = 0; contentFlagIndex < MAXIMUM_CONTENT_FLAGS; contentFlagIndex++)
                 {
-                    level.contentFlags[contentFlagIndex] = (ContentFlag)reader.ReadByte();
-                    reader.ReadBytes(contentFlag_LENGTH - 1);
+                    level.contentFlags.Add((ContentFlag)reader.ReadByte());
+                    bool isDone = reader.ReadByte() != 0x20;
+                    if (isDone)
+                    {
+                        contentFlagIndex++;
+                        for (int i = contentFlagIndex; i < MAXIMUM_CONTENT_FLAGS; i++)
+                        {
+                            reader.ReadBytes(contentFlag_LENGTH);
+                        }
+                        break;
+                    }
                 }
 
                 for (int switchOrPepperIndex = 0; switchOrPepperIndex < SWITCHORPEPPER_DEFINITIONS; switchOrPepperIndex++)
@@ -166,11 +177,80 @@ namespace tileeditor.DataFormats
 
                 return level;
             }
+
+            public void SerializeExbin(ref List<byte> serializedData, int bytesLeft)
+            {
+                serializedData.AddRange(tutorialText1);
+                serializedData.AddRange(tutorialText2);
+                serializedData.AddRange(tutorialTextbuffer);
+
+                serializedData.AddRange(unknownCP);
+                serializedData.AddRange(unknownPostCP);
+                serializedData.Add(_ID);
+                backgroundID.SerializeExbin(ref serializedData, backgroundID_LENGTH);
+                notDoor.SerializeExbin(ref serializedData, notDoor_LENGTH);
+                teleportIndices.SerializeExbin(ref serializedData, teleportIndices_LENGTH);
+
+                foreach (byte key in HOLE_DEFINITION_KEYS)
+                {
+                    serializedData.Add((byte)holeDefinitions[key]);
+                    for (int i = 0; i < holeDefinitions_LENGTH - 1; i++)
+                    {
+                        serializedData.Add(0x00);
+                    }
+                }
+
+                for (int contentFlagIndex = 0; contentFlagIndex < MAXIMUM_CONTENT_FLAGS; contentFlagIndex++)
+                {
+                    if (contentFlagIndex < contentFlags.Count)
+                    {
+                        serializedData.Add((byte)contentFlags[contentFlagIndex]);
+                        if (contentFlagIndex+1 < contentFlags.Count)
+                        {
+                            serializedData.Add(0x20);
+                        }
+                        else
+                        {
+                            serializedData.Add(0x00);
+                        }
+                    }
+                    else
+                    {
+                        serializedData.Add(0x00);
+                        serializedData.Add(0x00);
+                    }
+                }
+
+                for (int switchOrPepperIndex = 0; switchOrPepperIndex < SWITCHORPEPPER_DEFINITIONS; switchOrPepperIndex++)
+                {
+                    serializedData.Add((byte)switchOrPepperDefinitions[switchOrPepperIndex]);
+                    for (int i = 0; i < switchOrPepperDefinitions_LENGTH - 1; i++)
+                    {
+                        serializedData.Add(0x00);
+                    }
+                }
+
+                for (int patternIndex = 0; patternIndex < MOVEMENTPATTERN_DEFINITIONS; patternIndex++)
+                {
+                    movementPatterns[patternIndex].SerializeExbin(ref serializedData, movementPattern_LENGTH);
+                }
+
+                for (int FDefinitionIndex = 0; FDefinitionIndex < FRUIT_ORDER_DEFINITIONS; FDefinitionIndex++)
+                {
+                    orderedFruitDefinition[FDefinitionIndex].SerializeExbin(ref serializedData, orderedFruitDefinition_LENGTH);
+                }
+
+                for (int fruitAssociationIndex = 0; fruitAssociationIndex < FRUIT_ASSOCIATIONS; fruitAssociationIndex++)
+                {
+                    fruitAssociations[fruitAssociationIndex].SerializeExbin(ref serializedData, fruitAssociations_LENGTH);
+                }
+            }
+
         };
 
         #region File description
         private byte[] headerUnknown; // < 20 bytes
-        private Dictionary<int, Stage> payload = new Dictionary<int, Stage>(61); // 61 is based on the game's default amount of maps (50 in-game + 10 unused maps + tutorial)
+        private Dictionary<int, Stage> payload = new Dictionary<int, Stage>(61); // < 956 bytes * 61 (61 is based on the game's default amount of maps (50 in-game + 10 unused maps + tutorial))
         public bool HasLevelWithID(int mapID)
         {
             return payload.ContainsKey(mapID);
@@ -179,13 +259,34 @@ namespace tileeditor.DataFormats
         {
             return payload[mapID];
         }
+        public int LevelCount
+        {
+            get
+            {
+                return payload.Count;
+            }
+        }
+        /// <summary>
+        /// Update stage data - currently limited to overwriting stages (no inserting)
+        /// </summary>
+        public bool UpdateLevelByID(int mapID, Stage stage)
+        {
+            if (!payload.ContainsKey(mapID))
+            {
+                return false;
+            }
+
+            payload[mapID] = stage;
+            return true;
+        }
         #endregion
 
         public static StageData Load(string pathToYsiExtract)
         {
             StageData stageData = new StageData();
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Path.Combine(pathToYsiExtract, "StageData.exbin"), FileMode.Open)))
+            FileStream fs = new FileStream(Path.Combine(pathToYsiExtract, "StageData.exbin"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using (BinaryReader reader = new BinaryReader(fs))
             {
                 stageData.headerUnknown = reader.ReadBytes(20);
                 while (reader.BaseStream.Position != reader.BaseStream.Length)
@@ -198,5 +299,16 @@ namespace tileeditor.DataFormats
 
             return stageData;
         }
+
+        public void SerializeExbin(ref List<byte> serializedData, int bytesLeft)
+        {
+            serializedData.AddRange(headerUnknown);
+            foreach(KeyValuePair<int, Stage> stageWithIndex in payload)
+            {
+                stageWithIndex.Value.SerializeExbin(ref serializedData, tileeditor.DataFormats.StageData.Stage.BYTES_REQUIRED);
+            }
+
+        }
+
     }
 }

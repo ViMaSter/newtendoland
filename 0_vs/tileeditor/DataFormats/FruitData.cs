@@ -157,6 +157,14 @@ namespace tileeditor.DataFormats
             return IDexists;
         }
 
+        public int FruitCount
+        {
+            get
+            {
+                return payload.Count;
+            }
+        }
+
         private byte[] headerUnknown; // < 16 bytes
         private Dictionary<int, Fruit> payload = new Dictionary<int, Fruit>(90); // 61 is based on the game's default amount of maps (50 in-game + 10 unused maps + tutorial)
         private byte[] footerUnknown; // < 3 bytes
@@ -164,7 +172,8 @@ namespace tileeditor.DataFormats
         {
             FruitData fruitData = new FruitData();
 
-            using (BinaryReader reader = new BinaryReader(File.Open(Path.Combine(pathToYsiExtract, "FruitData.exbin"), FileMode.Open)))
+            FileStream fs = new FileStream(Path.Combine(pathToYsiExtract, "FruitData.exbin"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using (BinaryReader reader = new BinaryReader(fs))
             {
                 fruitData.headerUnknown = reader.ReadBytes(16);
                 while (reader.BaseStream.Position != reader.BaseStream.Length)

@@ -54,6 +54,8 @@ namespace tileeditor.Tests.DataFormats
         public void SerializeCleanExbin()
         {
             IEnumerable<string> maps = Directory.EnumerateFiles(pathToYsiExtract, "MapData*.exbin");
+
+            int levelCount = 0;
             foreach (string map in maps)
             {
                 tileeditor.DataFormats.MapData mapData = tileeditor.DataFormats.MapData.Load(map);
@@ -71,7 +73,11 @@ namespace tileeditor.Tests.DataFormats
                     File.ReadAllBytes(map),
                     serializedData
                 );
+
+                levelCount++;
             }
+
+            Assert.AreEqual(61, levelCount, "Default game files require exactly 50 levels + 10 used levels + tutorial level");
         }
 
         /// <summary>

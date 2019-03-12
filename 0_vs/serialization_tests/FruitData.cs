@@ -25,6 +25,7 @@ namespace tileeditor.Tests.DataFormats
         public void SerializeCleanExbin()
         {
             tileeditor.DataFormats.FruitData fruitData = tileeditor.DataFormats.FruitData.Load(pathToYsiExtract);
+            Assert.AreEqual(fruitData.FruitCount, 90, "Default game files require exactly 90 fruit definitions");
             List<byte> serializedData = new List<byte>();
             fruitData.SerializeExbin(ref serializedData, 16 + 84 * 90 + 3); // magic number is the max length of the default FruitData.exbin-file
 
