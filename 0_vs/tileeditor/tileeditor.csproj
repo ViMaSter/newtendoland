@@ -240,6 +240,12 @@
   <ItemGroup>
     <Resource Include="Resources\TileTypes\Hole.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NintendoLandDataFormats\NintendoLandDataFormats.csproj">
+      <Project>{2ef107b3-4f92-4af4-afd0-fd676367f747}</Project>
+      <Name>NintendoLandDataFormats</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>Xcopy /E /I /Y $(SolutionDir)..\1_scripts $(TargetDir)Scripts</PreBuildEvent>

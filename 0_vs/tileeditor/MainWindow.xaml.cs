@@ -19,90 +19,25 @@ namespace tileeditor
     public partial class MainWindow : Window
     {
         #region UI constructor
-        Image[,] imageElements = new Image[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
-        TextBox[,] textBoxElements = new TextBox[DataFormats.MapData.ROWS_VISIBLE, DataFormats.MapData.COLUMNS_VISIBLE];
-
-        private void CreateObjectPicker()
+        private void CreateGridDemo()
         {
-            // create object picker
-            int row = 0;
-            int column = 0;
+            List<List<int>> lsts = new List<List<int>>();
 
-            GridObjects.Registrar.ForEach((GridObjects.BaseObject type) =>
+            for (int i = 0; i < NintendoLand.DataFormats.MapData.COLUMNS_TOTAL; i++)
             {
-                if (!type.IsValid())
-                {
-                    return;
-                }
+                lsts.Add(new List<int>());
 
-                if (column == 0)
+                for (int j = 0; j < NintendoLand.DataFormats.MapData.ROWS_TOTAL; j++)
                 {
-                    // add rows on demand
-                    ObjectPicker.RowDefinitions.Add(new RowDefinition
-                    {
-                        Height = new GridLength(1, GridUnitType.Star)
-                    });
-                }
-
-                Button newButton = new Button
-                {
-                    Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri("pack://application:,,,/Resources/TileTypes/" + type.DisplayName + ".png", UriKind.Absolute)),
-                        VerticalAlignment = VerticalAlignment.Center
-                    },
-                    ToolTip = type.DisplayName
-                };
-                newButton.Click += (object sender, RoutedEventArgs e) => ConfigPopup.Show(type, this);
-                Grid.SetColumn(newButton, column);
-                Grid.SetRow(newButton, row);
-                ObjectPicker.Children.Add(newButton);
-
-                column++;
-                if (column == ObjectPicker.ColumnDefinitions.Count)
-                {
-                    column = 0;
-                    row++;
-                }
-            });
-        }
-        private void CreatePlacementGrid()
-        {
-            // create placement grid
-            for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
-            {
-                for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
-                {
-                    imageElements[row, column] = new Image();
-                    Grid.SetRow(imageElements[row, column], row);
-                    Grid.SetColumn(imageElements[row, column], column);
-                    ImageGrid.Children.Add(imageElements[row, column]);
-
-                    Border borderElement = new Border();
-                    borderElement.BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x74, 0x74, 0x74));
-                    borderElement.BorderThickness = new Thickness(1, 1, (column + 1) == DataFormats.MapData.COLUMNS_VISIBLE ? 1 : 0, (row + 1) == DataFormats.MapData.ROWS_VISIBLE ? 1 : 0);
-                    Grid.SetRow(borderElement, row);
-                    Grid.SetColumn(borderElement, column);
-                    ImageGrid.Children.Add(borderElement);
-
-                    textBoxElements[row, column] = new TextBox();
-                    Grid.SetRow(textBoxElements[row, column], row);
-                    Grid.SetColumn(textBoxElements[row, column], column);
-                    textBoxElements[row, column].TextWrapping = TextWrapping.NoWrap;
-                    textBoxElements[row, column].TextAlignment = TextAlignment.Center;
-                    textBoxElements[row, column].VerticalAlignment = VerticalAlignment.Center;
-                    textBoxElements[row, column].Text = "";
-                    textBoxElements[row, column].Visibility = Visibility.Hidden;
-                    textBoxElements[row, column].Background = new SolidColorBrush(Color.FromArgb(0xDF, 0xFF, 0xFF, 0xFF));
-                    textBoxElements[row, column].Foreground = Brushes.Black;
-                    textBoxElements[row, column].BorderBrush = Brushes.Transparent;
-                    ImageGrid.Children.Add(textBoxElements[row, column]);
+                    lsts[i].Add((i * NintendoLand.DataFormats.MapData.COLUMNS_TOTAL) + j);
                 }
             }
+
+            InitializeComponent();
+
+            lst.ItemsSource = lsts;
         }
         #endregion
-
-        DataFormats.GameDataContainer gameDataContainer;
 
         public MainWindow()
         {
@@ -111,14 +46,15 @@ namespace tileeditor
 
             GridObjects.Registrar.Populate();
 
-            CreateObjectPicker();
-            CreatePlacementGrid();
+            CreateGridDemo();
         }
 
         ~MainWindow()
         {
             // detect remaiming temp-folder and delete it
         }
+
+        NintendoLand.DataFormats.GameDataContainer gameDataContainer;
 
         private void LoadFile_Click(object sender, RoutedEventArgs e)
         {
@@ -168,7 +104,7 @@ namespace tileeditor
                 }
 
                 Parago.Windows.ProgressDialog.Report(progress, 90, "Populating GameDataContainer...");
-                gameDataContainer = new DataFormats.GameDataContainer(Path.Combine(
+                gameDataContainer = new NintendoLand.DataFormats.GameDataContainer(Path.Combine(
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     "tmp",
                     "sourceFiles",
@@ -257,6 +193,7 @@ namespace tileeditor
 
         private void VisualizeMapData(string mapDataFileName)
         {
+            /*
             DataFormats.Level level = gameDataContainer.GetLevelInfo(mapDataFileName);
             for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
             {
@@ -300,6 +237,7 @@ namespace tileeditor
                     imageElements[row, column].Source = new BitmapImage(new Uri("pack://application:,,,/" + path, UriKind.Absolute));
                 }
             }
+            */
         }
         #endregion
     }
