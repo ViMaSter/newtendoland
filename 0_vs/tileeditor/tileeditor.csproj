@@ -97,6 +97,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataFormats\GridObjects\BaseObject.cs" />
+    <Compile Include="DataFormats\GridObjects\Bee.cs" />
+    <Compile Include="DataFormats\GridObjects\Fruit.cs" />
+    <Compile Include="DataFormats\GridObjects\Goal.cs" />
+    <Compile Include="DataFormats\GridObjects\Heart.cs" />
+    <Compile Include="DataFormats\GridObjects\Hole.cs" />
+    <Compile Include="DataFormats\GridObjects\OrderedFruit.cs" />
+    <Compile Include="DataFormats\GridObjects\PepperOrSwitch.cs" />
+    <Compile Include="DataFormats\GridObjects\Registrar.cs" />
+    <Compile Include="DataFormats\GridObjects\RotatingObject.cs" />
+    <Compile Include="DataFormats\GridObjects\Spike.cs" />
+    <Compile Include="DataFormats\GridObjects\Start.cs" />
     <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
     <Page Include="ProgressDialog\ProgressDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -227,12 +239,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TileTypes\Hole.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NintendoLandDataFormats\NintendoLandDataFormats.csproj">
-      <Project>{2ef107b3-4f92-4af4-afd0-fd676367f747}</Project>
-      <Name>NintendoLandDataFormats</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

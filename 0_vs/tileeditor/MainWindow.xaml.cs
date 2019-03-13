@@ -8,7 +8,6 @@ using System.Resources;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -29,7 +28,7 @@ namespace tileeditor
             int row = 0;
             int column = 0;
 
-            TileTypes.Registrar.ForEach((TileTypes.BaseType type) =>
+            GridObjects.Registrar.ForEach((GridObjects.BaseObject type) =>
             {
                 if (!type.IsValid())
                 {
@@ -110,7 +109,7 @@ namespace tileeditor
             // @TODO: detect remaining temp-folder
             InitializeComponent();
 
-            TileTypes.Registrar.Populate();
+            GridObjects.Registrar.Populate();
 
             CreateObjectPicker();
             CreatePlacementGrid();
@@ -263,7 +262,7 @@ namespace tileeditor
             {
                 for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
                 {
-                    TileTypes.BaseType tile = level.mapData.GetItem(row, column);
+                    GridObjects.BaseObject tile = level.mapData.GetItem(row, column);
 
                     // reset text
                     textBoxElements[row, column].Text = tile.DisplayData;

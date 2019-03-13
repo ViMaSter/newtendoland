@@ -11,7 +11,7 @@ namespace tileeditor
     /// </summary>
     partial class ConfigPopup : Window
     {
-        public static void Show(TileTypes.BaseType tileType, Window owner)
+        public static void Show(GridObjects.BaseObject tileType, Window owner)
         {
             ConfigPopup newPopup = new ConfigPopup();
             newPopup.Title = "Configure tile: "+tileType.DisplayName;
