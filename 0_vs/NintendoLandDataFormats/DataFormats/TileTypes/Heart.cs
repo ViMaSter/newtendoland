@@ -1,6 +1,6 @@
 ﻿namespace NintendoLand.TileTypes
 {
-    class Heart : BaseType
+    public class Heart : BaseType
     {
         public override char MemoryIdentifier
         {

@@ -12,7 +12,7 @@ namespace NintendoLand.TileTypes
     /// and looking up it's value inside StageData.
     /// @see NintendoLand.DataFormats.StageData.Stage.movementPatterns
     /// </summary>
-    class Bee : BaseType
+    public class Bee : BaseType
     {
         public override char MemoryIdentifier
         {

@@ -2,13 +2,13 @@
 
 namespace tileeditor.GridObjects
 {
-    class Heart : BaseObject
+    class Pepper : BaseObject
     {
         public override string DisplayName
         {
             get
             {
-                return "Heart";
+                return "Pepper";
             }
         }
 
@@ -16,9 +16,11 @@ namespace tileeditor.GridObjects
         {
             get
             {
-                return DisplayName.ToString();
+                return DisplayName;
             }
         }
+
+        int index;
 
         #region Form generator
         public override bool PopulateFields(ref Grid grid)

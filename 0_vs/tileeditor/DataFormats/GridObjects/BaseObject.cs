@@ -17,9 +17,12 @@ namespace tileeditor.GridObjects
 
         public abstract bool PopulateFields(ref Grid grid);
         public abstract void ObtainData();
-        public virtual bool IsValid()
+
+        public virtual bool CanConvert(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            return true;
+            return false;
         }
+
+        public abstract BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage);
     }
 }

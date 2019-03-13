@@ -2,13 +2,13 @@
 
 namespace tileeditor.GridObjects
 {
-    class Heart : BaseObject
+    class Switch : BaseObject
     {
         public override string DisplayName
         {
             get
             {
-                return "Heart";
+                return "Switch";
             }
         }
 
@@ -16,7 +16,7 @@ namespace tileeditor.GridObjects
         {
             get
             {
-                return DisplayName.ToString();
+                return DisplayName;
             }
         }
 
@@ -34,7 +34,8 @@ namespace tileeditor.GridObjects
         #region Conversion
         public override bool CanConvert(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            return tileType is NintendoLand.TileTypes.PepperOrSwitch
+                   && (stage.switchOrPepperDefinitions[((NintendoLand.TileTypes.PepperOrSwitch)tileType).Index] == NintendoLand.DataFormats.StageData.Stage.PepperOrSwitchFlag.Switch);
         }
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)

@@ -12,7 +12,7 @@ namespace NintendoLand.TileTypes
     /// and looking up it's value inside StageData.
     /// @see NintendoLand.DataFormats.StageData.PepperOrSwitchFlag
     /// </summary>
-    class PepperOrSwitch : BaseType
+    public class PepperOrSwitch : BaseType
     {
         public override char MemoryIdentifier
         {
@@ -22,6 +22,13 @@ namespace NintendoLand.TileTypes
             }
         }
 
+        public int Index
+        {
+            get
+            {
+                return index;
+            }
+        }
         int index;
 
         protected override void Load(List<byte> parsableBytes)

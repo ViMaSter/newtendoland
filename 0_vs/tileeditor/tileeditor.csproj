@@ -104,11 +104,13 @@
     <Compile Include="DataFormats\GridObjects\Heart.cs" />
     <Compile Include="DataFormats\GridObjects\Hole.cs" />
     <Compile Include="DataFormats\GridObjects\OrderedFruit.cs" />
-    <Compile Include="DataFormats\GridObjects\PepperOrSwitch.cs" />
+    <Compile Include="DataFormats\GridObjects\Pepper.cs" />
     <Compile Include="DataFormats\GridObjects\Registrar.cs" />
     <Compile Include="DataFormats\GridObjects\RotatingObject.cs" />
     <Compile Include="DataFormats\GridObjects\Spike.cs" />
     <Compile Include="DataFormats\GridObjects\Start.cs" />
+    <Compile Include="DataFormats\GridObjects\Switch.cs" />
+    <Compile Include="DataFormats\MapDescriptor.cs" />
     <Compile Include="ProgressDialog\ProgressDialogResult.cs" />
     <Page Include="ProgressDialog\ProgressDialog.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -12,20 +12,20 @@ namespace NintendoLand.DataFormats
     /// </summary>
     public class Level
     {
-        public StageData.Stage level;
+        public StageData.Stage stage;
         public MapData mapData;
         public bool IsComplete
         {
             get
             {
-                return level != null && mapData != null;
+                return stage != null && mapData != null;
             }
         }
     }
 
     public class GameDataContainer
     {
-        StageData stageData;
+        public StageData stageData;
         FruitData fruitData;
         Dictionary<string, MapData> mapData = new Dictionary<string, MapData>(61); // 61 is based on the game's default amount of maps (50 in-game + 10 unused maps + tutorial)
         public Dictionary<string, MapData>.KeyCollection MapsAvailable
@@ -49,7 +49,7 @@ namespace NintendoLand.DataFormats
             return new Level
             {
                 mapData = mapData[mapFileName],
-                level = stageData.HasLevelWithID(_IDfromFilename) ? stageData.GetLevelByID(_IDfromFilename) : null,
+                stage = stageData.HasLevelWithID(_IDfromFilename) ? stageData.GetLevelByID(_IDfromFilename) : null,
                 // @TODO VM FruitData
                 // @TODO VM EnemyData
             };

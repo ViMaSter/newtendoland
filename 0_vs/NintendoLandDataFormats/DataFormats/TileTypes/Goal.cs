@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace NintendoLand.TileTypes
 {
-    class Goal : BaseType
+    public class Goal : BaseType
     {
         public override char MemoryIdentifier
         {

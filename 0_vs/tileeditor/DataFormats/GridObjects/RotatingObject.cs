@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 
 namespace tileeditor.GridObjects
@@ -99,7 +95,16 @@ namespace tileeditor.GridObjects
         }
         #endregion
 
-        // @TODO VM Make private - registar complains if not public, work around it
-        public RotatingObject(){}
+        #region Conversion
+        public override bool CanConvert(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        {
+            throw new System.NotImplementedException();
+        }
+        #endregion
     }
 }

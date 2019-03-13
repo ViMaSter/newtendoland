@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace NintendoLand.TileTypes
 {
-    class Spike : BaseType
+    public class Spike : BaseType
     {
         public override char MemoryIdentifier
         {

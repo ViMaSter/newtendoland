@@ -18,7 +18,7 @@ namespace NintendoLand.DataFormats
                 Unknown2 = 'B',
             };
 
-            enum PepperOrSwitchFlag
+            public enum PepperOrSwitchFlag
             {
                 NONE = 0,
                 Switch = '1',
@@ -71,8 +71,8 @@ namespace NintendoLand.DataFormats
 
             // this seems to determine which textboxes are shown after map start
             // before a player gains control over the level
-            private byte[] tutorialText1;                       // < 2 bytes
-            private byte[] tutorialText2;                       // < 2 bytes
+            public byte[] tutorialText1;                       // < 2 bytes
+            public byte[] tutorialText2;                       // < 2 bytes
             // potential buffer for tutorial texts
             private byte[] tutorialTextbuffer;                  // < 2 bytes
             // this is always set to [0xC3, 0x50] in default levels
@@ -107,7 +107,7 @@ namespace NintendoLand.DataFormats
             private const int contentFlag_LENGTH = 2;
             private List<ContentFlag> contentFlags = new List<ContentFlag>();
             private const int switchOrPepperDefinitions_LENGTH = 8;
-            private PepperOrSwitchFlag[] switchOrPepperDefinitions = new PepperOrSwitchFlag[SWITCHORPEPPER_DEFINITIONS];
+            public PepperOrSwitchFlag[] switchOrPepperDefinitions = new PepperOrSwitchFlag[SWITCHORPEPPER_DEFINITIONS];
             private const int movementPattern_LENGTH = 12;
             private IndexResolver[] movementPatterns = new IndexResolver[MOVEMENTPATTERN_DEFINITIONS];
             // related to fruit order?                                                                                              

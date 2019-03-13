@@ -44,6 +44,7 @@ namespace tileeditor
             // @TODO: detect remaining temp-folder
             InitializeComponent();
 
+            NintendoLand.TileTypes.Registrar.Populate();
             GridObjects.Registrar.Populate();
 
             CreateGridDemo();
@@ -193,51 +194,8 @@ namespace tileeditor
 
         private void VisualizeMapData(string mapDataFileName)
         {
-            /*
-            DataFormats.Level level = gameDataContainer.GetLevelInfo(mapDataFileName);
-            for (int row = 0; row < DataFormats.MapData.ROWS_VISIBLE; row++)
-            {
-                for (int column = 0; column < DataFormats.MapData.COLUMNS_VISIBLE; column++)
-                {
-                    GridObjects.BaseObject tile = level.mapData.GetItem(row, column);
-
-                    // reset text
-                    textBoxElements[row, column].Text = tile.DisplayData;
-
-                    // update image
-                    if (!tile.IsValid())
-                    {
-                        imageElements[row, column].Source = new BitmapImage();
-                        imageElements[row, column].ToolTip = "";
-                        continue;
-                    }
-
-                    // update texts
-                    textBoxElements[row, column].Text = tile.DisplayData;
-                    imageElements[row, column].ToolTip = tile.DisplayName;
-
-                    string path = "Resources/TileTypes/" + tile.DisplayName + ".png";
-                    if (tile.DisplayData.Length > 0)
-                    {
-                        imageElements[row, column].ToolTip += " [" + tile.DisplayData + "]";
-
-                        path = "Resources/TileTypes/" + tile.DisplayName + "_" + tile.DisplayData + ".png";
-                        if (!ResourceExists(path))
-                        {
-                            // fallback to non-indexed image
-                            path = "Resources/TileTypes/" + tile.DisplayName + ".png";
-                        }
-                    }
-                    if (!ResourceExists(path))
-                    {
-                        // fallback to non-indexed image
-                        path = "Resources/TileTypes/unknown.png";
-                    }
-
-                    imageElements[row, column].Source = new BitmapImage(new Uri("pack://application:,,,/" + path, UriKind.Absolute));
-                }
-            }
-            */
+            DataFormats.MapDescriptor descriptor = DataFormats.MapDescriptor.FromGameData(mapDataFileName, gameDataContainer);
+            Debug.Assert(true, "Successful conversion");
         }
         #endregion
     }

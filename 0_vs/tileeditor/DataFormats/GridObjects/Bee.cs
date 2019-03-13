@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace tileeditor.GridObjects
 {
@@ -42,6 +38,18 @@ namespace tileeditor.GridObjects
 
         public override void ObtainData()
         {
+        }
+        #endregion
+
+        #region Conversion
+        public override bool CanConvert(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        {
+            throw new System.NotImplementedException();
         }
         #endregion
     }

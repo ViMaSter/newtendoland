@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace NintendoLand.TileTypes
 {
-    class Hole : BaseType
+    public class Hole : BaseType
     {
         public override char MemoryIdentifier
         {
