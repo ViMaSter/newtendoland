@@ -20,11 +20,11 @@ namespace NintendoLand.DataFormats
         public byte[] headerConstant1;                              // < 16 bytes
         private byte[] backgroundUnknown;                           // < 9 bytes
         public byte[] headerConstant2;                              // < 10 bytes
-        public enum UnknownFlag
+        public enum UnknownFlag                                     
         {
-            Regular = 0x12,
-            OnlyMapData38 = 0x11
-        }
+            Regular = 0x12,                                         
+            OnlyMapData38 = 0x11                                    
+        }                                                           
         public UnknownFlag unknownFlag;                             // < 1 byte
         public byte[] headerConstant3;                              // < 2 bytes
         private TileTypes.RotatingObjectHeader[] rotatingObjects;   // < 96 bytes
@@ -137,7 +137,7 @@ namespace NintendoLand.DataFormats
                 {
                     int cellBytesLeft = CELL_TILE_PADDING + 1;
                     this.rows[row, column].SerializeExbin(ref target, ref cellBytesLeft);
-                    Debug.Assert(cellBytesLeft >= 0, "Cell data required " + cellBytesLeft * -1 + "more bytes than legal");
+                    Debug.Assert(cellBytesLeft >= 0, "Cell data required "+ cellBytesLeft * -1+"more bytes than legal");
                     for (int i = 0; i < cellBytesLeft; i++)
                     {
                         target.Add(0x00);

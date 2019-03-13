@@ -59,6 +59,7 @@ namespace NintendoLand.Tests.DataFormats
             foreach (string map in maps)
             {
                 NintendoLand.DataFormats.MapData mapData = NintendoLand.DataFormats.MapData.Load(map);
+
                 List<byte> serializedData = new List<byte>();
                 mapData.SerializeExbin(ref serializedData,
                     16 + 4 + 18 +   // header
@@ -66,8 +67,11 @@ namespace NintendoLand.Tests.DataFormats
                     (NintendoLand.DataFormats.MapData.ROWS_TOTAL * NintendoLand.DataFormats.MapData.COLUMNS_TOTAL * (1 + NintendoLand.DataFormats.MapData.CELL_TILE_PADDING )) // payload of actual cells
                 ); // magic number is the max length of a default MapData.exbin-file
 
+                #if DEBUG
+                // Write inspectable files during debug builds to allow diffing of generated output and regular files in external tools
                 File.WriteAllText(map + ".gen", string.Empty);
                 File.WriteAllBytes(map + ".gen", serializedData.ToArray());
+                #endif
 
                 CollectionAssert.AreEqual(
                     File.ReadAllBytes(map),

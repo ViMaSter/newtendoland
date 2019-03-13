@@ -25,9 +25,17 @@ namespace NintendoLand.Tests.DataFormats
         public void SerializeCleanExbin()
         {
             NintendoLand.DataFormats.FruitData fruitData = NintendoLand.DataFormats.FruitData.Load(pathToYsiExtract);
+
             Assert.AreEqual(fruitData.FruitCount, 90, "Default game files require exactly 90 fruit definitions");
+
             List<byte> serializedData = new List<byte>();
             fruitData.SerializeExbin(ref serializedData, 16 + 84 * 90 + 3); // magic number is the max length of the default FruitData.exbin-file
+
+            #if DEBUG
+            // Write inspectable files during debug builds to allow diffing of generated output and regular files in external tools
+            File.WriteAllText(pathToYsiExtract + "FruitData.exbin" + ".gen", string.Empty);
+            File.WriteAllBytes(pathToYsiExtract + "FruitData.exbin" + ".gen", serializedData.ToArray());
+            #endif
 
             CollectionAssert.AreEqual(
                 File.ReadAllBytes(Path.Combine(pathToYsiExtract, "FruitData.exbin")),

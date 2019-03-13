@@ -28,15 +28,18 @@ namespace NintendoLand.Tests.DataFormats
 
             Assert.AreEqual(51, stageData.LevelCount, "Default game files require exactly 50 levels + tutorial level"); // while there are 61 MapData**.exbin files, 10 of them are unused by not being present in StageData.exbin - hence 51
 
-            List<byte> serializedDefaultStageData = new List<byte>();
-            stageData.SerializeExbin(ref serializedDefaultStageData, 20 + (NintendoLand.DataFormats.StageData.Stage.BYTES_REQUIRED * 61));
+            List<byte> serializedData = new List<byte>();
+            stageData.SerializeExbin(ref serializedData, 20 + (NintendoLand.DataFormats.StageData.Stage.BYTES_REQUIRED * 61));
 
-            File.WriteAllText(Path.Combine(pathToYsiExtract, "StageData.exbin") + ".gen", string.Empty);
-            File.WriteAllBytes(Path.Combine(pathToYsiExtract, "StageData.exbin") + ".gen", serializedDefaultStageData.ToArray());
+            #if DEBUG
+            // Write inspectable files during debug builds to allow diffing of generated output and regular files in external tools
+            File.WriteAllText(pathToYsiExtract + "StageData.exbin" + ".gen", string.Empty);
+            File.WriteAllBytes(pathToYsiExtract + "StageData.exbin" + ".gen", serializedData.ToArray());
+            #endif
 
             CollectionAssert.AreEqual(
                 File.ReadAllBytes(Path.Combine(pathToYsiExtract, "StageData.exbin")),
-                serializedDefaultStageData
+                serializedData
             );
         }
 

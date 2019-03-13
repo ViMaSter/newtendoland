@@ -5,8 +5,10 @@
         <structure name="MapData.exbin file (Yoshi's Fruit Cart Level Data)" id="3" length="2054" alignment="0" encoding="ISO_8859-1:1987" endian="big" signed="no">
             <structure name="Header" id="4">
                 <structure name="Header Unknown" id="5" length="16"/>
-                <structure name="Background ?" id="7" length="4" fillcolor="FF8C8E"/>
-                <structure name="Header Unknown 2" id="9" length="18"/>
+                <structure name="Background ?" id="7" length="9" fillcolor="FF8C8E"/>
+                <structure name="Header Unknown 2" id="9" length="10" alignment="0"/>
+                <structure name="Random 11/12" id="36" length="1" alignment="0" fillcolor="B9ABFF"/>
+                <structure name="Header unknown 3" id="38" length="2"/>
                 <structure name="RotatingObjectInfo" id="11" repeatmin="8" repeatmax="8">
                     <structref name="ShortEntry" id="13" repeatmin="4" repeatmax="4" structure="id:12"/>
                 </structure>
