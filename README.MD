@@ -1,5 +1,5 @@
 # Nintendo Yoshi's Fruit Cart Map Editor
-[![Build Status](https://vimaster.visualstudio.com/newtendoland/_apis/build/status/ViMaSter.newtendoland?branchName=azure-pipeline)](https://vimaster.visualstudio.com/newtendoland/_build/latest?definitionId=1&branchName=azure-pipeline)
+[![Build Status](https://vimaster.visualstudio.com/newtendoland/_apis/build/status/ViMaSter.newtendoland?branchName=master)](https://vimaster.visualstudio.com/newtendoland/_build/latest?definitionId=1&branchName=master)
 
 ## Running tests
 Some tests require game files to be run properly. The quickest way to achieve this, is to manually extract the `Ysi.szs` file into the `/5_azurescripts/testresources/`-folder.  
