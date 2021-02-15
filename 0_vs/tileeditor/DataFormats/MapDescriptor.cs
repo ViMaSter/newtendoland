@@ -45,7 +45,7 @@ namespace tileeditor.DataFormats
                     System.Diagnostics.Debug.Assert(
                         createdObject == null,
                         "No valid GridObject conversion",
-                        "No GridObject could be created from tile [{0}, {1}]: {2}", row, column, type.ToString()
+                        $"No GridObject could be created from tile [{row}, {column}]: {type}"
                     );
                     mapDescriptor.grid[row, column] = createdObject;
                 }
