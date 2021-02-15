@@ -79,6 +79,10 @@ namespace tileeditor
 
                 string extractedFolderName = newTargetFolder + Path.GetFileNameWithoutExtension(filePath) + "/";
                 DirectoryInfo dirInfo = new DirectoryInfo(extractedFolderName);
+                if (!dirInfo.Exists)
+                {
+                    throw new Exception("Failed to extact; check the stdout and stderr output of the process variable");
+                }
                 return dirInfo.Exists;
             }
 

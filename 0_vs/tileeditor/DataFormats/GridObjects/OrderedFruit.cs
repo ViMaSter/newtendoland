@@ -74,7 +74,7 @@ namespace tileeditor.GridObjects
         #region Conversion
         public override bool CanConvert(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            return tileType is NintendoLand.TileTypes.OrderedFruit;
         }
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)

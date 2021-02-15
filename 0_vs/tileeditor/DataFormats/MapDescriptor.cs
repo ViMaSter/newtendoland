@@ -1,4 +1,6 @@
-﻿namespace tileeditor.DataFormats
+﻿using tileeditor.GridObjects;
+
+namespace tileeditor.DataFormats
 {
     class MapDescriptor
     {
@@ -18,12 +20,15 @@
 
         public static MapDescriptor FromGameData(string fileName, NintendoLand.DataFormats.GameDataContainer gameDataContainer)
         {
-            MapDescriptor mapDescriptor = new MapDescriptor();
             NintendoLand.DataFormats.Level level = gameDataContainer.GetLevelInfo(fileName);
-            mapDescriptor.mapID = level.stage.ID;
-            mapDescriptor.backgroundID = level.stage.backgroundID;
-            mapDescriptor.tutorialText1 = level.stage.tutorialText1;
-            mapDescriptor.tutorialText2 = level.stage.tutorialText2;
+            MapDescriptor mapDescriptor = new MapDescriptor
+            {
+                mapID = level.stage.ID,
+                backgroundID = level.stage.backgroundID,
+                tutorialText1 = level.stage.tutorialText1,
+                tutorialText2 = level.stage.tutorialText2,
+                grid = new BaseObject[NintendoLand.DataFormats.MapData.ROWS_TOTAL, NintendoLand.DataFormats.MapData.COLUMNS_TOTAL]
+            };
             for (int row = 0; row < NintendoLand.DataFormats.MapData.ROWS_TOTAL; row++)
             {
                 for (int column = 0; column < NintendoLand.DataFormats.MapData.COLUMNS_TOTAL; column++)
