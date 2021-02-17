@@ -13,9 +13,9 @@ namespace NintendoLand.TileTypes
             }
         }
 
-        SpikeStartState state;
+        public SpikeStartState state;
 
-        enum SpikeStartState
+        public enum SpikeStartState
         {
             Closed = '+',
             Open = '-'
@@ -36,7 +36,7 @@ namespace NintendoLand.TileTypes
             target.Add((byte)MemoryIdentifier);
             bytesLeft--;
 
-            // add stringified index
+            // add stringified order
             byte[] stateStringified = System.Text.Encoding.ASCII.GetBytes(((char)state).ToString());
             Debug.Assert(bytesLeft >= stateStringified.Length, "No bytes left in buffer for hole size qualifier");
             target.AddRange(stateStringified);

@@ -1,6 +1,6 @@
 ﻿namespace NintendoLand.TileTypes
 {
-    class Empty : BaseType
+    public class Empty : BaseType
     {
         public override char MemoryIdentifier
         {
@@ -16,7 +16,7 @@
         }
     }
 
-    class Nothing : BaseType
+    public class Nothing : BaseType
     {
         public override char MemoryIdentifier
         {
@@ -32,7 +32,7 @@
         }
     }
 
-    class Null : BaseType
+    public class Null : BaseType
     {
         public override char MemoryIdentifier
         {
@@ -64,7 +64,7 @@
         }
     }
 
-    class Wall : BaseType
+    public class Wall : BaseType
     {
         public override char MemoryIdentifier
         {

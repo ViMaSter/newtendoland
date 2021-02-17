@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="DataFormats\GridObjects\BaseObject.cs" />
     <Compile Include="DataFormats\GridObjects\Bee.cs" />
+    <Compile Include="DataFormats\GridObjects\Empty.cs" />
     <Compile Include="DataFormats\GridObjects\Fruit.cs" />
     <Compile Include="DataFormats\GridObjects\Goal.cs" />
     <Compile Include="DataFormats\GridObjects\Heart.cs" />

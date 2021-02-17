@@ -39,7 +39,7 @@ namespace tileeditor.GridObjects
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            return new Heart();
         }
         #endregion
     }

@@ -107,13 +107,13 @@ namespace NintendoLand.TileTypes
     /// Refers to header information containing a pivot and rotating objects (orbiters)
     /// Up to RotatingObject.AVAILABLE_PIVOTS pivots can be placed inside the map
     /// 
-    /// The body only refers to the MemoryIdentifier and an index (i.e. ['M', '2']).
+    /// The body only refers to the MemoryIdentifier and an order (i.e. ['M', '2']).
     /// Inside the header the actual objects are defined (pivot and orbiters)
     /// 
     /// Examples:
     /// In DataFormats.MapData10.exbin at [5, 6] we find ['M', '1'] inside the body. (The first orbiter.)
     /// Information about the actual objects, is stored inside the header starting with M1 at offset 0x26.
-    /// This data is formatted just like the regular DataFormats.MapData, but with only 2 bytes for an index (instead of the regular 3)
+    /// This data is formatted just like the regular DataFormats.MapData, but with only 2 bytes for an order (instead of the regular 3)
     /// and allowing up to 4 items, including the pivot.
     /// 
     /// Going there, we would find [Oa, P1] (a small spike + a regular fruit).
@@ -124,7 +124,7 @@ namespace NintendoLand.TileTypes
     /// 
     /// Exception: More than 3 objects around one pivot
     /// It is possible to have more than 3 objects around a pivot. This is done, by having the
-    /// last orbiter be a RotatingObject with +1 of the current index.
+    /// last orbiter be a RotatingObject with +1 of the current order.
     /// Example in DataFormats.MapData38.exbin:
     /// At [7, 8] we find ['M', '1']. At 0x26 (the header containing pivot + orbitters) we find: [S, P1, P2, M2]
     /// Notice the M2 at the end - looking at 0x32 (the header containing the next pivot + orbitters) we find [P3, P4].
@@ -141,29 +141,29 @@ namespace NintendoLand.TileTypes
             }
         }
 
-        int index;
+        public int index;
 
         protected override void Load(List<byte> parsableBytes)
         {
             base.Load(parsableBytes);
 
-            Debug.Assert(parsableBytes.Count >= 1, "index of Rotating object", "Rotating objects require an index - none found");
+            Debug.Assert(parsableBytes.Count >= 1, "order of Rotating object", "Rotating objects require an order - none found");
             index = Int32.Parse(System.Text.Encoding.Default.GetString(parsableBytes.ToArray()));
         }
 
         /// <summary>
         /// Convert an instance of this class into a byte-array representation inside the .exbin-format
         /// </summary>
-        /// <param name="bytesLeft">How much bytes we can occupy for this index at max</param>
+        /// <param name="bytesLeft">How much bytes we can occupy for this order at max</param>
         public override bool SerializeExbin(ref List<byte> target, ref int bytesLeft)
         {
             // add memory identifier
             target.Add((byte)MemoryIdentifier);
             bytesLeft--;
 
-            // add stringified index
+            // add stringified order
             byte[] indexStringified = System.Text.Encoding.ASCII.GetBytes(index.ToString());
-            Debug.Assert(bytesLeft >= indexStringified.Length, "No bytes left in buffer for index");
+            Debug.Assert(bytesLeft >= indexStringified.Length, "No bytes left in buffer for order");
             target.AddRange(indexStringified);
             bytesLeft -= indexStringified.Length;
 

@@ -43,14 +43,15 @@ namespace tileeditor.DataFormats
                         }
                     });
                     System.Diagnostics.Debug.Assert(
-                        createdObject == null,
+                        createdObject != null,
                         "No valid GridObject conversion",
                         $"No GridObject could be created from tile [{row}, {column}]: {type}"
                     );
                     mapDescriptor.grid[row, column] = createdObject;
                 }
             }
-            throw new System.NotImplementedException();
+
+            return mapDescriptor;
         }
         #endregion
     }

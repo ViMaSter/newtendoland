@@ -73,7 +73,8 @@ namespace tileeditor.GridObjects
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            NintendoLand.TileTypes.Spike spike = tileType as NintendoLand.TileTypes.Spike;
+            return new Spike() {state = (SpikeStartState) spike.state, selector = new ComboBox()};
         }
         #endregion
     }

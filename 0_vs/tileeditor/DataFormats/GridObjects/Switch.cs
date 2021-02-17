@@ -20,6 +20,8 @@ namespace tileeditor.GridObjects
             }
         }
 
+        int index;
+
         #region Form generator
         public override bool PopulateFields(ref Grid grid)
         {
@@ -35,12 +37,13 @@ namespace tileeditor.GridObjects
         public override bool CanConvert(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
             return tileType is NintendoLand.TileTypes.PepperOrSwitch
-                   && (stage.switchOrPepperDefinitions[((NintendoLand.TileTypes.PepperOrSwitch)tileType).Index] == NintendoLand.DataFormats.StageData.Stage.PepperOrSwitchFlag.Switch);
+                   && (stage.switchOrPepperDefinitions[((NintendoLand.TileTypes.PepperOrSwitch)tileType).Index-1] == NintendoLand.DataFormats.StageData.Stage.PepperOrSwitchFlag.Switch);
         }
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            NintendoLand.TileTypes.PepperOrSwitch pepperOrSwitch = tileType as NintendoLand.TileTypes.PepperOrSwitch;
+            return new Switch() {index = pepperOrSwitch.Index};
         }
         #endregion
     }

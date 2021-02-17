@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using NintendoLand.TileTypes;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace NintendoLand.DataFormats
 {
@@ -61,7 +63,7 @@ namespace NintendoLand.DataFormats
                 CircleSize7_Offset2 = 36
             };
 
-            private static readonly byte[] HOLE_DEFINITION_KEYS = { 0x0a, 0x0b, 0x0c };
+            public static readonly byte[] HOLE_DEFINITION_KEYS = { 0x0a, 0x0b, 0x0c };
             private const int MAXIMUM_CONTENT_FLAGS = 6;
             private const int SWITCHORPEPPER_DEFINITIONS = 16;
             private const int MOVEMENTPATTERN_DEFINITIONS = 16;
@@ -117,6 +119,30 @@ namespace NintendoLand.DataFormats
             private const int fruitAssociations_LENGTH = 12;
             private IndexResolver[] fruitAssociations = new IndexResolver[FRUIT_ASSOCIATIONS];
 
+            private Stage() { }
+
+            public static Stage CreateBlankDefault(int index)
+            {
+                return new Stage()
+                {
+                    _ID = (byte)index,
+                    backgroundID = new IndexResolver(3),
+                    contentFlags = new List<ContentFlag>() {ContentFlag.NormalGoal},
+                    fruitAssociations = Enumerable.Range(0, Stage.FRUIT_ASSOCIATIONS).Select(i=>new IndexResolver(13)).ToArray(),
+                    holeDefinitions = Stage.HOLE_DEFINITION_KEYS.ToDictionary(keyByte => keyByte, keyByte => Hole.Size.Small),
+                    movementPatterns = Enumerable.Range(0, Stage.MOVEMENTPATTERN_DEFINITIONS).Select(i => new IndexResolver(0)).ToArray(),
+                    orderedFruitDefinition = Enumerable.Range(0, Stage.MOVEMENTPATTERN_DEFINITIONS).Select(i => new IndexResolver(0)).ToArray(),
+                    switchOrPepperDefinitions = Enumerable.Range(0, Stage.SWITCHORPEPPER_DEFINITIONS).Select(i => PepperOrSwitchFlag.Unset).ToArray(),
+                    notDoor = new IndexResolver(20),
+                    teleportIndices = new IndexResolver(index),
+                    tutorialText1 = new byte[] { 0xFF, 0xFF },
+                    tutorialText2 = new byte[] { 0xFF, 0xFF },
+                    tutorialTextbuffer = new byte[] { 0x00, 0x00 },
+                    unknownCP = new byte[] { 0xC3, 0x50 },
+                    unknownPostCP = new byte[] { 0x00, 0x00, 0x00 }
+                };
+            }
+
             public static Stage Load(BinaryReader reader)
             {
                 Stage level = new Stage();
@@ -127,6 +153,14 @@ namespace NintendoLand.DataFormats
                 level.unknownCP = reader.ReadBytes(2);
                 level.unknownPostCP = reader.ReadBytes(3);
                 level._ID = reader.ReadByte();
+                if (level._ID == 0)
+                {
+                    level._ID = 99;
+                }
+                else
+                {
+                    --level._ID;
+                }
 
                 level.backgroundID = IndexResolver.Load(reader, backgroundID_LENGTH);
                 level.notDoor = IndexResolver.Load(reader, notDoor_LENGTH);
@@ -185,7 +219,7 @@ namespace NintendoLand.DataFormats
 
                 serializedData.AddRange(unknownCP);
                 serializedData.AddRange(unknownPostCP);
-                serializedData.Add(_ID);
+                serializedData.Add((byte)(_ID == 99 ? 0 : ++_ID));
                 backgroundID.SerializeExbin(ref serializedData, backgroundID_LENGTH);
                 notDoor.SerializeExbin(ref serializedData, notDoor_LENGTH);
                 teleportIndices.SerializeExbin(ref serializedData, teleportIndices_LENGTH);

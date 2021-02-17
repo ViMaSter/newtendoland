@@ -71,8 +71,8 @@ namespace NintendoLand.Tests.DataFormats
         public void InsertUpdateFruitReturnValue()
         {
             NintendoLand.DataFormats.StageData stageData = NintendoLand.DataFormats.StageData.Load(pathToYsiExtract);
-            Assert.IsTrue(stageData.UpdateLevelByID(1, new NintendoLand.DataFormats.StageData.Stage()));
-            Assert.IsFalse(stageData.UpdateLevelByID(200, new NintendoLand.DataFormats.StageData.Stage()));
+            Assert.IsTrue(stageData.UpdateLevelByID(1, NintendoLand.DataFormats.StageData.Stage.CreateBlankDefault(1)));
+            Assert.IsFalse(stageData.UpdateLevelByID(200, NintendoLand.DataFormats.StageData.Stage.CreateBlankDefault(200)));
         }
     }
 }

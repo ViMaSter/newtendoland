@@ -49,7 +49,7 @@ namespace NintendoLand.DataFormats
             return new Level
             {
                 mapData = mapData[mapFileName],
-                stage = stageData.HasLevelWithID(_IDfromFilename) ? stageData.GetLevelByID(_IDfromFilename) : null,
+                stage = stageData.HasLevelWithID(_IDfromFilename) ? stageData.GetLevelByID(_IDfromFilename) : StageData.Stage.CreateBlankDefault(_IDfromFilename),
                 // @TODO VM FruitData
                 // @TODO VM EnemyData
             };

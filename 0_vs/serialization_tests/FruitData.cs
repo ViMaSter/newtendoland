@@ -14,7 +14,7 @@ namespace NintendoLand.Tests.DataFormats
         {
             Assert.IsTrue(
                 File.Exists(pathToYsiExtract + "FruitData.exbin"),
-                "FruitData.exbin needs to exist inside /5_azurescripts/testresources/ for tests to be run! (More info in README.MD -> 'Running tests')"
+                "FruitData.exbin needs to exist inside /5_azurescripts/testresources/ for tests to be run! (More info in README.MD -> 'Running automated tests')"
             );
         }
 

@@ -49,7 +49,8 @@ namespace tileeditor.GridObjects
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            NintendoLand.TileTypes.Bee bee = tileType as NintendoLand.TileTypes.Bee;
+            return new Bee() { index = bee.index };
         }
         #endregion
     }

@@ -117,7 +117,7 @@ namespace NintendoLand.DataFormats
             /// <summary>
             /// Convert an instance of this class into a byte-array representation inside the .exbin-format
             /// </summary>
-            /// <param name="bytesLeft">How much bytes we can occupy for this index at max</param>
+            /// <param name="bytesLeft">How much bytes we can occupy for this order at max</param>
             public void SerializeExbin(ref List<byte> target, int bytesLeft)
             {
                 Debug.Assert(bytesLeft >= 3, "No bytes left for 'unknown'");
@@ -191,7 +191,7 @@ namespace NintendoLand.DataFormats
         /// <summary>
         /// Convert an instance of this class into a byte-array representation inside the .exbin-format
         /// </summary>
-        /// <param name="bytesLeft">How much bytes we can occupy for this index at max</param>
+        /// <param name="bytesLeft">How much bytes we can occupy for this order at max</param>
         public void SerializeExbin(ref List<byte> target, int bytesLeft)
         {
             Debug.Assert(bytesLeft >= 15, "No bytes left for 'headerUnknown'");

@@ -79,7 +79,8 @@ namespace tileeditor.GridObjects
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            NintendoLand.TileTypes.Fruit fruit = tileType as NintendoLand.TileTypes.Fruit;
+            return new Fruit() { index = fruit.index, indexInput = new TextBox() };
         }
         #endregion
     }

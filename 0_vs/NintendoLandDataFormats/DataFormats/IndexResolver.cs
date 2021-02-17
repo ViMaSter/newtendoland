@@ -10,13 +10,13 @@ namespace NintendoLand.DataFormats
     /// 
     /// This class is required, as indices are NOT stored as raw byte values, but human readable-representations (strings) of those numbers in a fixed length, null-terminated string.
     /// I.e. "1" = 0x49, "4" = 0x52, "17" = ['1', '7'] = [0x49, 0x55], 20 = ['2', '0'] = [0x50, 0x48]
-    /// Additionally, both a direct index value and a range of indices are supported:
+    /// Additionally, both a direct order value and a range of indices are supported:
     /// - Direct values simply being a string of the number i.e. "1", "47", "20"
     /// - Ranges being formatted using a direct value like above, delimited by "~" or 0x00 followed by another direct value i.e. "2~4", "1~17", "20.30"
     /// Notice how there is NO padding used for the min and max value
     /// 
     /// This class helps with parsing these type of references. Use IndexResolver.Load() and pass two parameters:
-    ///  - a reader pointed to the beginning of the index to parse
+    ///  - a reader pointed to the beginning of the order to parse
     ///  - the maximum amount of bytes that can be used (this is always fixed per field)
     /// 
     /// The returned object can be asked
@@ -163,15 +163,15 @@ namespace NintendoLand.DataFormats
         }
 
         /// <summary>
-        /// Creates an instance of an index based on a memory region.
+        /// Creates an instance of an order based on a memory region.
         /// 
         /// The memory region will start at the current position of reader and will stop parsing at latest after reading as many bytes as provided in remainingBytes.
         /// 
         /// Important: If numbers do not take up all the space provided by remainingBytes, they are discarded and the reader is advanced still.
         /// Basically this method guarantees, that after executing it, reader is at reader.BaseStream.Position (before execution) + remainingBytes.
         /// </summary>
-        /// <param name="reader">BinaryReader that is set up to be at the intended start of an index</param>
-        /// <param name="remainingBytes">How many bytes can be parsed at maximum - if less are required to create the index, the remaining bytes are skipped and reader is advanced</param>
+        /// <param name="reader">BinaryReader that is set up to be at the intended start of an order</param>
+        /// <param name="remainingBytes">How many bytes can be parsed at maximum - if less are required to create the order, the remaining bytes are skipped and reader is advanced</param>
         /// <returns></returns>
         public static IndexResolver Load(BinaryReader reader, int remainingBytes)
         {

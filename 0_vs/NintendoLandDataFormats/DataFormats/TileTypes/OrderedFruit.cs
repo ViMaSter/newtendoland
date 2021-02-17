@@ -14,7 +14,7 @@ namespace NintendoLand.TileTypes
             }
         }
 
-        int order;
+        public int order;
 
         protected override void Load(List<byte> parsableBytes)
         {

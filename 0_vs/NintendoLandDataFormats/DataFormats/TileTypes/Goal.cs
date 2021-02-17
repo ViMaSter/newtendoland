@@ -14,7 +14,7 @@ namespace NintendoLand.TileTypes
             }
         }
 
-        int levelTarget;
+        public int levelTarget;
 
         protected override void Load(List<byte> parsableBytes)
         {

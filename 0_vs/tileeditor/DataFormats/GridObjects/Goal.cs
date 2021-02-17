@@ -103,7 +103,8 @@ namespace tileeditor.GridObjects
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            NintendoLand.TileTypes.Goal goal = tileType as NintendoLand.TileTypes.Goal;
+            return new Goal() { levelTarget = goal.levelTarget, bonusGoalInput = new TextBox(), isBonusGoal = new CheckBox()};
         }
         #endregion
 

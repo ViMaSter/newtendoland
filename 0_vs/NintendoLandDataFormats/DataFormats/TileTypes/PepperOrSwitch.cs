@@ -8,7 +8,7 @@ namespace NintendoLand.TileTypes
     /// PepperOrSwitch are resolved inside StageData
     /// 
     /// Similar to how Fruit and OrderedFruit derive their type of fruit from another lookup,
-    /// the PepperOrSwitch-type can be resolved by using the index (i.e. W2 would be '2')
+    /// the PepperOrSwitch-type can be resolved by using the order (i.e. W2 would be '2')
     /// and looking up it's value inside StageData.
     /// @see NintendoLand.DataFormats.StageData.PepperOrSwitchFlag
     /// </summary>
@@ -35,7 +35,7 @@ namespace NintendoLand.TileTypes
         {
             base.Load(parsableBytes);
 
-            Debug.Assert(parsableBytes.Count >= 1, "index of PepperOrSwitch", "PepperOrSwitch-entries require an index - none found");
+            Debug.Assert(parsableBytes.Count >= 1, "order of PepperOrSwitch", "PepperOrSwitch-entries require an order - none found");
             index = Int32.Parse(System.Text.Encoding.Default.GetString(parsableBytes.ToArray()));
         }
 
@@ -45,9 +45,9 @@ namespace NintendoLand.TileTypes
             target.Add((byte)MemoryIdentifier);
             bytesLeft--;
 
-            // add stringified index
+            // add stringified order
             byte[] orderStringified = System.Text.Encoding.ASCII.GetBytes(index.ToString());
-            Debug.Assert(bytesLeft >= orderStringified.Length, "No bytes left in buffer for index");
+            Debug.Assert(bytesLeft >= orderStringified.Length, "No bytes left in buffer for order");
             target.AddRange(orderStringified);
             bytesLeft -= orderStringified.Length;
 

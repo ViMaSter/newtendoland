@@ -21,7 +21,7 @@ namespace NintendoLand.TileTypes
             Large = 'L'
         }
 
-        Size state;
+        public Size state;
 
         protected override void Load(List<byte> parsableBytes)
         {

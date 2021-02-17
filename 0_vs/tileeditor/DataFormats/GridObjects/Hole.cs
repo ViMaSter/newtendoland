@@ -75,7 +75,8 @@ namespace tileeditor.GridObjects
 
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
-            throw new System.NotImplementedException();
+            NintendoLand.TileTypes.Hole hole = tileType as NintendoLand.TileTypes.Hole;
+            return new Hole(){selector = new ComboBox(), state = (Size)hole.state };
         }
         #endregion
     }
