@@ -85,6 +85,12 @@
     <Compile Include="ConfigPopup.xaml.cs">
       <DependentUpon>ConfigPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\BaseObjectToTooltipTextConverter.cs" />
+    <Compile Include="Converter\PositionToColorConverter.cs" />
+    <Compile Include="Extensions\LINQHelper.cs" />
+    <Compile Include="GridButton.xaml.cs">
+      <DependentUpon>GridButton.xaml</DependentUpon>
+    </Compile>
     <Page Include="ConfigPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="GridButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -190,12 +200,16 @@
     <Resource Include="Resources\TileTypes\Hole_Large.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\Fruit %28Regular%29.png" />
+    <Resource Include="Resources\TileTypes\empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TileTypes\Unordered Fruit.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TileTypes\Goal_Regular.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\TileTypes\Pepper.png" />
     <Resource Include="Resources\TileTypes\Spike_Closed.png" />
   </ItemGroup>
   <ItemGroup>
@@ -214,16 +228,13 @@
     <Resource Include="Resources\TileTypes\unknown.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TileTypes\Fruit %28Ordered%29.png" />
+    <Resource Include="Resources\TileTypes\Ordered Fruit.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TileTypes\HeaderUnknown.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TileTypes\Rotating object.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\TileTypes\PepperOrSwitch.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MetroDark\HowToApplyTheme.txt" />
@@ -249,6 +260,7 @@
       <Name>NintendoLandDataFormats</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>Xcopy /E /I /Y $(SolutionDir)..\1_scripts $(TargetDir)Scripts</PreBuildEvent>

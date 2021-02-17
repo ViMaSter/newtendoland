@@ -2,23 +2,11 @@
 
 namespace tileeditor.GridObjects
 {
-    class Pepper : BaseObject
+    public class Pepper : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Pepper";
-            }
-        }
+        public override string DisplayName => "Pepper";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
+        public override string IconFileName => DisplayName;
 
         int index;
 

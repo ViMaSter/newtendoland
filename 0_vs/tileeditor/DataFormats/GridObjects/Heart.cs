@@ -4,21 +4,9 @@ namespace tileeditor.GridObjects
 {
     class Heart : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Heart";
-            }
-        }
+        public override string DisplayName => "Heart";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName.ToString();
-            }
-        }
+        public override string IconFileName => DisplayName;
 
         #region Form generator
         public override bool PopulateFields(ref Grid grid)

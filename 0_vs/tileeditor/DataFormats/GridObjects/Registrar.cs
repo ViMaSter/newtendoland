@@ -9,13 +9,8 @@ namespace tileeditor.GridObjects
     public abstract class Registrar
     {
         private static List<BaseObject> registar = new List<BaseObject>();
-        public static IEnumerable<BaseObject> Enumerable
-        {
-            get
-            {
-                return registar;
-            }
-        }
+        public static IEnumerable<BaseObject> Enumerable => registar;
+
         public static BaseObject HasTypeByMemoryIdentifier(char identifier)
         {
             return registar[identifier];

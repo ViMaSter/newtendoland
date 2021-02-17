@@ -2,13 +2,7 @@
 {
     public class Empty : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return '0';
-            }
-        }
+        public override char MemoryIdentifier => '0';
 
         public override bool IsValid()
         {
@@ -18,13 +12,7 @@
 
     public class Nothing : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return ' ';
-            }
-        }
+        public override char MemoryIdentifier => ' ';
 
         public override bool IsValid()
         {
@@ -34,13 +22,7 @@
 
     public class Null : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return '\0';
-            }
-        }
+        public override char MemoryIdentifier => '\0';
 
         public override bool IsValid()
         {
@@ -50,13 +32,7 @@
 
     class HeaderUnknown : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return '#';
-            }
-        }
+        public override char MemoryIdentifier => '#';
 
         public override bool IsValid()
         {
@@ -66,13 +42,7 @@
 
     public class Wall : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return '*';
-            }
-        }
+        public override char MemoryIdentifier => '*';
 
         public override bool IsValid()
         {

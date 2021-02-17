@@ -12,21 +12,9 @@ namespace tileeditor.GridObjects
     /// </summary>
     class Bee : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Bee";
-            }
-        }
+        public override string DisplayName => "Bee";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
+        public override string IconFileName => DisplayName;
 
         int index;
 

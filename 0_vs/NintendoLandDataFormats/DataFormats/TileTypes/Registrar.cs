@@ -8,13 +8,8 @@ namespace NintendoLand.TileTypes
     public abstract class Registrar
     {
         private static Dictionary<char, BaseType> registar = new Dictionary<char, BaseType>();
-        public static IEnumerable<BaseType> Enumerable
-        {
-            get
-            {
-                return registar.Values;
-            }
-        }
+        public static IEnumerable<BaseType> Enumerable => registar.Values;
+
         public static BaseType HasTypeByMemoryIdentifier(char identifier)
         {
             return registar[identifier];

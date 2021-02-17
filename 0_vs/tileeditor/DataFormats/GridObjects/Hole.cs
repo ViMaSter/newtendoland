@@ -5,29 +5,11 @@ namespace tileeditor.GridObjects
 {
     class Hole : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Hole";
-            }
-        }
+        public override string DisplayName => "Hole";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName.ToString();
-            }
-        }
+        public override string IconFileName => DisplayName;
 
-        public override string DisplayData
-        {
-            get
-            {
-                return state.ToString();
-            }
-        }
+        public override string DisplayData => state.ToString();
 
         public enum Size
         {
@@ -76,7 +58,7 @@ namespace tileeditor.GridObjects
         public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
         {
             NintendoLand.TileTypes.Hole hole = tileType as NintendoLand.TileTypes.Hole;
-            return new Hole(){selector = new ComboBox(), state = (Size)hole.state };
+            return new Hole(){selector = new ComboBox(), state = (Size)stage.holeDefinitions[hole.definitionIndex] };
         }
         #endregion
     }

@@ -8,8 +8,9 @@ using System.Resources;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using NintendoLand.DataFormats;
+using tileeditor.Extensions;
+using tileeditor.GridObjects;
 
 namespace tileeditor
 {
@@ -21,21 +22,7 @@ namespace tileeditor
         #region UI constructor
         private void CreateGridDemo()
         {
-            List<List<int>> lsts = new List<List<int>>();
-
-            for (int i = 0; i < NintendoLand.DataFormats.MapData.COLUMNS_TOTAL; i++)
-            {
-                lsts.Add(new List<int>());
-
-                for (int j = 0; j < NintendoLand.DataFormats.MapData.ROWS_TOTAL; j++)
-                {
-                    lsts[i].Add((i * NintendoLand.DataFormats.MapData.COLUMNS_TOTAL) + j);
-                }
-            }
-
             InitializeComponent();
-
-            lst.ItemsSource = lsts;
         }
         #endregion
 
@@ -200,6 +187,8 @@ namespace tileeditor
         {
             DataFormats.MapDescriptor descriptor = DataFormats.MapDescriptor.FromGameData(mapDataFileName, gameDataContainer);
             Debug.Assert(true, "Successful conversion");
+
+            lst.ItemsSource = descriptor.grid.Cast<BaseObject>().Chunk(MapData.COLUMNS_TOTAL);
         }
         #endregion
     }

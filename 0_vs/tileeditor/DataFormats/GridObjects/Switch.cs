@@ -4,21 +4,9 @@ namespace tileeditor.GridObjects
 {
     class Switch : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Switch";
-            }
-        }
+        public override string DisplayName => "Switch";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
+        public override string IconFileName => DisplayName;
 
         int index;
 

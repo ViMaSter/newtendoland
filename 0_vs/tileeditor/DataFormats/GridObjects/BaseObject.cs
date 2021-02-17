@@ -1,4 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using Image = System.Windows.Controls.Image;
 
 namespace tileeditor.GridObjects
 {
@@ -6,14 +10,19 @@ namespace tileeditor.GridObjects
     {
         protected BaseObject() { }
         public abstract string DisplayName { get; }
-        public abstract string GetIconFileName { get; }
-        public virtual string DisplayData
+        public virtual string IconFileName => "unknown";
+        private int column;
+        private Point position;
+        public Point Position => position;
+
+        public Image Icon => new Image
         {
-            get
-            {
-                return "";
-            }
-        }
+            Source = new BitmapImage(new Uri(
+                $"pack://application:,,,/tileeditor;component/Resources/TileTypes/{IconFileName}.png",
+                UriKind.Absolute))
+        };
+
+        public virtual string DisplayData => "";
 
         public abstract bool PopulateFields(ref Grid grid);
         public abstract void ObtainData();
@@ -24,5 +33,10 @@ namespace tileeditor.GridObjects
         }
 
         public abstract BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage);
+
+        public void SetPosition(int column, int row)
+        {
+            this.position = new Point(column, row);
+        }
     }
 }

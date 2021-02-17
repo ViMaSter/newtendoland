@@ -4,15 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tileeditor"
+        xmlns:converter="clr-namespace:tileeditor.Converter"
         mc:Ignorable="d"
-        Title="Yoshi Fruit Cart - Map Editor" Background="#282b2d" Height="450" Width="800">
+        Title="Yoshi Fruit Cart - Map Editor" Background="#282b2d" Height="580" Width="830">
     <Window.Resources>
+
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" x:Key="GridButton">
             <Setter Property="Padding" Value="0" />
         </Style>
 
         <DataTemplate x:Key="DataTemplate_Level2">
-            <Button Style="{StaticResource GridButton}" Content="{Binding}" Height="24" Width="32" MinWidth="32" MinHeight="24" MaxWidth="32" MaxHeight="24"/>
+            <local:GridButton Style="{StaticResource GridButton}" Content="{Binding}" Height="24" Width="32" MinWidth="32" MinHeight="24" MaxWidth="32" MaxHeight="24"/>
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplate_Level1">

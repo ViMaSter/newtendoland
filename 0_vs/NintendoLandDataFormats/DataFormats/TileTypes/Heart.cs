@@ -2,12 +2,6 @@
 {
     public class Heart : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'H';
-            }
-        }
+        public override char MemoryIdentifier => 'H';
     }
 }

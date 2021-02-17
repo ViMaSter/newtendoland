@@ -5,29 +5,11 @@ namespace tileeditor.GridObjects
 {
     class Empty : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Empty";
-            }
-        }
+        public override string DisplayName => "Empty";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
+        public override string IconFileName => "empty";
 
-        public override string DisplayData
-        {
-            get
-            {
-                return "";
-            }
-        }
+        public override string DisplayData => "";
 
         #region Form generator
 
@@ -74,29 +56,9 @@ namespace tileeditor.GridObjects
 
     class Nothing : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Nothing";
-            }
-        }
+        public override string DisplayName => "Nothing";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
-
-        public override string DisplayData
-        {
-            get
-            {
-                return "";
-            }
-        }
+        public override string DisplayData => "";
 
         #region Form generator
 
@@ -143,29 +105,9 @@ namespace tileeditor.GridObjects
 
     class Null : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Null";
-            }
-        }
+        public override string DisplayName => "Null";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
-
-        public override string DisplayData
-        {
-            get
-            {
-                return "";
-            }
-        }
+        public override string DisplayData => "";
 
         #region Form generator
 
@@ -212,29 +154,9 @@ namespace tileeditor.GridObjects
 
     class Wall : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Wall";
-            }
-        }
+        public override string DisplayName => "Wall";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
-
-        public override string DisplayData
-        {
-            get
-            {
-                return "";
-            }
-        }
+        public override string DisplayData => "";
 
         #region Form generator
 

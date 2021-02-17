@@ -38,23 +38,11 @@ namespace NintendoLand.DataFormats
         public class Fruit
         {
             private byte[] unknown;                             // < 3 bytes
-            public byte ID
-            {
-                get
-                {
-                    return _ID;
-                }
-            }
+            public byte ID => _ID;
             private byte _ID;                                   // < 1  byte
             private byte[] unknown2;                            // < 64 bytes
             private const int fruitType_LENGTH = 3;
-            public IndexResolver FruitType
-            {
-                get
-                {
-                    return fruitType;
-                }
-            }
+            public IndexResolver FruitType => fruitType;
             private IndexResolver fruitType;                    // < 3 bytes (see FruitMapping)
             private byte[] unknown3;                            // < 13 bytes
 
@@ -136,13 +124,7 @@ namespace NintendoLand.DataFormats
             }
         }
 
-        public Dictionary<int, Fruit> FruitByID
-        {
-            get
-            {
-                return payload;
-            }
-        }
+        public Dictionary<int, Fruit> FruitByID => payload;
 
         /// <summary>
         /// Update the definition of a fruit
@@ -157,13 +139,7 @@ namespace NintendoLand.DataFormats
             return IDexists;
         }
 
-        public int FruitCount
-        {
-            get
-            {
-                return payload.Count;
-            }
-        }
+        public int FruitCount => payload.Count;
 
         private byte[] headerUnknown; // < 16 bytes
         private Dictionary<int, Fruit> payload = new Dictionary<int, Fruit>(90); // 61 is based on the game's default amount of maps (50 in-game + 10 unused maps + tutorial)

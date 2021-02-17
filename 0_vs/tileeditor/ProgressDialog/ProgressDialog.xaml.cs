@@ -23,15 +23,15 @@ namespace Parago.Windows
 
 		public string Label
 		{
-			get { return TextLabel.Text; }
-			set { TextLabel.Text = value; }
+			get => TextLabel.Text;
+            set => TextLabel.Text = value;
         }
 
         private int requestedProgress = 0;
         public int RequestedProgress
         {
-            get { return requestedProgress; }
-            set { requestedProgress = value; }
+            get => requestedProgress;
+            set => requestedProgress = value;
         }
 
         internal ProgressDialogResult Result { get; private set; }

@@ -5,29 +5,11 @@ namespace tileeditor.GridObjects
 {
     class OrderedFruit : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Fruit (Ordered)";
-            }
-        }
+        public override string DisplayName => "Ordered Fruit";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
+        public override string IconFileName => DisplayName;
 
-        public override string DisplayData
-        {
-            get
-            {
-                return "Order: " + order.ToString();
-            }
-        }
+        public override string DisplayData => order.ToString();
 
         public static int HighestCurrentlyUsedorder = 0;
 

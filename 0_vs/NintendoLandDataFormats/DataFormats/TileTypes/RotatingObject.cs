@@ -133,13 +133,7 @@ namespace NintendoLand.TileTypes
     /// </summary>
     public class RotatingObject : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'M';
-            }
-        }
+        public override char MemoryIdentifier => 'M';
 
         public int index;
 

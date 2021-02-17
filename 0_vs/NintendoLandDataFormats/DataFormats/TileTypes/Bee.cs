@@ -14,13 +14,7 @@ namespace NintendoLand.TileTypes
     /// </summary>
     public class Bee : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'E';
-            }
-        }
+        public override char MemoryIdentifier => 'E';
 
         public int index;
 

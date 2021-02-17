@@ -6,13 +6,7 @@ namespace NintendoLand.TileTypes
 {
     public class Goal : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'G';
-            }
-        }
+        public override char MemoryIdentifier => 'G';
 
         public int levelTarget;
 

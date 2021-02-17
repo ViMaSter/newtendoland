@@ -6,13 +6,7 @@ namespace NintendoLand.TileTypes
 {
     public class OrderedFruit : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'F';
-            }
-        }
+        public override char MemoryIdentifier => 'F';
 
         public int order;
 

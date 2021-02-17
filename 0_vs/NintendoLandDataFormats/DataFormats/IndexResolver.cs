@@ -43,13 +43,7 @@ namespace NintendoLand.DataFormats
         }
         #endregion
 
-        public bool IsRange
-        {
-            get
-            {
-                return max != -1;
-            }
-        }
+        public bool IsRange => max != -1;
 
         int minOrValue;
         public int Min

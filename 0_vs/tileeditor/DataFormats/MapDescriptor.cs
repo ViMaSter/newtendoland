@@ -47,6 +47,7 @@ namespace tileeditor.DataFormats
                         "No valid GridObject conversion",
                         $"No GridObject could be created from tile [{row}, {column}]: {type}"
                     );
+                    createdObject.SetPosition(column, row);
                     mapDescriptor.grid[row, column] = createdObject;
                 }
             }

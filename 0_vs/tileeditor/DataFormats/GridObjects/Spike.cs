@@ -5,29 +5,11 @@ namespace tileeditor.GridObjects
 {
     class Spike : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Spike";
-            }
-        }
+        public override string DisplayName => "Spike";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName;
-            }
-        }
+        public override string IconFileName => DisplayName;
 
-        public override string DisplayData
-        {
-            get
-            {
-                return state.ToString();
-            }
-        }
+        public override string DisplayData => state.ToString();
 
         enum SpikeStartState
         {

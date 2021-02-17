@@ -14,21 +14,9 @@ namespace NintendoLand.TileTypes
     /// </summary>
     public class PepperOrSwitch : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'W';
-            }
-        }
+        public override char MemoryIdentifier => 'W';
 
-        public int Index
-        {
-            get
-            {
-                return index;
-            }
-        }
+        public int Index => index;
         int index;
 
         protected override void Load(List<byte> parsableBytes)

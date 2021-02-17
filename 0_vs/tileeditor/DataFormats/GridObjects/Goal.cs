@@ -5,29 +5,11 @@ namespace tileeditor.GridObjects
 {
     class Goal : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Goal";
-            }
-        }
+        public override string DisplayName => "Goal";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName.ToString();
-            }
-        }
+        public override string IconFileName => DisplayName;
 
-        public override string DisplayData
-        {
-            get
-            {
-                return levelTarget == -1 ? "Regular" : "Jumps to " + levelTarget.ToString();
-            }
-        }
+        public override string DisplayData => levelTarget == -1 ? "Next level" : "Jumps to level " + levelTarget;
 
         #region Form generator
         private CheckBox isBonusGoal;

@@ -2,12 +2,6 @@
 {
     public class Start : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'S';
-            }
-        }
+        public override char MemoryIdentifier => 'S';
     }
 }

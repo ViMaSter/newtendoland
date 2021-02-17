@@ -19,12 +19,9 @@ namespace Parago.Windows
 		public bool Cancelled { get; private set; }
 		public Exception Error { get; private set; }
 
-		public bool OperationFailed
-		{
-			get { return Error != null; }
-		}
+		public bool OperationFailed => Error != null;
 
-		public ProgressDialogResult(RunWorkerCompletedEventArgs e)
+        public ProgressDialogResult(RunWorkerCompletedEventArgs e)
 		{
 			if(e.Cancelled)
 				Cancelled = true;

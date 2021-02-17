@@ -63,7 +63,7 @@ namespace NintendoLand.DataFormats
                 CircleSize7_Offset2 = 36
             };
 
-            public static readonly byte[] HOLE_DEFINITION_KEYS = { 0x0a, 0x0b, 0x0c };
+            public static readonly byte[] HOLE_DEFINITION_KEYS = { (byte)'a', (byte)'b', (byte)'c'};
             private const int MAXIMUM_CONTENT_FLAGS = 6;
             private const int SWITCHORPEPPER_DEFINITIONS = 16;
             private const int MOVEMENTPATTERN_DEFINITIONS = 16;
@@ -84,13 +84,7 @@ namespace NintendoLand.DataFormats
             // @TODO VM play with this value a bit
             private byte[] unknownPostCP;                       // < 3 bytes
             private byte _ID;                                   // < 1 byte
-            public byte ID
-            {
-                get
-                {
-                    return _ID;
-                }
-            }
+            public byte ID => _ID;
 
             // loaded from Ysi_Cmn.pack / Common/Model/Ysi_Field.szs / gsys.bfres / Textures -> Field*
             // @TODO VM build renderer/selector for this
@@ -105,7 +99,7 @@ namespace NintendoLand.DataFormats
             private const int teleportIndices_LENGTH = 8;
             private IndexResolver teleportIndices;
             private const int holeDefinitions_LENGTH = 4;
-            private Dictionary<byte, NintendoLand.TileTypes.Hole.Size> holeDefinitions = new Dictionary<byte, TileTypes.Hole.Size>(3);
+            public Dictionary<byte, NintendoLand.TileTypes.Hole.Size> holeDefinitions = new Dictionary<byte, TileTypes.Hole.Size>(3);
             private const int contentFlag_LENGTH = 2;
             private List<ContentFlag> contentFlags = new List<ContentFlag>();
             private const int switchOrPepperDefinitions_LENGTH = 8;
@@ -292,13 +286,8 @@ namespace NintendoLand.DataFormats
         {
             return payload[mapID];
         }
-        public int LevelCount
-        {
-            get
-            {
-                return payload.Count;
-            }
-        }
+        public int LevelCount => payload.Count;
+
         /// <summary>
         /// Update stage data - currently limited to overwriting stages (no inserting)
         /// </summary>

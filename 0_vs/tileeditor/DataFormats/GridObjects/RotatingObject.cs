@@ -33,29 +33,11 @@ namespace tileeditor.GridObjects
     /// </summary>
     public class RotatingObject : BaseObject
     {
-        public override string DisplayName
-        {
-            get
-            {
-                return "Rotating object";
-            }
-        }
+        public override string DisplayName => "Rotating object";
 
-        public override string GetIconFileName
-        {
-            get
-            {
-                return DisplayName.ToString();
-            }
-        }
+        public override string IconFileName => DisplayName;
 
-        public override string DisplayData
-        {
-            get
-            {
-                return "ID: " + index.ToString();
-            }
-        }
+        public override string DisplayData => "ID: " + index;
 
         #region Form generator
         private ComboBox pivotInput;

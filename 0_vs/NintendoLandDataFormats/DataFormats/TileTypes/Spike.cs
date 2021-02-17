@@ -5,13 +5,7 @@ namespace NintendoLand.TileTypes
 {
     public class Spike : BaseType
     {
-        public override char MemoryIdentifier
-        {
-            get
-            {
-                return 'A';
-            }
-        }
+        public override char MemoryIdentifier => 'A';
 
         public SpikeStartState state;
 
