@@ -6,19 +6,33 @@
         xmlns:local="clr-namespace:tileeditor"
         xmlns:converter="clr-namespace:tileeditor.Converter"
         mc:Ignorable="d"
-        Title="Yoshi Fruit Cart - Map Editor" Background="#282b2d" Height="580" Width="830">
+        Title="Yoshi Fruit Cart - Map Editor" Background="#282b2d" Height="780" Width="790">
     <Window.Resources>
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" x:Key="GridButton">
             <Setter Property="Padding" Value="0" />
         </Style>
 
-        <DataTemplate x:Key="DataTemplate_Level2">
-            <local:GridButton Style="{StaticResource GridButton}" Content="{Binding}" Height="24" Width="32" MinWidth="32" MinHeight="24" MaxWidth="32" MaxHeight="24"/>
+        <DataTemplate x:Key="MapDataColumn">
+            <local:GridButton Style="{StaticResource GridButton}" Content="{Binding}" Height="24" Width="32" MinWidth="32" MinHeight="24" MaxWidth="32" MaxHeight="24" MouseEnter="MapDataCellMouseEnter" MouseLeave="MapDataCellMouseLeave"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplate_Level1">
-            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource DataTemplate_Level2}">
+        <DataTemplate x:Key="MapDataRow">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource MapDataColumn}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StageDataColumn">
+            <Label DataContext="{Binding }" Background="{Binding Path=IsFocussed, Converter={StaticResource BoolToColorConverter}}" Content="{Binding Path=mainValue}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StageDataRow">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource StageDataColumn}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -30,17 +44,68 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="37*"/>
-            <ColumnDefinition Width="758*"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="650"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="LoadFile" Content="Load file..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="89" Click="LoadFile_Click" Height="22" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="LevelSelector" Margin="67,10,10,0" VerticalAlignment="Top" SelectedIndex="0" SelectionChanged="LevelSelector_SelectionChanged" Grid.Column="1" IsEnabled="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="490"/>
+            <RowDefinition Height="200"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="LoadFile" Content="Load file..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="89" Click="LoadFile_Click" Height="22" Grid.ColumnSpan="1"/>
+        <ComboBox x:Name="LevelSelector"  Margin="0, 0, 0, 0"  SelectedIndex="0" SelectionChanged="LevelSelector_SelectionChanged" Grid.Column="2" IsEnabled="False" VerticalAlignment="Center">
             <ComboBoxItem Name="default">Select Level...</ComboBoxItem>
         </ComboBox>
 
-        <Grid Margin="10,45,29,10.5" Grid.ColumnSpan="24" Grid.RowSpan="20">
-            <ItemsControl x:Name="lst" ItemTemplate="{DynamicResource DataTemplate_Level1}" Grid.RowSpan="20" Grid.ColumnSpan="24" />
+        <ItemsControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="MapDataGrid" ItemTemplate="{DynamicResource MapDataRow}" />
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" >PepperOrSwitch:</Label>
+            <Label Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" >Rotating:</Label>
+            <Label Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" >FruitOrdering(?):</Label>
+            <Label Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" >FruitType:</Label>
+            <ItemsControl Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="32" Grid.RowSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="StageDataGrid" ItemTemplate="{DynamicResource StageDataRow}" />
         </Grid>
-
     </Grid>
 </Window>

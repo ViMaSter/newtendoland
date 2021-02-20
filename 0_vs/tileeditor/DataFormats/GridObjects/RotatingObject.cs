@@ -39,11 +39,12 @@ namespace tileeditor.GridObjects
 
         public override string DisplayData => "ID: " + index;
 
+        public int Index => index;
+        private int index;
+
         #region Form generator
         private ComboBox pivotInput;
         private List<BaseObject> orbitters;
-
-        private int index;
 
         // implement common methods
         public override bool PopulateFields(ref Grid grid)

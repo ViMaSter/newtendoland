@@ -12,10 +12,12 @@ namespace tileeditor.GridObjects
         public override string DisplayData => index.ToString();
 
         public static int HighestCurrentlyUsedIndex = 0;
- 
+
+        int index;
+        public int Index => index;
+
         #region Form generator
         private TextBox indexInput;
-        int index;
 
         // implement common methods
         public override bool PopulateFields(ref Grid grid)

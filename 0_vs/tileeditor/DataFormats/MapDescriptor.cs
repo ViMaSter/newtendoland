@@ -1,7 +1,49 @@
-﻿using tileeditor.GridObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
+using tileeditor.Annotations;
+using tileeditor.GridObjects;
 
 namespace tileeditor.DataFormats
 {
+    class FocusableComponent<T> : INotifyPropertyChanged
+    {
+        public T mainValue { get; }
+        public bool isFocussed = false;
+
+        public bool IsFocussed
+        {
+            get => isFocussed;
+            private set
+            {
+                isFocussed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public FocusableComponent(T value)
+        {
+            mainValue = value;
+        }
+
+        public void SetFocus(bool newFocus)
+        {
+            IsFocussed = newFocus;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     class MapDescriptor
     {
         public byte mapID;
@@ -9,6 +51,10 @@ namespace tileeditor.DataFormats
         public byte[] tutorialText2;
         public NintendoLand.DataFormats.IndexResolver backgroundID;
         public GridObjects.BaseObject[,] grid;
+        public FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[] pepperOrSwitchFlagMap;
+        public FocusableComponent<IndexResolver>[] movementPatternMap;
+        public FocusableComponent<IndexResolver>[] fruitOrderMap;
+        public FocusableComponent<IndexResolver>[] fruitAssociations;
 
         private MapDescriptor() { }
 
@@ -27,7 +73,11 @@ namespace tileeditor.DataFormats
                 backgroundID = level.stage.backgroundID,
                 tutorialText1 = level.stage.tutorialText1,
                 tutorialText2 = level.stage.tutorialText2,
-                grid = new BaseObject[NintendoLand.DataFormats.MapData.ROWS_TOTAL, NintendoLand.DataFormats.MapData.COLUMNS_TOTAL]
+                grid = new BaseObject[NintendoLand.DataFormats.MapData.ROWS_TOTAL, NintendoLand.DataFormats.MapData.COLUMNS_TOTAL],
+                pepperOrSwitchFlagMap = level.stage.switchOrPepperDefinitions.Select(entry => new FocusableComponent<StageData.Stage.PepperOrSwitchFlag>(entry)).ToArray(),
+                movementPatternMap = level.stage.movementPatterns.Select(entry =>  new FocusableComponent<IndexResolver>(entry)).ToArray(),
+                fruitOrderMap = level.stage.orderedFruitDefinition.Select(entry => new FocusableComponent<IndexResolver>(entry)).ToArray(),
+                fruitAssociations = level.stage.fruitAssociations.Select(entry =>  new FocusableComponent<IndexResolver>(entry)).ToArray()
             };
             for (int row = 0; row < NintendoLand.DataFormats.MapData.ROWS_TOTAL; row++)
             {

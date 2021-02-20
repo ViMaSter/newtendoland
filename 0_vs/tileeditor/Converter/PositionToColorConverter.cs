@@ -32,4 +32,21 @@ namespace tileeditor.Converter
             throw new NotImplementedException();
         }
     }
+
+    [ValueConversion(typeof(bool), typeof(SolidColorBrush))]
+    public class BoolToColorConverter : IValueConverter
+    {
+        public static readonly SolidColorBrush TrueColor = new SolidColorBrush(Color.FromArgb(0xFF, 0x80, 0x80, 0x80));
+        public static readonly SolidColorBrush FalseColor = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x00, 0x00));
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool isActive = (bool)value;
+            return isActive ? TrueColor : FalseColor;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

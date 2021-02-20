@@ -13,9 +13,11 @@ namespace tileeditor.GridObjects
 
         public static int HighestCurrentlyUsedorder = 0;
 
+        public int Order => order;
+        int order;
+
         #region Form generator
         private TextBox orderInput;
-        int order;
 
         // implement common methods
         public override bool PopulateFields(ref Grid grid)

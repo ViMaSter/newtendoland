@@ -65,10 +65,10 @@ namespace NintendoLand.DataFormats
 
             public static readonly byte[] HOLE_DEFINITION_KEYS = { (byte)'a', (byte)'b', (byte)'c'};
             private const int MAXIMUM_CONTENT_FLAGS = 6;
-            private const int SWITCHORPEPPER_DEFINITIONS = 16;
-            private const int MOVEMENTPATTERN_DEFINITIONS = 16;
-            private const int FRUIT_ORDER_DEFINITIONS = 16;
-            private const int FRUIT_ASSOCIATIONS = 32;
+            public const int SWITCHORPEPPER_DEFINITIONS = 16;
+            public const int MOVEMENTPATTERN_DEFINITIONS = 16;
+            public const int FRUIT_ORDER_DEFINITIONS = 16;
+            public const int FRUIT_ASSOCIATIONS_DEFINITIONS = 32;
             public const int BYTES_REQUIRED = 956;
 
             // this seems to determine which textboxes are shown after map start
@@ -105,13 +105,13 @@ namespace NintendoLand.DataFormats
             private const int switchOrPepperDefinitions_LENGTH = 8;
             public PepperOrSwitchFlag[] switchOrPepperDefinitions = new PepperOrSwitchFlag[SWITCHORPEPPER_DEFINITIONS];
             private const int movementPattern_LENGTH = 12;
-            private IndexResolver[] movementPatterns = new IndexResolver[MOVEMENTPATTERN_DEFINITIONS];
+            public IndexResolver[] movementPatterns = new IndexResolver[MOVEMENTPATTERN_DEFINITIONS];
             // related to fruit order?                                                                                              
             private const int orderedFruitDefinition_LENGTH = 12;
-            private IndexResolver[] orderedFruitDefinition = new IndexResolver[FRUIT_ORDER_DEFINITIONS];
+            public IndexResolver[] orderedFruitDefinition = new IndexResolver[FRUIT_ORDER_DEFINITIONS];
             // resolved an index to a specific fruit (See FruitData)                                                                
             private const int fruitAssociations_LENGTH = 12;
-            private IndexResolver[] fruitAssociations = new IndexResolver[FRUIT_ASSOCIATIONS];
+            public IndexResolver[] fruitAssociations = new IndexResolver[FRUIT_ASSOCIATIONS_DEFINITIONS];
 
             private Stage() { }
 
@@ -122,7 +122,7 @@ namespace NintendoLand.DataFormats
                     _ID = (byte)index,
                     backgroundID = new IndexResolver(3),
                     contentFlags = new List<ContentFlag>() {ContentFlag.NormalGoal},
-                    fruitAssociations = Enumerable.Range(0, Stage.FRUIT_ASSOCIATIONS).Select(i=>new IndexResolver(13)).ToArray(),
+                    fruitAssociations = Enumerable.Range(0, Stage.FRUIT_ASSOCIATIONS_DEFINITIONS).Select(i=>new IndexResolver(13)).ToArray(),
                     holeDefinitions = Stage.HOLE_DEFINITION_KEYS.ToDictionary(keyByte => keyByte, keyByte => Hole.Size.Small),
                     movementPatterns = Enumerable.Range(0, Stage.MOVEMENTPATTERN_DEFINITIONS).Select(i => new IndexResolver(0)).ToArray(),
                     orderedFruitDefinition = Enumerable.Range(0, Stage.MOVEMENTPATTERN_DEFINITIONS).Select(i => new IndexResolver(0)).ToArray(),
@@ -197,7 +197,7 @@ namespace NintendoLand.DataFormats
                     level.orderedFruitDefinition[FDefinitionIndex] = IndexResolver.Load(reader, orderedFruitDefinition_LENGTH);
                 }
 
-                for (int fruitAssociationIndex = 0; fruitAssociationIndex < FRUIT_ASSOCIATIONS; fruitAssociationIndex++)  // < FRUIT_ASSOCIATIONS * (2 bytes (min) + 1 byte (delimiter) + 2 bytes (max)) + 7 bytes (padding))
+                for (int fruitAssociationIndex = 0; fruitAssociationIndex < FRUIT_ASSOCIATIONS_DEFINITIONS; fruitAssociationIndex++)  // < FRUIT_ASSOCIATIONS_DEFINITIONS * (2 bytes (min) + 1 byte (delimiter) + 2 bytes (max)) + 7 bytes (padding))
                 {                                                                                               // related to fruit order? actual usage unknown
                     level.fruitAssociations[fruitAssociationIndex] = IndexResolver.Load(reader, fruitAssociations_LENGTH);
                 }
@@ -267,7 +267,7 @@ namespace NintendoLand.DataFormats
                     orderedFruitDefinition[FDefinitionIndex].SerializeExbin(ref serializedData, orderedFruitDefinition_LENGTH);
                 }
 
-                for (int fruitAssociationIndex = 0; fruitAssociationIndex < FRUIT_ASSOCIATIONS; fruitAssociationIndex++)
+                for (int fruitAssociationIndex = 0; fruitAssociationIndex < FRUIT_ASSOCIATIONS_DEFINITIONS; fruitAssociationIndex++)
                 {
                     fruitAssociations[fruitAssociationIndex].SerializeExbin(ref serializedData, fruitAssociations_LENGTH);
                 }

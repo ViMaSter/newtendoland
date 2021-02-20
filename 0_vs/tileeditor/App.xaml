@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Themes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:PositionToColorConverter x:Key="ColorBasedOnRowConverter" />
+            <converter:BoolToColorConverter x:Key="BoolToColorConverter" />
             <converter:BaseObjectToTooltipTextConverter x:Key="BaseObjectToTooltipTextConverter" />
         </ResourceDictionary>
     </Application.Resources>

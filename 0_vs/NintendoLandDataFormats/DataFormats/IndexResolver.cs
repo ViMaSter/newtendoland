@@ -222,5 +222,10 @@ namespace NintendoLand.DataFormats
                 target.Add(0x00);
             }
         }
+
+        public override string ToString()
+        {
+            return IsRange ? $"{Min}-{Max}" : Value.ToString();
+        }
     }
 }

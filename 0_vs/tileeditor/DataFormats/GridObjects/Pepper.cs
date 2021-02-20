@@ -8,6 +8,7 @@ namespace tileeditor.GridObjects
 
         public override string IconFileName => DisplayName;
 
+        public int Index => index;
         int index;
 
         #region Form generator

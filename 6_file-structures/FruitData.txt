@@ -95,7 +95,7 @@ This file is padded, so line 101 starts at index 1.
 
 
 
-   ID (byte)                                                        Type (3 = Bananas)
+   ID (byte)                                                        Type (1 = Melon, 3 = Bananas, ... check FruitData.cs)
    |                                                                |
    |                                                                |
 ....N...0...........0~99........0...........0...........0...........1~3.............
