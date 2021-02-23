@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
 
 namespace tileeditor.GridObjects
 {
@@ -16,13 +18,7 @@ namespace tileeditor.GridObjects
         // implement common methods
         public override bool PopulateFields(ref Grid grid)
         {
-            Label label = new Label();
-            label.Content = "EMPTY";
-            Grid.SetColumn(label, 0);
-            Grid.SetRow(label, 0);
-
-            grid.Children.Add(label);
-            return true;
+            return false;
         }
 
         public override void ObtainData()
@@ -47,7 +43,7 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Empty;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             return new Empty();
         }
@@ -65,13 +61,7 @@ namespace tileeditor.GridObjects
         // implement common methods
         public override bool PopulateFields(ref Grid grid)
         {
-            Label label = new Label();
-            label.Content = "Nothing";
-            Grid.SetColumn(label, 0);
-            Grid.SetRow(label, 0);
-
-            grid.Children.Add(label);
-            return true;
+            return false;
         }
 
         public override void ObtainData()
@@ -96,7 +86,7 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Nothing;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             return new Nothing();
         }
@@ -114,13 +104,7 @@ namespace tileeditor.GridObjects
         // implement common methods
         public override bool PopulateFields(ref Grid grid)
         {
-            Label label = new Label();
-            label.Content = "Null";
-            Grid.SetColumn(label, 0);
-            Grid.SetRow(label, 0);
-
-            grid.Children.Add(label);
-            return true;
+            return false;
         }
 
         public override void ObtainData()
@@ -145,7 +129,7 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Null;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             return new Null();
         }
@@ -163,13 +147,7 @@ namespace tileeditor.GridObjects
         // implement common methods
         public override bool PopulateFields(ref Grid grid)
         {
-            Label label = new Label();
-            label.Content = "Wall";
-            Grid.SetColumn(label, 0);
-            Grid.SetRow(label, 0);
-
-            grid.Children.Add(label);
-            return true;
+            return false;
         }
 
         public override void ObtainData()
@@ -194,7 +172,7 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Wall;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             return new Wall();
         }

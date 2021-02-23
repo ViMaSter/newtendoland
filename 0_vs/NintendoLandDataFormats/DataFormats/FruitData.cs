@@ -9,17 +9,15 @@ namespace NintendoLand.DataFormats
     public class FruitData
     {
         // byte-to-3D-object mapping
-        public enum FruitMapping
+        public enum FruitType
         {
-            NONE = 0,
-
             // Large
             WaterMelon = 1,
             Cantaloupe = 2,
             Bananas = 3,
 
             // Average
-            PinkPeach = 4,
+            Peach = 4,
             Apple = 5,
             Grapes = 6,
 
@@ -31,7 +29,7 @@ namespace NintendoLand.DataFormats
             PresentReferencedButNotUsed = 50,
             Present10Coins = 51,
             Present1Up = 52,
-            PresentBlueCheckMark = 53
+            PresentBlueCheckmark = 53
         };
 
         [DebuggerDisplay("{this.Readable()}")]
@@ -43,7 +41,7 @@ namespace NintendoLand.DataFormats
             private byte[] unknown2;                            // < 64 bytes
             private const int fruitType_LENGTH = 3;
             public IndexResolver FruitType => fruitType;
-            private IndexResolver fruitType;                    // < 3 bytes (see FruitMapping)
+            private IndexResolver fruitType;                    // < 3 bytes (see FruitType)
             private byte[] unknown3;                            // < 13 bytes
 
             /// <summary>
@@ -54,14 +52,15 @@ namespace NintendoLand.DataFormats
             /// <summary>
             /// Creates a fruit with the ID and type specified
             /// 
-            /// If the third parameter is specified and not set to FruitMapping.NONE, random selection using a range is created
+            /// If the third parameter is specified and not set to FruitType.NONE, random selection using a range is created
             /// </summary>
             /// <param name="ID">ID of the fruit</param>
             /// <param name="fruitType">Type the fruit should be</param>
-            /// <param name="fruitTypeRangeEnd">If not FruitMapping.NONE, the fruit will be a runtime-random fruit ranging from `fruitType` (inclusive) to `fruitTypeRangeEnd` (inclusive)</param>
-            public Fruit(byte ID, FruitMapping fruitType, FruitMapping fruitTypeRangeEnd = FruitMapping.NONE)
+            /// <param name="fruitTypeRangeEnd">If not FruitType.NONE, the fruit will be a runtime-random fruit ranging from `fruitType` (inclusive) to `fruitTypeRangeEnd` (inclusive)</param>
+            /// TODO MH: Replace fruit range with fruit array (via '.' instead of '~'
+            public Fruit(byte ID, FruitType fruitType, FruitType fruitTypeRangeEnd)
             {
-                if (fruitTypeRangeEnd != FruitMapping.NONE)
+                if (fruitTypeRangeEnd != (FruitType) (-1))
                 {
                     this.fruitType = new IndexResolver((int)fruitType, (int)fruitTypeRangeEnd, (byte)'~');
                 }
@@ -78,16 +77,7 @@ namespace NintendoLand.DataFormats
 
             public string Readable()
             {
-                if (fruitType.IsRange)
-                {
-                    // when a range is given a fruit is being picked at random using the min/max properties of this.fruitType
-                    List<FruitMapping> possibleFruits = Enum.GetValues(typeof(FruitMapping)).Cast<FruitMapping>().Where((n, x) => x >= fruitType.Min && x <= fruitType.Max).ToList();
-                    return "Random range: [" + String.Join(", ", possibleFruits) + "]";
-                }
-                else
-                {
-                    return ((FruitMapping)fruitType.Value).ToString();
-                }
+                return string.Join(", ", fruitType.Values.Select(value => (FruitData.FruitType)value));
             }
 
             public static Fruit Load(BinaryReader reader)

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
 
 namespace tileeditor.GridObjects
 {
@@ -84,7 +86,7 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.RotatingObject;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             NintendoLand.TileTypes.RotatingObject rotatingObject = tileType as NintendoLand.TileTypes.RotatingObject;
             return new RotatingObject() {index = rotatingObject.index, orbitters = new List<BaseObject>(), pivotInput = new ComboBox()};

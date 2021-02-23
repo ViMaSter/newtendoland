@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
+using static System.Int32;
 
 namespace tileeditor.GridObjects
 {
@@ -12,7 +16,6 @@ namespace tileeditor.GridObjects
         public override string DisplayData => levelTarget == -1 ? "Next level" : "Jumps to level " + levelTarget;
 
         #region Form generator
-        private CheckBox isBonusGoal;
         private TextBox bonusGoalInput;
         int levelTarget;
 
@@ -23,38 +26,16 @@ namespace tileeditor.GridObjects
             // Optional inputs
             Label jumpToLevel = new Label();
             jumpToLevel.Content = "Jump to level:";
-            jumpToLevel.Visibility = System.Windows.Visibility.Hidden;
             Grid.SetColumn(jumpToLevel, 0);
             Grid.SetRow(jumpToLevel, 1);
 
             bonusGoalInput = new TextBox();
-            bonusGoalInput.Text = "1";
+            bonusGoalInput.Text = (levelTarget == -1 ? (Application.Current.MainWindow as MainWindow).NextLevelIndex+1  : levelTarget).ToString();
             bonusGoalInput.PreviewTextInput += Selector_PreviewTextInput;
-            bonusGoalInput.Visibility = System.Windows.Visibility.Hidden;
             Grid.SetColumn(bonusGoalInput, 1);
             Grid.SetRow(bonusGoalInput, 1);
             Grid.SetColumnSpan(bonusGoalInput, 1);
 
-            // Regular input
-            isBonusGoal = new CheckBox();
-            isBonusGoal.IsChecked = false;
-            isBonusGoal.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            Grid.SetColumn(isBonusGoal, 0);
-            Grid.SetRow(isBonusGoal, 0);
-            Grid.SetColumnSpan(isBonusGoal, 2);
-            isBonusGoal.Checked += (object sender, System.Windows.RoutedEventArgs e) =>
-            {
-                bonusGoalInput.Visibility = (sender as CheckBox).IsChecked == true ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-                jumpToLevel.Visibility = (sender as CheckBox).IsChecked == true ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-            };
-            isBonusGoal.Unchecked += (object sender, System.Windows.RoutedEventArgs e) =>
-            {
-                bonusGoalInput.Visibility = (sender as CheckBox).IsChecked == true ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-                jumpToLevel.Visibility = (sender as CheckBox).IsChecked == true ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-            };
-            isBonusGoal.Content = "Is bonus goal";
-
-            grid.Children.Add(isBonusGoal);
             grid.Children.Add(jumpToLevel);
             grid.Children.Add(bonusGoalInput);
             return true;
@@ -62,7 +43,7 @@ namespace tileeditor.GridObjects
 
         public override void ObtainData()
         {
-            levelTarget = isBonusGoal.IsChecked == true ? Int32.Parse(bonusGoalInput.Text) : 0;
+            levelTarget = Parse(bonusGoalInput.Text);
         }
 
         private void Selector_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -73,7 +54,7 @@ namespace tileeditor.GridObjects
         private bool ValidateInput(string text)
         {
             int input = -1;
-            return Int32.TryParse(text, out input) && input >= 0 && input <= 99;
+            return TryParse(text, out input) && input >= 0 && input <= 99;
         }
         #endregion
 
@@ -83,10 +64,10 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Goal;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             NintendoLand.TileTypes.Goal goal = tileType as NintendoLand.TileTypes.Goal;
-            return new Goal() { levelTarget = goal.levelTarget, bonusGoalInput = new TextBox(), isBonusGoal = new CheckBox()};
+            return new Goal() { levelTarget = goal.levelTarget, bonusGoalInput = new TextBox() };
         }
         #endregion
 

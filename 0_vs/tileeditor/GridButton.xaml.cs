@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using tileeditor.GridObjects;
 
 namespace tileeditor
 {
@@ -23,6 +24,11 @@ namespace tileeditor
         public GridButton()
         {
             InitializeComponent();
+        }
+
+        private void GridButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ConfigPopup.Show(DataContext as BaseObject, this.Parent as Window);
         }
     }
 }

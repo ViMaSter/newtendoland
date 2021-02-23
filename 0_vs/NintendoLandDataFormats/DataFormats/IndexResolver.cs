@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace NintendoLand.DataFormats
 {
@@ -43,10 +44,10 @@ namespace NintendoLand.DataFormats
         }
         #endregion
 
-        public bool IsRange => max != -1;
+        private bool IsRange => max != -1;
 
         int minOrValue;
-        public int Min
+        private int Min
         {
             get
             {
@@ -54,7 +55,7 @@ namespace NintendoLand.DataFormats
                 return minOrValue;
             }
         }
-        public int Value
+        private int Value
         {
             get
             {
@@ -63,9 +64,8 @@ namespace NintendoLand.DataFormats
             }
         }
 
-
         int max = -1;
-        public int Max
+        private int Max
         {
             get
             {
@@ -74,12 +74,15 @@ namespace NintendoLand.DataFormats
             }
         }
 
+        public IEnumerable<int> Values => IsRange ? (Delimiter == '~' ? Enumerable.Range(Min, (Max - Min)+1) : new []{Min, Max}) : new[] {Value};
+
+
         /// <summary>
         /// Byte used to divide min and max value (is `null`, if only one value was stored)
         /// 
         /// This is required to be stored, as there seem to be differences in outcome.
         /// FruitData.exbin stores the fruit type using both "1~3" and "4.6" in the same file
-        /// @TODO VM Inspect influence of delimiter in FruitData - current hypothesis: ~ = from MIN to MAX | . = MIN or MAX
+        /// @TODO VM Verify influence of delimiter in FruitData - current hypothesis: ~ = from MIN to MAX | . = MIN or MAX
         /// </summary>
         byte? delimiter = null;
         public byte Delimiter
@@ -107,11 +110,6 @@ namespace NintendoLand.DataFormats
         public IndexResolver(int value)
         {
             this.minOrValue = value;
-        }
-
-        public int GetRandom()
-        {
-            return IsRange ? new System.Random().Next(minOrValue, max + 1) : minOrValue;
         }
 
         private static int ParseNumber(BinaryReader reader, ref int remainingBytes)
@@ -225,7 +223,7 @@ namespace NintendoLand.DataFormats
 
         public override string ToString()
         {
-            return IsRange ? $"{Min}-{Max}" : Value.ToString();
+            return string.Join(", ", Values);
         }
     }
 }

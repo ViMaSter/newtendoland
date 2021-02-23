@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
 
 namespace tileeditor.GridObjects
 {
@@ -53,10 +55,10 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Spike;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             NintendoLand.TileTypes.Spike spike = tileType as NintendoLand.TileTypes.Spike;
-            return new Spike() {state = (SpikeStartState) spike.state, selector = new ComboBox()};
+            return new Spike() {state = (SpikeStartState) spike.state};
         }
         #endregion
     }

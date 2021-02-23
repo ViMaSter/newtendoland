@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
 using Image = System.Windows.Controls.Image;
 
 namespace tileeditor.GridObjects
@@ -11,7 +13,6 @@ namespace tileeditor.GridObjects
         protected BaseObject() { }
         public abstract string DisplayName { get; }
         public virtual string IconFileName => "unknown";
-        private int column;
         private Point position;
         public Point Position => position;
 
@@ -32,7 +33,7 @@ namespace tileeditor.GridObjects
             return false;
         }
 
-        public abstract BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage);
+        public abstract BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData);
 
         public void SetPosition(int column, int row)
         {

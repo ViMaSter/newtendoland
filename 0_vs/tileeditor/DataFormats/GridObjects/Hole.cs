@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Windows.Controls;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
 
 namespace tileeditor.GridObjects
 {
     class Hole : BaseObject
     {
+        public Hole()
+        {
+            selector = new ComboBox();
+        }
+
         public override string DisplayName => "Hole";
 
         public override string IconFileName => DisplayName;
@@ -35,6 +42,8 @@ namespace tileeditor.GridObjects
             {
                 selector.Items.Add(spikeState);
             }
+
+            selector.SelectedValue = state;
             Grid.SetColumn(selector, 1);
             Grid.SetRow(selector, 0);
 
@@ -55,10 +64,10 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Hole;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             NintendoLand.TileTypes.Hole hole = tileType as NintendoLand.TileTypes.Hole;
-            return new Hole(){selector = new ComboBox(), state = (Size)stage.holeDefinitions[hole.definitionIndex] };
+            return new Hole(){state = (Size)stage.holeDefinitions[hole.definitionIndex] };
         }
         #endregion
     }

@@ -50,7 +50,7 @@ namespace NintendoLand.Tests.DataFormats
         public void SerializeDirtyExbin()
         {
             NintendoLand.DataFormats.FruitData fruitData = NintendoLand.DataFormats.FruitData.Load(pathToYsiExtract);
-            fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas, NintendoLand.DataFormats.FruitData.FruitMapping.Strawberry));
+            fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitType.Bananas, NintendoLand.DataFormats.FruitData.FruitType.Strawberry));
             List<byte> serializedData = new List<byte>();
             fruitData.SerializeExbin(ref serializedData, 16 + 84 * 90 + 3); // magic number is the max length of the default FruitData.exbin-file (16 [header] + 84 [one fruit definition] * 90 + 3 [footer])
 
@@ -73,7 +73,7 @@ namespace NintendoLand.Tests.DataFormats
 
             {
                 // ensure deserialized data is identical
-                NintendoLand.DataFormats.FruitData.Fruit waterMelonID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.WaterMelon);
+                NintendoLand.DataFormats.FruitData.Fruit waterMelonID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitType.WaterMelon, (NintendoLand.DataFormats.FruitData.FruitType)(-1));
 
                 Assert.AreEqual(fruitData.FruitByID[10].ID, waterMelonID10.ID);
                 Assert.AreEqual(fruitData.FruitByID[10].FruitType, waterMelonID10.FruitType);
@@ -87,7 +87,7 @@ namespace NintendoLand.Tests.DataFormats
 
             // changed ID
             {
-                NintendoLand.DataFormats.FruitData.Fruit waterMelonID11 = new NintendoLand.DataFormats.FruitData.Fruit(11, NintendoLand.DataFormats.FruitData.FruitMapping.WaterMelon);
+                NintendoLand.DataFormats.FruitData.Fruit waterMelonID11 = new NintendoLand.DataFormats.FruitData.Fruit(11, NintendoLand.DataFormats.FruitData.FruitType.WaterMelon, (NintendoLand.DataFormats.FruitData.FruitType)(-1));
 
                 Assert.AreNotEqual(fruitData.FruitByID[10].ID, waterMelonID11.ID);
                 Assert.AreEqual(fruitData.FruitByID[10].FruitType, waterMelonID11.FruitType);
@@ -101,7 +101,7 @@ namespace NintendoLand.Tests.DataFormats
 
             // changed type
             {
-                NintendoLand.DataFormats.FruitData.Fruit bananasID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas);
+                NintendoLand.DataFormats.FruitData.Fruit bananasID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitType.Bananas, (NintendoLand.DataFormats.FruitData.FruitType)(-1));
 
                 Assert.AreEqual(fruitData.FruitByID[10].ID, bananasID10.ID);
                 Assert.AreNotEqual(fruitData.FruitByID[10].FruitType, bananasID10.FruitType);
@@ -115,7 +115,7 @@ namespace NintendoLand.Tests.DataFormats
 
             // changed type to range
             {
-                NintendoLand.DataFormats.FruitData.Fruit waterMelonAppleID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.WaterMelon, NintendoLand.DataFormats.FruitData.FruitMapping.Apple);
+                NintendoLand.DataFormats.FruitData.Fruit waterMelonAppleID10 = new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitType.WaterMelon, NintendoLand.DataFormats.FruitData.FruitType.Apple);
 
                 Assert.AreEqual(fruitData.FruitByID[10].ID, waterMelonAppleID10.ID);
                 Assert.AreNotEqual(fruitData.FruitByID[10].FruitType, waterMelonAppleID10.FruitType);
@@ -135,8 +135,8 @@ namespace NintendoLand.Tests.DataFormats
         public void InsertUpdateFruitReturnValue()
         {
             NintendoLand.DataFormats.FruitData fruitData = NintendoLand.DataFormats.FruitData.Load(pathToYsiExtract);
-            Assert.IsTrue(fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas, NintendoLand.DataFormats.FruitData.FruitMapping.Strawberry)));
-            Assert.IsFalse(fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(200, NintendoLand.DataFormats.FruitData.FruitMapping.Bananas, NintendoLand.DataFormats.FruitData.FruitMapping.Strawberry)));
+            Assert.IsTrue(fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(10, NintendoLand.DataFormats.FruitData.FruitType.Bananas, NintendoLand.DataFormats.FruitData.FruitType.Strawberry)));
+            Assert.IsFalse(fruitData.UpdateFruit(new NintendoLand.DataFormats.FruitData.Fruit(200, NintendoLand.DataFormats.FruitData.FruitType.Bananas, NintendoLand.DataFormats.FruitData.FruitType.Strawberry)));
         }
     }
 }

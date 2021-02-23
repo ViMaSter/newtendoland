@@ -89,7 +89,7 @@ namespace tileeditor.DataFormats
                     {
                         if (baseType.CanConvert(type, level.stage))
                         {
-                            createdObject = baseType.FromTileType(type, level.stage);
+                            createdObject = baseType.FromTileType(type, level.stage, gameDataContainer.fruitData);
                         }
                     });
                     System.Diagnostics.Debug.Assert(

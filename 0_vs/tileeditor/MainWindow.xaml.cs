@@ -133,6 +133,9 @@ namespace tileeditor
             });
         }
 
+        private int currentLevelIndex = -1;
+        public int NextLevelIndex => currentLevelIndex+1;
+
         private void LevelSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count <= 0)
@@ -150,6 +153,7 @@ namespace tileeditor
             }
 
             VisualizeMapData((e.AddedItems[0] as ComboBoxItem).Name + ".exbin");
+            currentLevelIndex = currentMapDescriptor.mapID;
         }
 
         #region Visualize map
@@ -193,72 +197,7 @@ namespace tileeditor
             Debug.Assert(true, "Successful conversion");
 
             MapDataGrid.ItemsSource = currentMapDescriptor.grid.Cast<BaseObject>().Chunk(MapData.COLUMNS_TOTAL);
-            StageDataGrid.ItemsSource = new List<Array>
-            {
-                currentMapDescriptor.pepperOrSwitchFlagMap, 
-                currentMapDescriptor.movementPatternMap, 
-                currentMapDescriptor.fruitOrderMap,
-                currentMapDescriptor.fruitAssociations
-            };
         }
         #endregion
-
-        private void MapDataCellMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (((System.Windows.FrameworkElement)sender).DataContext is Switch switchElement)
-            {
-                FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[] a = (FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[])((List<Array>)StageDataGrid.ItemsSource)[0];
-                a[switchElement.Index - 1].SetFocus(true);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is Pepper pepper)
-            {
-                FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[] a = (FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[]) ((List<Array>)StageDataGrid.ItemsSource)[0];
-                a[pepper.Index-1].SetFocus(true);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is RotatingObject rotatingObject)
-            {
-                FocusableComponent<IndexResolver>[] a = (FocusableComponent<IndexResolver>[])((List<Array>)StageDataGrid.ItemsSource)[1];
-                a[rotatingObject.Index - 1].SetFocus(true);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is OrderedFruit orderedFruit)
-            {
-                FocusableComponent<IndexResolver>[] a = (FocusableComponent<IndexResolver>[])((List<Array>)StageDataGrid.ItemsSource)[2];
-                a[orderedFruit.Order - 1].SetFocus(true);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is Fruit fruit)
-            {
-                FocusableComponent<IndexResolver>[] a = (FocusableComponent<IndexResolver>[])((List<Array>)StageDataGrid.ItemsSource)[3];
-                a[fruit.Index - 1].SetFocus(true);
-            }
-        }
-
-        private void MapDataCellMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (((System.Windows.FrameworkElement)sender).DataContext is Switch switchElement)
-            {
-                FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[] a = (FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[])((List<Array>)StageDataGrid.ItemsSource)[0];
-                a[switchElement.Index - 1].SetFocus(false);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is Pepper pepper)
-            {
-                FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[] a = (FocusableComponent<StageData.Stage.PepperOrSwitchFlag>[])((List<Array>)StageDataGrid.ItemsSource)[0];
-                a[pepper.Index - 1].SetFocus(false);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is RotatingObject rotatingObject)
-            {
-                FocusableComponent<IndexResolver>[] a = (FocusableComponent<IndexResolver>[])((List<Array>)StageDataGrid.ItemsSource)[1];
-                a[rotatingObject.Index - 1].SetFocus(false);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is OrderedFruit orderedFruit)
-            {
-                FocusableComponent<IndexResolver>[] a = (FocusableComponent<IndexResolver>[])((List<Array>)StageDataGrid.ItemsSource)[2];
-                a[orderedFruit.Order - 1].SetFocus(false);
-            }
-            if (((System.Windows.FrameworkElement)sender).DataContext is Fruit fruit)
-            {
-                FocusableComponent<IndexResolver>[] a = (FocusableComponent<IndexResolver>[])((List<Array>)StageDataGrid.ItemsSource)[3];
-                a[fruit.Index - 1].SetFocus(false);
-            }
-        }
     }
 }

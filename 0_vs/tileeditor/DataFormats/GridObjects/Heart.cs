@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
 
 namespace tileeditor.GridObjects
 {
@@ -25,7 +27,7 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Heart;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             return new Heart();
         }

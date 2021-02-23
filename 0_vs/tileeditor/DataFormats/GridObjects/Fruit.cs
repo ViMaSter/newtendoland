@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
+using NintendoLand.DataFormats;
+using NintendoLand.TileTypes;
 
 namespace tileeditor.GridObjects
 {
@@ -9,38 +13,41 @@ namespace tileeditor.GridObjects
 
         public override string IconFileName => DisplayName;
 
-        public override string DisplayData => index.ToString();
+        public override string DisplayData =>
+            string.Join(", ",
+                selectedFruitTypes.Where(entry => entry.Value)
+                    .Select(entry => entry.Key.ToString()));
 
-        public static int HighestCurrentlyUsedIndex = 0;
-
-        int index;
-        public int Index => index;
+        public Dictionary<FruitData.FruitType, bool> selectedFruitTypes;
+        private CheckBox checkbox;
 
         #region Form generator
-        private TextBox indexInput;
-
         // implement common methods
         public override bool PopulateFields(ref Grid grid)
         {
-            Label label = new Label();
-            label.Content = "Index:";
-            Grid.SetColumn(label, 0);
-            Grid.SetRow(label, 0);
+            int index = -1;
+            foreach (FruitData.FruitType fruitType in Enum.GetValues(typeof(FruitData.FruitType)))
+            {
+                Label label = new Label();
+                label.Content = fruitType + ":";
+                Grid.SetColumn(label, 0);
+                Grid.SetRow(label, ++index);
 
-            indexInput = new TextBox();
-            indexInput.Text = Fruit.HighestCurrentlyUsedIndex.ToString();
-            indexInput.PreviewTextInput += Selector_PreviewTextInput;
-            Grid.SetColumn(indexInput, 1);
-            Grid.SetRow(indexInput, 0);
+                checkbox = new CheckBox();
+                checkbox.IsChecked = selectedFruitTypes[fruitType];
+                Grid.SetColumn(checkbox, 1);
+                Grid.SetRow(checkbox, index);
 
-            grid.Children.Add(label);
-            grid.Children.Add(indexInput);
+                grid.Children.Add(label);
+                grid.Children.Add(checkbox);
+            }
+
             return true;
         }
 
         public override void ObtainData()
         {
-            index = Int32.Parse(indexInput.Text);
+            throw new NotImplementedException("Build UI for selecting types");
         }
 
         private void Selector_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -61,10 +68,19 @@ namespace tileeditor.GridObjects
             return tileType is NintendoLand.TileTypes.Fruit;
         }
 
-        public override BaseObject FromTileType(NintendoLand.TileTypes.BaseType tileType, NintendoLand.DataFormats.StageData.Stage stage)
+        public override BaseObject FromTileType(BaseType tileType, StageData.Stage stage, FruitData fruitData)
         {
             NintendoLand.TileTypes.Fruit fruit = tileType as NintendoLand.TileTypes.Fruit;
-            return new Fruit() { index = fruit.index, indexInput = new TextBox() };
+            var fruitMappings = stage.fruitAssociations[fruit.index-1].Values;
+            var fruitTypeMappings = fruitMappings.Select(fruitMapping => fruitData.FruitByID[fruitMapping].FruitType);
+            var fruitTypes = new HashSet<FruitData.FruitType>(fruitTypeMappings.SelectMany(mapping => mapping.Values).Select(entry => (FruitData.FruitType)entry));
+
+            return new Fruit()
+            {
+                selectedFruitTypes =
+                    ((FruitData.FruitType[]) Enum.GetValues(typeof(FruitData.FruitType))).ToDictionary(
+                        enumValue => enumValue, enumValue => fruitTypes.Contains(enumValue))
+            };
         }
         #endregion
     }

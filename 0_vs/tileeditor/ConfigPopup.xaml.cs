@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+
 namespace tileeditor
 {
     /// <summary>
@@ -21,6 +23,20 @@ namespace tileeditor
             {
                 return;
             }
+
+            newPopup.KeyDown += (sender, args) =>
+            {
+                if (args.Key == Key.Escape)
+                {
+                    newPopup.Close();
+                }
+
+                if (args.Key == Key.Enter)
+                {
+                    tileType.ObtainData();
+                    newPopup.Close();
+                }
+            };
 
             newPopup.OK.Click += (object sender, RoutedEventArgs e) =>
             {
