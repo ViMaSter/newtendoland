@@ -18,7 +18,7 @@
     </Window.Resources>
     <Grid>
         <Button Name="OK" Content="OK" HorizontalAlignment="Left" Margin="10,439,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="342,439,0,0" VerticalAlignment="Top" Width="74"/>
+        <Button Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="342,438,0,0" VerticalAlignment="Top" Width="74"/>
         <Grid Name="CustomContent" Margin="10,10,5,45.5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
@@ -38,6 +38,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
         </Grid>

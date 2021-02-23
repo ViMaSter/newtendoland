@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using NintendoLand.DataFormats;
 using NintendoLand.TileTypes;
 
@@ -44,13 +45,12 @@ namespace tileeditor.GridObjects
                 orderInput.Text = Order.ToString();
                 orderInput.PreviewTextInput += Selector_PreviewTextInput;
                 Grid.SetColumn(orderInput, 1);
+                Grid.SetColumnSpan(orderInput, 2);
                 Grid.SetRow(orderInput, ++index);
 
                 grid.Children.Add(label);
                 grid.Children.Add(orderInput);
             }
-
-
 
             foreach (FruitData.FruitType fruitType in Enum.GetValues(typeof(FruitData.FruitType)))
             {
@@ -59,12 +59,22 @@ namespace tileeditor.GridObjects
                 Grid.SetColumn(label, 0);
                 Grid.SetRow(label, ++index);
 
+                Image icon = new Image
+                {
+                    Source = new BitmapImage(new Uri(
+                        $"pack://application:,,,/tileeditor;component/Resources/Fruit/{fruitType}.png",
+                        UriKind.Absolute))
+                };
+                Grid.SetColumn(icon, 1);
+                Grid.SetRow(icon, index);
+
                 checkbox = new CheckBox();
                 checkbox.IsChecked = selectedFruitTypes[fruitType];
-                Grid.SetColumn(checkbox, 1);
+                Grid.SetColumn(checkbox, 2);
                 Grid.SetRow(checkbox, index);
 
                 grid.Children.Add(label);
+                grid.Children.Add(icon);
                 grid.Children.Add(checkbox);
             }
 

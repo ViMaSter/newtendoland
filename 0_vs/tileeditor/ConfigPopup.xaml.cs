@@ -48,6 +48,9 @@ namespace tileeditor
             {
                 newPopup.Close();
             };
+            newPopup.WindowStartupLocation = WindowStartupLocation.Manual;
+            newPopup.Left = owner.Left + owner.ActualWidth;
+            newPopup.Top = owner.Top;
             newPopup.ShowDialog();
         }
 

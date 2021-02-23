@@ -198,6 +198,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Fruit\present10Coins.png" />
+    <Resource Include="Resources\Fruit\present1Up.png" />
     <Resource Include="Resources\TileTypes\Hole_Large.png" />
   </ItemGroup>
   <ItemGroup>
@@ -261,7 +263,21 @@
       <Name>NintendoLandDataFormats</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Fruit\apple.png" />
+    <Resource Include="Resources\Fruit\bananas.png" />
+    <Resource Include="Resources\Fruit\cantaloupe.png" />
+    <Resource Include="Resources\Fruit\grapes.png" />
+    <Resource Include="Resources\Fruit\orange.png" />
+    <Resource Include="Resources\Fruit\peach.png" />
+    <Resource Include="Resources\Fruit\pear.png" />
+    <Resource Include="Resources\Fruit\presentBlueCheckmark.png" />
+    <Resource Include="Resources\Fruit\strawberry.png" />
+    <Resource Include="Resources\Fruit\waterMelon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Fruit\presentReferencedButNotUsed.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>Xcopy /E /I /Y $(SolutionDir)..\1_scripts $(TargetDir)Scripts</PreBuildEvent>

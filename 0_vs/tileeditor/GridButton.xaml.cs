@@ -28,7 +28,7 @@ namespace tileeditor
 
         private void GridButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ConfigPopup.Show(DataContext as BaseObject, this.Parent as Window);
+            ConfigPopup.Show(DataContext as BaseObject, Window.GetWindow(this) as Window);
         }
     }
 }
