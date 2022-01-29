@@ -1,6 +1,8 @@
 # Nintendo Yoshi's Fruit Cart Map Editor
 [![Build Status](https://vimaster.visualstudio.com/newtendoland/_apis/build/status/ViMaSter.newtendoland?branchName=master)](https://vimaster.visualstudio.com/newtendoland/_build/latest?definitionId=1&branchName=master)
 
+![image](https://user-images.githubusercontent.com/1689033/151661504-df1b3db4-317d-48ec-bba6-29ab35b93f21.png)
+
 ## Required
 - Python 3 + `py` inside `PATH`
 - [Uwizard](https://github.com/MrMysterio/Uwizard) to extract and re-pack gamefiles
