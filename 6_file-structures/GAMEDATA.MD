@@ -14,8 +14,8 @@ Game data is split up into two types; **globals** and **maps**.
 ## Globals
 Globals exist once and are constants across all maps.
 E.g.: FruitData might define a banana, that restores 20% of the energy bar with the ID 7.
-### FruitData [(human-readable)](6_file-structures/FruitData.txt) [(grammar)](3_hexgrammar/FruitData.exbin.grammar)
-### StageData [(human-readable)](6_file-structures/StageData.txt) [(grammar)](3_hexgrammar/StageData.exbin.grammar)
+### FruitData [(human-readable)](FruitData.txt) [(grammar)](3_hexgrammar/FruitData.exbin.grammar)
+### StageData [(human-readable)](StageData.txt) [(grammar)](3_hexgrammar/StageData.exbin.grammar)
 Note: StageData IDs go from 1 to (including) 50. So 50 in total.  
 StageData ID 1 however is actually the tutorial stage, which is `MapData99.exbin`. Afterwards, the mapping starts at what the game displays as "level 01".
 
@@ -27,7 +27,7 @@ The mapping is as follows:
 | `3`          | MapData`01`.exbin | Level 02                       |
 | `4`          | MapData`02`.exbin | Level 03                       |
 | `...`        | MapData`..`.exbin | Level 04                       |
-### EnemyData [(human-readable)](6_file-structures/EnemyData.txt) 
+### EnemyData [(human-readable)](EnemyData.txt) 
 
 ## Maps
 Maps are stored inside 61 `MapDataXY.exbin` files, with `XY` representing an index starting at 0 and ending at 59.  
